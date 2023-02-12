@@ -12,10 +12,12 @@ namespace TournamentManager.DataAccess.UnitOfWork
             _context = context;
             Season = new SeasonRepository(_context);
             GameType = new GameTypeRepository(_context);
+            Venue = new VenueRepository(_context);  
         }
 
         public ISeasonRepository Season  { get; private set; }
         public IGameTypeRepository GameType { get; set; }
+        public IVenueRepository Venue { get; set; }
 
         public void Dispose()
         {

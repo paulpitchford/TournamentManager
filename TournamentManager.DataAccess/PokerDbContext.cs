@@ -9,6 +9,7 @@ namespace TournamentManager.DataAccess
 
         public DbSet<Season> Seasons { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
+        public DbSet<Venue> Venues { get; set; }
 
         // Seed the database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -62,6 +63,47 @@ namespace TournamentManager.DataAccess
                     Id = new Guid("0bd6aac9-ad90-4fdb-9725-ae363f0d9171"),
                     GameTypeName = "Special",
                     AwardPoints = false
+                }
+            );
+            #endregion
+
+            #region Venue
+            modelBuilder.Entity<Venue>().Property(v => v.VenueName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.Address).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.Town).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.County).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.PostCode).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.PhoneNumber).HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.WebAddress).HasMaxLength(255);
+            modelBuilder.Entity<Venue>().Property(v => v.FacebookAddress).HasMaxLength(255);
+            modelBuilder.Entity<Venue>().Property(v => v.ExtraInformation).HasMaxLength(255);
+            modelBuilder.Entity<Venue>().HasIndex(s => s.VenueName).IsUnique();
+            modelBuilder.Entity<Venue>().HasData
+            (
+                new Venue
+                {
+                    Id = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    VenueName = "The Devonshire Arms",
+                    Address = "High Pavement",
+                    Town = "Sutton in Ashfield",
+                    County = "Nottinghamshire",
+                    PostCode = "NG17 4BA"
+                }, new Venue
+                {
+                    Id = new Guid("cb29fe0d-e42c-4a8a-9ab9-839caeb9d4ea"),
+                    VenueName = "Josephs Club",
+                    Address = "High Pavement",
+                    Town = "Sutton in Ashfield",
+                    County = "Nottinghamshire",
+                    PostCode = "NG17 4BD"
+                }, new Venue
+                {
+                    Id = new Guid("ae24627e-9e05-4529-b6ff-5917d6b8038e"),
+                    VenueName = "Bentinck Social Club",
+                    Address = "Sutton Road",
+                    Town = "Kirkby in Ashfield",
+                    County = "Nottinghamshire",
+                    PostCode = "NG17 7GZ"
                 }
             );
             #endregion

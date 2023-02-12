@@ -6,6 +6,8 @@
 
         IGameTypeRepository GameType { get; }
 
+        IVenueRepository Venue { get; }
+
         int Save();
     }
 }
