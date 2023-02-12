@@ -4,6 +4,8 @@
     {
         ISeasonRepository Season { get; }
 
+        IGameTypeRepository GameType { get; }
+
         int Save();
     }
 }

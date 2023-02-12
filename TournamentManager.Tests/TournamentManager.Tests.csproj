@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TournamentManager.API\TournamentManager.API.csproj" />
     <ProjectReference Include="..\TournamentManager.DataAccess\TournamentManager.DataAccess.csproj" />
     <ProjectReference Include="..\TournamentManager.Infrastructure\TournamentManager.Infrastructure.csproj" />
   </ItemGroup>

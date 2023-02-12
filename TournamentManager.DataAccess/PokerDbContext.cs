@@ -8,10 +8,12 @@ namespace TournamentManager.DataAccess
         public PokerDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Season> Seasons { get; set; }
+        public DbSet<GameType> GameTypes { get; set; }
 
         // Seed the database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Season
             modelBuilder.Entity<Season>().Property(s => s.SeasonName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Season>().Property(s => s.StartDate).IsRequired();
             modelBuilder.Entity<Season>().HasIndex(s => s.SeasonName).IsUnique();
@@ -35,6 +37,34 @@ namespace TournamentManager.DataAccess
                     StartDate = new DateTime(2023, 1, 1)
                 }
             );
+            #endregion
+
+            #region GameType
+            modelBuilder.Entity<GameType>().Property(s => s.GameTypeName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<GameType>().Property(s => s.AwardPoints).IsRequired();
+            modelBuilder.Entity<GameType>().HasIndex(s => s.GameTypeName).IsUnique();
+            modelBuilder.Entity<GameType>().HasData
+            (
+                new GameType
+                { 
+                    Id = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    GameTypeName = "League",
+                    AwardPoints = true
+                },
+                new GameType
+                {
+                    Id = new Guid("6117db2a-2143-460d-a5cf-7d038caa3c33"),
+                    GameTypeName = "Final",
+                    AwardPoints = false
+                },
+                new GameType
+                {
+                    Id = new Guid("0bd6aac9-ad90-4fdb-9725-ae363f0d9171"),
+                    GameTypeName = "Special",
+                    AwardPoints = false
+                }
+            );
+            #endregion
         }
     }
 }

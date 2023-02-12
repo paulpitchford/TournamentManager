@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
 

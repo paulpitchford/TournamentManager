@@ -1,10 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using TournamentManager.API.Controllers;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Tests.Fixtures;
 
-namespace TournamentManager.Tests.RepositoryTests
+namespace TournamentManager.Tests.ControllerTests
 {
     public class SeasonTests : IClassFixture<TestDatabaseFixture>
     {
@@ -24,12 +23,14 @@ namespace TournamentManager.Tests.RepositoryTests
             var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
             int response = 0;
 
+            // Act
+            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
             using (var context = _fixture.CreateContext())
             {
-                // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Season.Add(season);
-                response = unitOfWork.Save();
+                var controller = new SeasonController(unitOfWork);
+
+                response = controller.AddSeason(season);
             }
 
             // Assert
@@ -46,11 +47,14 @@ namespace TournamentManager.Tests.RepositoryTests
             var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
             Season? season;
 
+            // Act and Assert
+            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
             using (var context = _fixture.CreateContext())
             {
-                // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                season = unitOfWork.Season.GetById(seasonId);
+                var controller = new SeasonController(unitOfWork);
+
+                season = controller.GetSeason(seasonId);
 
                 // If the season.Id matches the seasonId we've successfully retrieved the season from the database
                 Assert.Equal(seasonId, season.Id);
@@ -63,44 +67,19 @@ namespace TournamentManager.Tests.RepositoryTests
             // Arrange
             // This is a guid from one of the seeded seasons
             var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
-            Season? season;
+            Season? season = null;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                season = unitOfWork.Season.GetById(seasonId);
+                var controller = new SeasonController(unitOfWork);
 
+                season = controller.GetSeason(seasonId);
                 season.StartDate = DateTime.Now;
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
-                Assert.Equal(1, unitOfWork.Save());
-            }
-        }
-
-        [Fact]
-        public void CannotAddTwoSeasonsWithSameName()
-        {
-            // Arrange
-            using (var context = _fixture.CreateContext())
-            {
-                var unitOfWork = new UnitOfWork(context);
-                // Make up a random season name
-                string seasonName = Guid.NewGuid().ToString();
-                unitOfWork.Season.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today });
-                unitOfWork.Save();
-
-                // Act and Assert
-                var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today };
-                unitOfWork.Season.Add(secondSeason);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
-                var sqlException = exception.InnerException as SqlException;
-
-                if (sqlException != null)
-                {
-                    // If we get a sqlException of 2601 that means that the insert failed due to the constraint which is what this test is ensuring
-                    Assert.Equal(2601, sqlException.Number);
-                }
+                Assert.True(controller.UpdateSeason(seasonId, season));
             }
         }
     }
