@@ -7,6 +7,7 @@ namespace TournamentManager.DataAccess
     {
         public PokerDbContext(DbContextOptions options) : base(options) { }
 
+        public DbSet<Game> Games { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Season> Seasons { get; set; }
@@ -175,6 +176,102 @@ namespace TournamentManager.DataAccess
                     Id = new Guid("26b843f6-0af6-40c2-b7be-4320b6232bf0"),
                     FirstName = "Trinity",
                     LastName = "Lin"
+                }
+            );
+            #endregion
+
+            #region Game
+            modelBuilder.Entity<Game>().Property(g => g.SeasonId).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.GameTypeId).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.VenueId).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.GameTitle).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Game>().Property(g => g.GameDateTime).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.PublishResults).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.GameDetails).IsRequired().HasMaxLength(255);
+            modelBuilder.Entity<Game>().Property(g => g.Buyin).IsRequired();
+            modelBuilder.Entity<Game>().Property(g => g.Fee).IsRequired();
+            modelBuilder.Entity<Game>().HasOne(g => g.Season).WithMany(s => s.Games).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Game>().HasOne(g => g.GameType).WithMany(s => s.Games).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Game>().HasOne(g => g.Venue).WithMany(s => s.Games).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Game>().HasData
+            (
+                new Game
+                {
+                    Id = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 1",
+                    GameDateTime = new DateTime(2021, 1, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 1, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
+                },
+                new Game
+                {
+                    Id = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 2",
+                    GameDateTime = new DateTime(2021, 2, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 2, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
+                },
+                new Game
+                {
+                    Id = new Guid("85eaff7b-dd27-4e43-8976-f10eb415bf61"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 3",
+                    GameDateTime = new DateTime(2021, 3, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 3, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
+                },
+                new Game
+                {
+                    Id = new Guid("c9a29408-0b4e-44a8-8a23-c51ddb8b360a"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 4",
+                    GameDateTime = new DateTime(2021, 4, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 4, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
+                },
+                new Game
+                {
+                    Id = new Guid("c08c4989-8d4f-4729-a27d-f762f768cc59"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 5",
+                    GameDateTime = new DateTime(2021, 5, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 5, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
+                },
+                new Game
+                {
+                    Id = new Guid("87450acd-ca09-40c2-883b-aad03402f9dc"),
+                    SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
+                    GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
+                    VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"),
+                    GameTitle = "Game 6",
+                    GameDateTime = new DateTime(2021, 6, 1, 14, 30, 0),
+                    PublishResults = false,
+                    GameDetails = "League game 6, £40 buy in.",
+                    Buyin = 35d,
+                    Fee = 5d
                 }
             );
             #endregion

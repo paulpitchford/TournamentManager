@@ -12,5 +12,7 @@
         public string? WebAddress { get; set; }
         public string? FacebookAddress { get; set; }
         public string? ExtraInformation { get; set; }
+
+        public ICollection<Game> Games { get; set; } = new HashSet<Game>();
     }
 }
