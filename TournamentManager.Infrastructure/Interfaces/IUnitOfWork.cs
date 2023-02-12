@@ -2,10 +2,9 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        ISeasonRepository Season { get; }
-
         IGameTypeRepository GameType { get; }
-
+        IPlayerRepository Player { get; }
+        ISeasonRepository Season { get; }
         IVenueRepository Venue { get; }
 
         int Save();

@@ -7,8 +7,9 @@ namespace TournamentManager.DataAccess
     {
         public PokerDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Season> Seasons { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<Season> Seasons { get; set; }
         public DbSet<Venue> Venues { get; set; }
 
         // Seed the database
@@ -104,6 +105,76 @@ namespace TournamentManager.DataAccess
                     Town = "Kirkby in Ashfield",
                     County = "Nottinghamshire",
                     PostCode = "NG17 7GZ"
+                }
+            );
+            #endregion
+
+            #region Player
+            modelBuilder.Entity<Player>().Property(p => p.FirstName).IsRequired();
+            modelBuilder.Entity<Player>().Property(p => p.LastName).IsRequired();
+            modelBuilder.Entity<Player>().HasIndex(s => s.TournamentDirectorId).IsUnique();
+            modelBuilder.Entity<Player>().HasData
+            (
+                new Player
+                {
+                    Id = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd"),
+                    FirstName = "Paul",
+                    LastName = "Pitchford",
+                    TournamentDirectorId = new Guid("2f5bafda-b39e-4b87-84af-73f92b1dfecc")
+                }, 
+                new Player
+                {
+                    Id = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
+                    FirstName = "Adam",
+                    LastName = "May"
+                },
+                new Player
+                {
+                    Id = new Guid("f9288114-38dc-445f-ae86-603841f4eca7"),
+                    FirstName = "Niamh",
+                    LastName = "Warren"
+                },
+                new Player
+                {
+                    Id = new Guid("496f54f9-ab0c-4fd8-8ef5-f09fb1f09dd5"),
+                    FirstName = "Malakai",
+                    LastName = "Davidson"
+                },
+                new Player
+                {
+                    Id = new Guid("74b97573-79a4-487e-9b26-8c4020f8b395"),
+                    FirstName = "Saul",
+                    LastName = "Pena"
+                },
+                new Player
+                {
+                    Id = new Guid("d590a981-5caf-4416-83d2-36f5defdd89e"),
+                    FirstName = "Fleur",
+                    LastName = "Gray"
+                },
+                new Player
+                {
+                    Id = new Guid("99c65e3f-4a41-45c3-ac7d-f6593b2f72c0"),
+                    FirstName = "Nevaeh",
+                    LastName = "Hatfield"
+                },
+                new Player
+                {
+                    Id = new Guid("916d616d-a760-4a60-8524-bed87bee4411"),
+                    FirstName = "Layla",
+                    LastName = "Russell"
+                },
+                new Player
+                {
+                    Id = new Guid("50432083-d2c4-4123-b6f7-c5a5d8103928"),
+                    FirstName = "Priya",
+                    LastName = "Arroyo"
+                },
+                new Player
+                {
+                    Id = new Guid("26b843f6-0af6-40c2-b7be-4320b6232bf0"),
+                    FirstName = "Trinity",
+                    LastName = "Lin"
                 }
             );
             #endregion
