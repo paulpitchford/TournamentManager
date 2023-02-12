@@ -1,6 +1,7 @@
-# TournamentManager
+# Tournament Manager
 
-A project for creating a Poker Tournament Manager website and app for running a poker league.
+A project for creating a new Poker Tournament Manager website and app for running a poker league.
+www.suttonpoker.co.uk
 
 What I'm hoping to learn along the way:
 
