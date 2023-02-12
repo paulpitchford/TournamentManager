@@ -1,0 +1,12 @@
+﻿@page "/settings/seasons/create"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Season - Create</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Create</h3>
+
+<CascadingValue Value="Season">
+    <SeasonForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+</CascadingValue>

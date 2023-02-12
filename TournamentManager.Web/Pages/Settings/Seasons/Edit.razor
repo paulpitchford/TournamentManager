@@ -1,0 +1,14 @@
+﻿@page "/settings/seasons/{Id:guid}"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Season - Edit</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Edit</h3>
+
+<LoadingIndicator @bind-bind-Visible="formLoading">
+    <CascadingValue Value="Season">
+        <SeasonForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+    </CascadingValue>
+</LoadingIndicator>

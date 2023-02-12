@@ -1,0 +1,36 @@
+﻿@if (AlertIsVisible)
+{
+    <div class="alert @alertClass" role="alert">
+        @Message
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool AlertIsVisible { get; set; }
+    [Parameter]
+    public string? Message { get; set; }
+    [Parameter]
+    public AlertMessageType AlertMessageType { get; set; }
+
+    private string alertClass = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        switch (AlertMessageType)
+        {
+            case AlertMessageType.Danger:
+                alertClass = "alert-danger";
+                break;
+            case AlertMessageType.Warning:
+                alertClass = "alert-warning";
+                break;
+            case AlertMessageType.Success:
+                alertClass = "alert-success";
+                break;
+            case AlertMessageType.Information:
+                alertClass = "alert-information";
+                break;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (Season != null)
+{
+    <EditForm Model="Season" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="season-name" class="col-sm-2 col-form-label">Season Name</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="season-name" @bind-Value="Season.SeasonName" />
+                <ValidationMessage For="() => Season.SeasonName" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="start-date" class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-10">
+                <InputDate class="form-control" id="start-date" @bind-Value="Season.StartDate" />
+                <ValidationMessage For="() => Season.StartDate" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    Season? Season { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

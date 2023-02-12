@@ -1,0 +1,20 @@
+﻿@page "/settings/seasons/"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Seasons</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<LoadingIndicator @bind-Visible="gridLoading">
+    <DataGrid TItem="Season" Data="@Seasons" @bind-SelectedRow="@selectedSeason" Responsive PageSize="10" Hoverable ShowPager>
+        <DataGridColumns>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(Season.SeasonName)" Caption="Season" />
+            <DataGridColumn Field="@nameof(Season.StartDate)" Caption="Start Date" DisplayFormat="{0:d}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
+        </DataGridColumns>
+        <ButtonRowTemplate>
+            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+            <Button Color="Color.Secondary" Disabled="(selectedSeason is null)" Clicked="(() => Edit(selectedSeason!.Id))">Edit</Button>
+        </ButtonRowTemplate>
+    </DataGrid>
+</LoadingIndicator>
