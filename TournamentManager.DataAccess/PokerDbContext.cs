@@ -10,6 +10,7 @@ namespace TournamentManager.DataAccess
         public DbSet<Game> Games { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Result> Results { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Venue> Venues { get; set; }
 
@@ -272,6 +273,185 @@ namespace TournamentManager.DataAccess
                     GameDetails = "League game 6, £40 buy in.",
                     Buyin = 35d,
                     Fee = 5d
+                }
+            );
+            #endregion
+
+            #region Result
+            modelBuilder.Entity<Result>().Property(r => r.GameId).IsRequired();
+            modelBuilder.Entity<Result>().Property(r => r.PlayerId).IsRequired();
+            modelBuilder.Entity<Result>().Property(r => r.Position).IsRequired();
+            modelBuilder.Entity<Result>().Property(r => r.Cash).IsRequired();
+            modelBuilder.Entity<Result>().Property(r => r.Points).IsRequired();
+            modelBuilder.Entity<Result>().HasOne(r => r.Game).WithMany(g => g.Results).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Result>().HasOne(r => r.Player).WithMany(g => g.Results).OnDelete(DeleteBehavior.Restrict);
+            // Set a unique constraint on game and player ids so that the same player can't be added to the same set of game results twice
+            modelBuilder.Entity<Result>().HasIndex(r => new { r.GameId, r.PlayerId }).IsUnique();
+            modelBuilder.Entity<Result>().HasData
+            (
+                new Result
+                {
+                    Id = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd"),
+                    Position = 1,
+                    Cash = 200,
+                    Points = 200
+                },
+                new Result
+                {
+                    Id = new Guid("cc851e84-814a-4c7f-826a-044b15ca5034"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
+                    Position = 2,
+                    Cash = 100,
+                    Points = 150
+                }, new Result
+                {
+                    Id = new Guid("6ced4a42-898e-4ba9-afe9-39eb1a14798e"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("f9288114-38dc-445f-ae86-603841f4eca7"),
+                    Position = 3,
+                    Cash = 75,
+                    Points = 100
+                }, new Result
+                {
+                    Id = new Guid("eb438c54-477a-4e09-9084-d453b96f9834"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("496f54f9-ab0c-4fd8-8ef5-f09fb1f09dd5"),
+                    Position = 4,
+                    Cash = 0,
+                    Points = 75
+                }, new Result
+                {
+                    Id = new Guid("1cd86510-3464-4ef0-90ea-e8b7cac22567"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("74b97573-79a4-487e-9b26-8c4020f8b395"),
+                    Position = 5,
+                    Cash = 0,
+                    Points = 50
+                }, new Result
+                {
+                    Id = new Guid("34f60507-7c52-4ffe-b282-87a1f3f7ce0c"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("d590a981-5caf-4416-83d2-36f5defdd89e"),
+                    Position = 6,
+                    Cash = 0,
+                    Points = 25
+                }, new Result
+                {
+                    Id = new Guid("c465c4d8-494a-449d-8b17-72146a752d2b"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("99c65e3f-4a41-45c3-ac7d-f6593b2f72c0"),
+                    Position = 7,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("9f923e68-afc9-46e7-bb92-d76d3c0825b0"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("916d616d-a760-4a60-8524-bed87bee4411"),
+                    Position = 8,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("e5e8347e-d2e3-424e-b007-f5d4966954a0"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("50432083-d2c4-4123-b6f7-c5a5d8103928"),
+                    Position = 9,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("2f905b1d-648f-4a70-beca-c71c77d6ce49"),
+                    GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
+                    PlayerId = new Guid("26b843f6-0af6-40c2-b7be-4320b6232bf0"),
+                    Position = 10,
+                    Cash = 0,
+                    Points = 15
+                },
+                new Result
+                {
+                    Id = new Guid("bb09a001-830e-4e70-b6ac-b4b9790e59fd"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("26b843f6-0af6-40c2-b7be-4320b6232bf0"),
+                    Position = 1,
+                    Cash = 200,
+                    Points = 200
+                },
+                new Result
+                {
+                    Id = new Guid("07636c15-e4dc-4773-984e-75345884b7c1"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("50432083-d2c4-4123-b6f7-c5a5d8103928"),
+                    Position = 2,
+                    Cash = 100,
+                    Points = 150
+                }, new Result
+                {
+                    Id = new Guid("22b3aa24-66b9-46f6-8cf3-4f5e6b033f45"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("916d616d-a760-4a60-8524-bed87bee4411"),
+                    Position = 3,
+                    Cash = 75,
+                    Points = 100
+                }, new Result
+                {
+                    Id = new Guid("cad67546-e0b2-461e-8869-e7325a770114"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("99c65e3f-4a41-45c3-ac7d-f6593b2f72c0"),
+                    Position = 4,
+                    Cash = 0,
+                    Points = 75
+                }, new Result
+                {
+                    Id = new Guid("6a2c53e5-058b-4fe0-bd10-f30404e2700e"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("d590a981-5caf-4416-83d2-36f5defdd89e"),
+                    Position = 5,
+                    Cash = 0,
+                    Points = 50
+                }, new Result
+                {
+                    Id = new Guid("92b0c68f-391d-42dc-8a00-6649749467cb"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("74b97573-79a4-487e-9b26-8c4020f8b395"),
+                    Position = 6,
+                    Cash = 0,
+                    Points = 25
+                }, new Result
+                {
+                    Id = new Guid("33b3383c-598a-4933-a8b4-d9dc37ea469c"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("496f54f9-ab0c-4fd8-8ef5-f09fb1f09dd5"),
+                    Position = 7,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("1400ba4b-0cbd-4ef8-94a3-5b711f8e11cb"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("f9288114-38dc-445f-ae86-603841f4eca7"),
+                    Position = 8,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("d0c911ad-5812-46eb-906c-fc83e9c97522"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
+                    Position = 9,
+                    Cash = 0,
+                    Points = 15
+                }, new Result
+                {
+                    Id = new Guid("f2577898-1878-4309-9094-a94fa288f577"),
+                    GameId = new Guid("ff143321-2b4b-4b7b-adf3-57dc0beec786"),
+                    PlayerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd"),
+                    Position = 10,
+                    Cash = 0,
+                    Points = 15
                 }
             );
             #endregion

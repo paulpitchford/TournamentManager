@@ -16,5 +16,6 @@
         public virtual Season Season { get; set; } = default!;
         public virtual GameType GameType { get; set; } = default!;
         public virtual Venue Venue { get; set; } = default!;
+        public virtual ICollection<Result> Results { get; set; } = new HashSet<Result>();
     }
 }
