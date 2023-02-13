@@ -177,6 +177,12 @@ namespace TournamentManager.DataAccess
                     Id = new Guid("26b843f6-0af6-40c2-b7be-4320b6232bf0"),
                     FirstName = "Trinity",
                     LastName = "Lin"
+                },
+                new Player
+                {
+                    Id = new Guid("35d039f5-8c42-4764-beda-ae2e563e8c27"),
+                    FirstName = "Martin",
+                    LastName = "Jorgenson"
                 }
             );
             #endregion
