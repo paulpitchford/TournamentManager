@@ -2,7 +2,7 @@
 
 namespace TournamentManager.Infrastructure.Interfaces
 {
-    public interface IGameRepository : IGenericRepository<Game>
+    public interface IGamesRepository : IGenericRepository<Game>
     {
         IEnumerable<Game> GetAllDescending();
         IEnumerable<Game> GetAllAscending();

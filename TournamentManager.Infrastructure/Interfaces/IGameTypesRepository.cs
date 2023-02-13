@@ -2,8 +2,8 @@
 
 namespace TournamentManager.Infrastructure.Interfaces
 {
-    public interface ISeasonRepository : IGenericRepository<Season>
+    public interface IGameTypesRepository : IGenericRepository<GameType>
     {
-        IEnumerable<Season> GetAllByDateDesc();
+        IEnumerable<GameType> GetAllAscending();
     }
 }

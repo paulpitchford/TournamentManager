@@ -2,8 +2,8 @@
 
 namespace TournamentManager.Infrastructure.Interfaces
 {
-    public interface IGameTypeRepository : IGenericRepository<GameType>
+    public interface IPlayersRepository : IGenericRepository<Player>
     {
-        IEnumerable<GameType> GetAllAscending();
+        IEnumerable<Player> GetAllAscending();
     }
 }

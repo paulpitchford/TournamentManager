@@ -6,11 +6,11 @@ namespace TournamentManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VenueController : ControllerBase
+    public class VenuesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public VenueController(IUnitOfWork unitOfWork)
+        public VenuesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -18,26 +18,26 @@ namespace TournamentManager.API.Controllers
         [HttpGet]
         public IEnumerable<Venue> GetAllVenues()
         {
-            return _unitOfWork.Venue.GetAllAscending();
+            return _unitOfWork.Venues.GetAllAscending();
         }
 
         [HttpPost]
         public int AddVenue([FromBody] Venue venue)
         {
-            _unitOfWork.Venue.Add(venue);
+            _unitOfWork.Venues.Add(venue);
             return _unitOfWork.Save();
         }
 
         [HttpGet("{Id}")]
         public Venue GetVenue(Guid Id)
         {
-            return _unitOfWork.Venue.GetById(Id);
+            return _unitOfWork.Venues.GetById(Id);
         }
 
         [HttpPut("{Id}")]
         public bool UpdateVenue(Guid Id, [FromBody] Venue venue)
         {
-            Venue? oldVenue = _unitOfWork.Venue.GetById(Id);
+            Venue? oldVenue = _unitOfWork.Venues.GetById(Id);
             if (oldVenue != null)
             {
                 oldVenue.VenueName = venue.VenueName;

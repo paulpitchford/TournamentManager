@@ -6,11 +6,11 @@ namespace TournamentManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameTypeController : ControllerBase
+    public class GameTypesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GameTypeController(IUnitOfWork unitOfWork)
+        public GameTypesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -18,26 +18,26 @@ namespace TournamentManager.API.Controllers
         [HttpGet]
         public IEnumerable<GameType> GetAllGameTypes()
         {
-            return _unitOfWork.GameType.GetAllAscending();
+            return _unitOfWork.GameTypes.GetAllAscending();
         }
 
         [HttpPost]
         public int AddGameType([FromBody] GameType gameType)
         {
-            _unitOfWork.GameType.Add(gameType);
+            _unitOfWork.GameTypes.Add(gameType);
             return _unitOfWork.Save();
         }
 
         [HttpGet("{Id}")]
         public GameType GetGameType(Guid Id)
         {
-            return _unitOfWork.GameType.GetById(Id);
+            return _unitOfWork.GameTypes.GetById(Id);
         }
 
         [HttpPut("{Id}")]
         public bool UpdateGameType(Guid Id, [FromBody] GameType gameType)
         {
-            GameType? oldGameType = _unitOfWork.GameType.GetById(Id);
+            GameType? oldGameType = _unitOfWork.GameTypes.GetById(Id);
             if (oldGameType != null)
             {
                 oldGameType.GameTypeName = gameType.GameTypeName;

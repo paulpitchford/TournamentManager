@@ -4,9 +4,9 @@ using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.DataAccess.Repository
 {
-    public class PlayerRepository : GenericRepository<Player>, IPlayerRepository
+    public class PlayersRepository : GenericRepository<Player>, IPlayersRepository
     {
-        public PlayerRepository(PokerDbContext context) : base(context) { }
+        public PlayersRepository(PokerDbContext context) : base(context) { }
 
         public IEnumerable<Player> GetAllAscending()
         {

@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new PlayerController(unitOfWork);
+                var controller = new PlayersController(unitOfWork);
 
                 response = controller.AddPlayer(player);
             }
@@ -52,7 +52,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new PlayerController(unitOfWork);
+                var controller = new PlayersController(unitOfWork);
 
                 player = controller.GetPlayer(playerId);
 
@@ -73,7 +73,7 @@ namespace TournamentManager.Tests.ControllerTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new PlayerController(unitOfWork);
+                var controller = new PlayersController(unitOfWork);
 
                 player = controller.GetPlayer(playerId);
                 player.LastName = "LastName";

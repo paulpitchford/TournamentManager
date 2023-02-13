@@ -6,11 +6,11 @@ namespace TournamentManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlayerController : ControllerBase
+    public class PlayersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public PlayerController(IUnitOfWork unitOfWork)
+        public PlayersController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -18,26 +18,26 @@ namespace TournamentManager.API.Controllers
         [HttpGet]
         public IEnumerable<Player> GetAllPlayers()
         {
-            return _unitOfWork.Player.GetAllAscending();
+            return _unitOfWork.Players.GetAllAscending();
         }
 
         [HttpPost]
         public int AddPlayer([FromBody] Player player)
         {
-            _unitOfWork.Player.Add(player);
+            _unitOfWork.Players.Add(player);
             return _unitOfWork.Save();
         }
 
         [HttpGet("{Id}")]
         public Player GetPlayer(Guid Id)
         {
-            return _unitOfWork.Player.GetById(Id);
+            return _unitOfWork.Players.GetById(Id);
         }
 
         [HttpPut("{Id}")]
         public bool UpdatePlayer(Guid Id, [FromBody] Player player)
         {
-            Player? oldPlayer = _unitOfWork.Player.GetById(Id);
+            Player? oldPlayer = _unitOfWork.Players.GetById(Id);
             if (oldPlayer != null)
             {
                 oldPlayer.FirstName = player.FirstName;

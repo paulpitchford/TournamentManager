@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new VenueController(unitOfWork);
+                var controller = new VenuesController(unitOfWork);
 
                 response = controller.AddVenue(venue);
             }
@@ -52,7 +52,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new VenueController(unitOfWork);
+                var controller = new VenuesController(unitOfWork);
 
                 venue = controller.GetVenue(venueId);
 
@@ -73,7 +73,7 @@ namespace TournamentManager.Tests.ControllerTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new VenueController(unitOfWork);
+                var controller = new VenuesController(unitOfWork);
 
                 venue = controller.GetVenue(venueId);
                 venue.WebAddress = "https://www.somewebsite.com";

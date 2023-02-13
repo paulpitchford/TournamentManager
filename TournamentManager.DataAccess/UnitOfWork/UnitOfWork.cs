@@ -11,18 +11,18 @@ namespace TournamentManager.DataAccess.UnitOfWork
         {
             _context = context;
 
-            Game = new GameRepository(context);
-            GameType = new GameTypeRepository(_context);
-            Player = new PlayerRepository(_context);
-            Season = new SeasonRepository(_context);
-            Venue = new VenueRepository(_context);  
+            Games = new GamesRepository(context);
+            GameTypes = new GameTypesRepository(_context);
+            Players = new PlayersRepository(_context);
+            Seasons = new SeasonsRepository(_context);
+            Venues = new VenuesRepository(_context);  
         }
 
-        public IGameRepository Game { get; set; }
-        public IGameTypeRepository GameType { get; set; }
-        public IPlayerRepository Player { get; set; }
-        public ISeasonRepository Season  { get; private set; }
-        public IVenueRepository Venue { get; set; }
+        public IGamesRepository Games { get; set; }
+        public IGameTypesRepository GameTypes { get; set; }
+        public IPlayersRepository Players { get; set; }
+        public ISeasonsRepository Seasons  { get; private set; }
+        public IVenuesRepository Venues { get; set; }
 
         public void Dispose()
         {

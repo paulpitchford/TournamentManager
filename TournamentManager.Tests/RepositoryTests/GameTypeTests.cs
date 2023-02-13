@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.GameType.Add(gameType);
+                unitOfWork.GameTypes.Add(gameType);
                 unitOfWork.Save();
             }
 
@@ -49,7 +49,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                gameType = unitOfWork.GameType.GetById(gameTypeId);
+                gameType = unitOfWork.GameTypes.GetById(gameTypeId);
 
                 // If the gameType.Id matches the gameTypeId we've successfully retrieved the gameType from the database
                 Assert.Equal(gameTypeId, gameType.Id);
@@ -68,7 +68,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                gameType = unitOfWork.GameType.GetById(seasonId);
+                gameType = unitOfWork.GameTypes.GetById(seasonId);
 
                 gameType.GameTypeName = "Amended Game Type Name";
 
@@ -86,12 +86,12 @@ namespace TournamentManager.Tests.RepositoryTests
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random gameType name
                 string gameTypeName = Guid.NewGuid().ToString();
-                unitOfWork.GameType.Add(new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = true });
+                unitOfWork.GameTypes.Add(new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = true });
                 unitOfWork.Save();
 
                 // Act and Assert
                 var secondGameType = new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = false };
-                unitOfWork.GameType.Add(secondGameType);
+                unitOfWork.GameTypes.Add(secondGameType);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

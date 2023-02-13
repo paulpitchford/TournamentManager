@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonController(unitOfWork);
+                var controller = new SeasonsController(unitOfWork);
 
                 response = controller.AddSeason(season);
             }
@@ -52,7 +52,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonController(unitOfWork);
+                var controller = new SeasonsController(unitOfWork);
 
                 season = controller.GetSeason(seasonId);
 
@@ -73,7 +73,7 @@ namespace TournamentManager.Tests.ControllerTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonController(unitOfWork);
+                var controller = new SeasonsController(unitOfWork);
 
                 season = controller.GetSeason(seasonId);
                 season.StartDate = DateTime.Now;

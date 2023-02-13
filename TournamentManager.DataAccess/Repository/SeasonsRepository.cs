@@ -4,9 +4,9 @@ using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.DataAccess.Repository
 {
-    public class SeasonRepository : GenericRepository<Season>, ISeasonRepository
+    public class SeasonsRepository : GenericRepository<Season>, ISeasonsRepository
     {
-        public SeasonRepository(PokerDbContext context) : base(context) { }
+        public SeasonsRepository(PokerDbContext context) : base(context) { }
 
         public IEnumerable<Season> GetAllByDateDesc()
         {

@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new GameTypeController(unitOfWork);
+                var controller = new GameTypesController(unitOfWork);
 
                 response = controller.AddGameType(gameType);
             }
@@ -52,7 +52,7 @@ namespace TournamentManager.Tests.ControllerTests
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new GameTypeController(unitOfWork);
+                var controller = new GameTypesController(unitOfWork);
 
                 gameType = controller.GetGameType(gameTypeId);
 
@@ -74,7 +74,7 @@ namespace TournamentManager.Tests.ControllerTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                var controller = new GameTypeController(unitOfWork);
+                var controller = new GameTypesController(unitOfWork);
 
                 gameType = controller.GetGameType(gameTypeId);
                 gameType.GameTypeName = gameTypeName;

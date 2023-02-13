@@ -41,7 +41,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Game.Add(game);
+                unitOfWork.Games.Add(game);
                 response = unitOfWork.Save();
             }
 
@@ -63,7 +63,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                game = unitOfWork.Game.GetById(gameId);
+                game = unitOfWork.Games.GetById(gameId);
 
                 // If the game.Id matches the gameId we've successfully retrieved the game from the database
                 Assert.Equal(gameId, game.Id);
@@ -82,7 +82,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                game = unitOfWork.Game.GetById(gameId);
+                game = unitOfWork.Games.GetById(gameId);
 
                 game.GameDateTime = DateTime.Now;
 

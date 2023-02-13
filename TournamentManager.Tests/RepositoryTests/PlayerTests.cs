@@ -27,7 +27,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Player.Add(player);
+                unitOfWork.Players.Add(player);
                 response = unitOfWork.Save();
             }
 
@@ -49,7 +49,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                player = unitOfWork.Player.GetById(playerId);
+                player = unitOfWork.Players.GetById(playerId);
 
                 // If the player.Id matches the playerId we've successfully retrieved the player from the database
                 Assert.Equal(playerId, player.Id);
@@ -68,7 +68,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                player = unitOfWork.Player.GetById(playerId);
+                player = unitOfWork.Players.GetById(playerId);
 
                 player.FirstName = "Amended Name";
 
@@ -86,12 +86,12 @@ namespace TournamentManager.Tests.RepositoryTests
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random player name
                 Guid tournamentDirectorId = Guid.NewGuid();
-                unitOfWork.Player.Add(new Player { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Player", TournamentDirectorId = tournamentDirectorId });
+                unitOfWork.Players.Add(new Player { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Player", TournamentDirectorId = tournamentDirectorId });
                 unitOfWork.Save();
 
                 // Act and Assert
                 var secondPlayer = new Player { Id = Guid.NewGuid(), FirstName = "Another", LastName = "Player", TournamentDirectorId = tournamentDirectorId };
-                unitOfWork.Player.Add(secondPlayer);
+                unitOfWork.Players.Add(secondPlayer);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

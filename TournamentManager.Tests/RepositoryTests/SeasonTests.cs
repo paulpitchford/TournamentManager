@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Season.Add(season);
+                unitOfWork.Seasons.Add(season);
                 response = unitOfWork.Save();
             }
 
@@ -50,7 +50,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                season = unitOfWork.Season.GetById(seasonId);
+                season = unitOfWork.Seasons.GetById(seasonId);
 
                 // If the season.Id matches the seasonId we've successfully retrieved the season from the database
                 Assert.Equal(seasonId, season.Id);
@@ -69,7 +69,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                season = unitOfWork.Season.GetById(seasonId);
+                season = unitOfWork.Seasons.GetById(seasonId);
 
                 season.StartDate = DateTime.Now;
 
@@ -87,12 +87,12 @@ namespace TournamentManager.Tests.RepositoryTests
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random season name
                 string seasonName = Guid.NewGuid().ToString();
-                unitOfWork.Season.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today });
+                unitOfWork.Seasons.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today });
                 unitOfWork.Save();
 
                 // Act and Assert
                 var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today };
-                unitOfWork.Season.Add(secondSeason);
+                unitOfWork.Seasons.Add(secondSeason);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

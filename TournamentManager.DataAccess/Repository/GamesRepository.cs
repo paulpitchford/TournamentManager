@@ -4,9 +4,9 @@ using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.DataAccess.Repository
 {
-    public class GameRepository : GenericRepository<Game>, IGameRepository
+    public class GamesRepository : GenericRepository<Game>, IGamesRepository
     {
-        public GameRepository(PokerDbContext context) : base(context)
+        public GamesRepository(PokerDbContext context) : base(context)
         {
         }
 

@@ -28,7 +28,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Venue.Add(venue);
+                unitOfWork.Venues.Add(venue);
                 response = unitOfWork.Save();
             }
 
@@ -50,7 +50,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                venue = unitOfWork.Venue.GetById(venueId);
+                venue = unitOfWork.Venues.GetById(venueId);
 
                 // If the venue.Id matches the venueId we've successfully retrieved the venue from the database
                 Assert.Equal(venueId, venue.Id);
@@ -69,7 +69,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                venue = unitOfWork.Venue.GetById(venueId);
+                venue = unitOfWork.Venues.GetById(venueId);
 
                 venue.WebAddress = "https://www.somewebsite.com";
 
@@ -87,12 +87,12 @@ namespace TournamentManager.Tests.RepositoryTests
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random venue name
                 string venueName = Guid.NewGuid().ToString();
-                unitOfWork.Venue.Add(new Venue { Id = Guid.NewGuid(), VenueName = venueName, Address = "Street", Town = "Town", County = "County", PostCode = "Post Code" });
+                unitOfWork.Venues.Add(new Venue { Id = Guid.NewGuid(), VenueName = venueName, Address = "Street", Town = "Town", County = "County", PostCode = "Post Code" });
                 unitOfWork.Save();
 
                 // Act and Assert
                 var secondVenue = new Venue { Id = Guid.NewGuid(), VenueName = venueName, Address = "Street", Town = "Town", County = "County", PostCode = "Post Code" };
-                unitOfWork.Venue.Add(secondVenue);
+                unitOfWork.Venues.Add(secondVenue);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

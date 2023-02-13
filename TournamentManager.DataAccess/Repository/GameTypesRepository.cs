@@ -9,13 +9,13 @@ using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.DataAccess.Repository
 {
-    public class VenueRepository : GenericRepository<Venue>, IVenueRepository
+    public class GameTypesRepository : GenericRepository<GameType>, IGameTypesRepository
     {
-        public VenueRepository(PokerDbContext context) : base(context) { }
+        public GameTypesRepository(PokerDbContext context) : base(context) { }
 
-        public IEnumerable<Venue> GetAllAscending()
+        public IEnumerable<GameType> GetAllAscending()
         {
-            return _context.Venues.TagWith($"Venue Repo: GetAllAscending").OrderBy(v => v.VenueName);
+            return _context.GameTypes.TagWith($"Game Type Repo: GetAllAscending").OrderBy(gt => gt.GameTypeName);
         }
     }
 }

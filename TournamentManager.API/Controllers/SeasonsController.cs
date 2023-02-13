@@ -6,11 +6,11 @@ namespace TournamentManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeasonController : ControllerBase
+    public class SeasonsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public SeasonController(IUnitOfWork unitOfWork)
+        public SeasonsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -18,26 +18,26 @@ namespace TournamentManager.API.Controllers
         [HttpGet]
         public IEnumerable<Season> GetAllSeasons()
         {
-            return _unitOfWork.Season.GetAllByDateDesc();
+            return _unitOfWork.Seasons.GetAllByDateDesc();
         }
 
         [HttpPost]
         public int AddSeason([FromBody] Season season)
         {
-            _unitOfWork.Season.Add(season);
+            _unitOfWork.Seasons.Add(season);
             return _unitOfWork.Save();
         }
 
         [HttpGet("{Id}")]
         public Season GetSeason(Guid Id)
         {
-            return _unitOfWork.Season.GetById(Id);
+            return _unitOfWork.Seasons.GetById(Id);
         }
 
         [HttpPut("{Id}")]
         public bool UpdateSeason(Guid Id, [FromBody] Season season)
         {
-            Season? oldSeason = _unitOfWork.Season.GetById(Id);
+            Season? oldSeason = _unitOfWork.Seasons.GetById(Id);
             if (oldSeason != null)
             {
                 oldSeason.SeasonName = season.SeasonName;

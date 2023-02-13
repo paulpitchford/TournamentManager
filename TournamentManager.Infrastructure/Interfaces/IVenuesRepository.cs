@@ -7,7 +7,7 @@ using TournamentManager.Infrastructure.Entities;
 
 namespace TournamentManager.Infrastructure.Interfaces
 {
-    public interface IVenueRepository : IGenericRepository<Venue>
+    public interface IVenuesRepository : IGenericRepository<Venue>
     {
         IEnumerable<Venue> GetAllAscending();
     }
