@@ -14,6 +14,7 @@ namespace TournamentManager.DataAccess.UnitOfWork
             Games = new GamesRepository(context);
             GameTypes = new GameTypesRepository(_context);
             Players = new PlayersRepository(_context);
+            Results = new ResultsRepository(_context); 
             Seasons = new SeasonsRepository(_context);
             Venues = new VenuesRepository(_context);  
         }
@@ -21,6 +22,7 @@ namespace TournamentManager.DataAccess.UnitOfWork
         public IGamesRepository Games { get; set; }
         public IGameTypesRepository GameTypes { get; set; }
         public IPlayersRepository Players { get; set; }
+        public IResultsRepository Results { get; set; }
         public ISeasonsRepository Seasons  { get; private set; }
         public IVenuesRepository Venues { get; set; }
 
