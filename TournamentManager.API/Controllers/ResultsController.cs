@@ -17,14 +17,14 @@ namespace TournamentManager.API.Controllers
 
         [HttpGet]
         [Route("GetResultsByGame/{gameId}")]
-        public IEnumerable<Result> GetAllResults(Guid gameId)
+        public IEnumerable<Result> GetResultsByGame(Guid gameId)
         {
             return _unitOfWork.Results.GetResultsByGame(gameId);
         }
 
         [HttpGet]
         [Route("GetResultsByPlayer/{playerId}")]
-        public IEnumerable<Result> GetResultsBySeason(Guid playerId)
+        public IEnumerable<Result> GetResultsByPlayer(Guid playerId)
         {
             return _unitOfWork.Results.GetResultsByPlayer(playerId);
         }

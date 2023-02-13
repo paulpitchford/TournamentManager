@@ -62,7 +62,7 @@ namespace TournamentManager.Tests.RepositoryTests
         {
             // Arrange
             // This is a guid from one of the seeded venues
-            var venueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d");
+            var venueId = new Guid("cb29fe0d-e42c-4a8a-9ab9-839caeb9d4ea");
             Venue? venue;
 
             using (var context = _fixture.CreateContext())

@@ -23,8 +23,8 @@ namespace TournamentManager.Tests.RepositoryTests
             var result = new Result
             {
                 Id = resultId,
-                GameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be"),
-                PlayerId = new Guid("35d039f5-8c42-4764-beda-ae2e563e8c27"),
+                GameId = new Guid("c9a29408-0b4e-44a8-8a23-c51ddb8b360a"),
+                PlayerId = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
                 Position = 11,
                 Cash = 0d,
                 Points = 15d
