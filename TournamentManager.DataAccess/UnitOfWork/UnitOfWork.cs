@@ -10,12 +10,15 @@ namespace TournamentManager.DataAccess.UnitOfWork
         public UnitOfWork(PokerDbContext context)
         {
             _context = context;
+
+            Game = new GameRepository(context);
             GameType = new GameTypeRepository(_context);
             Player = new PlayerRepository(_context);
             Season = new SeasonRepository(_context);
             Venue = new VenueRepository(_context);  
         }
 
+        public IGameRepository Game { get; set; }
         public IGameTypeRepository GameType { get; set; }
         public IPlayerRepository Player { get; set; }
         public ISeasonRepository Season  { get; private set; }
