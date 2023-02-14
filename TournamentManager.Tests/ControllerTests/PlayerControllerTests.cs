@@ -5,11 +5,11 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.ControllerTests
 {
-    public class PlayerTests : IClassFixture<TestDatabaseFixture>
+    public class PlayerControllerTests : IClassFixture<TestDatabaseFixture>
     {
         private readonly TestDatabaseFixture _fixture;
 
-        public PlayerTests(TestDatabaseFixture fixture)
+        public PlayerControllerTests(TestDatabaseFixture fixture)
         {
             _fixture = fixture;
         }

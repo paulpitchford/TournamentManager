@@ -6,11 +6,11 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.RepositoryTests
 {
-    public class GameTests : IClassFixture<TestDatabaseFixture>
+    public class GameRepositoryTests : IClassFixture<TestDatabaseFixture>
     {
         private readonly TestDatabaseFixture _fixture;
 
-        public GameTests(TestDatabaseFixture fixture)
+        public GameRepositoryTests(TestDatabaseFixture fixture)
         {
             _fixture = fixture;
         }

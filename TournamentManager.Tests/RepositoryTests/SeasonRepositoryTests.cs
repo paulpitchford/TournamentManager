@@ -6,79 +6,72 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.RepositoryTests
 {
-    public class ResultTests : IClassFixture<TestDatabaseFixture>
+    public class SeasonRepositoryTests : IClassFixture<TestDatabaseFixture>
     {
         private readonly TestDatabaseFixture _fixture;
 
-        public ResultTests(TestDatabaseFixture fixture)
+        public SeasonRepositoryTests(TestDatabaseFixture fixture)
         {
             _fixture = fixture;
         }
 
         [Fact]
-        public void CanAddResult()
+        public void CanAddSeason()
         {
             // Arrange
-            var resultId = Guid.NewGuid();
-            var result = new Result
-            {
-                Id = resultId,
-                GameId = new Guid("c9a29408-0b4e-44a8-8a23-c51ddb8b360a"),
-                PlayerId = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
-                Position = 11,
-                Cash = 0d,
-                Points = 15d
-            };
-
+            var seasonId = Guid.NewGuid();
+            var seasonName = Guid.NewGuid().ToString();
+            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
             int response = 0;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Results.Add(result);
+                unitOfWork.Seasons.Add(season);
                 response = unitOfWork.Save();
             }
 
             // Assert
             Assert.Equal(1, response);
-            Assert.Equal(resultId, result.Id);
+            Assert.Equal(seasonId, season.Id);
+            Assert.Equal(seasonName, season.SeasonName);
         }
 
         [Fact]
-        public void CanGetSingleResult()
+        public void CanGetSingleSeason()
         {
             // Arrange
-            // This is a guid from one of the seeded results
-            var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
-            Result? result;
+            // This is a guid from one of the seeded seasons
+            var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
+            Season? season;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                result = unitOfWork.Results.GetById(resultId);
+                season = unitOfWork.Seasons.GetById(seasonId);
 
-                // If the result.Id matches the resultId we've successfully retrieved the result from the database
-                Assert.Equal(resultId, result.Id);
+                // If the season.Id matches the seasonId we've successfully retrieved the season from the database
+                Assert.Equal(seasonId, season.Id);
             }
         }
 
         [Fact]
-        public void CanUpdateSingleResult()
+        public void CanUpdateSingleSeason()
         {
             // Arrange
-            // This is a guid from one of the seeded results
-            var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
-            Result? result;
+            // This is a guid from one of the seeded seasons
+            var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
+            Season? season;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                result = unitOfWork.Results.GetById(resultId);
+                season = unitOfWork.Seasons.GetById(seasonId);
 
-                result.Cash = 1000d;
+                season.StartDate = DateTime.Now;
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
                 Assert.Equal(1, unitOfWork.Save());
@@ -86,20 +79,20 @@ namespace TournamentManager.Tests.RepositoryTests
         }
 
         [Fact]
-        public void CannotAddAPlayerToTheSameGameResultsTwice()
+        public void CannotAddTwoSeasonsWithSameName()
         {
             // Arrange
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                Guid gameId = new Guid("87450acd-ca09-40c2-883b-aad03402f9dc");
-                Guid playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
-                unitOfWork.Results.Add(new Result { Id = Guid.NewGuid(), GameId = gameId, PlayerId = playerId, Position = 1, Points = 200, Cash = 200 });
+                // Make up a random season name
+                string seasonName = Guid.NewGuid().ToString();
+                unitOfWork.Seasons.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today });
                 unitOfWork.Save();
 
                 // Act and Assert
-                var secondResult = new Result { Id = Guid.NewGuid(), GameId = gameId, PlayerId = playerId, Position = 2, Points = 175, Cash = 150 };
-                unitOfWork.Results.Add(secondResult);
+                var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today };
+                unitOfWork.Seasons.Add(secondSeason);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

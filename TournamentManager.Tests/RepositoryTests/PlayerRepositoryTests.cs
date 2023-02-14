@@ -6,71 +6,71 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.RepositoryTests
 {
-    public class GameTypeTests : IClassFixture<TestDatabaseFixture>
+    public class PlayerRepositoryTests : IClassFixture<TestDatabaseFixture>
     {
         private readonly TestDatabaseFixture _fixture;
 
-        public GameTypeTests(TestDatabaseFixture fixture)
+        public PlayerRepositoryTests(TestDatabaseFixture fixture)
         {
             _fixture = fixture;
         }
 
         [Fact]
-        public void CanAddGameType()
+        public void CanAddPlayer()
         {
             // Arrange
-            var gameTypeId = Guid.NewGuid();
-            string gameTypeName = "Test Game Type";
-            var gameType = new GameType { Id = gameTypeId, GameTypeName = gameTypeName, AwardPoints = false };
-
+            var playerId = Guid.NewGuid();
+            var player = new Player { Id = playerId, FirstName = "Test", LastName = "Player" };
+            int response = 0;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.GameTypes.Add(gameType);
-                unitOfWork.Save();
+                unitOfWork.Players.Add(player);
+                response = unitOfWork.Save();
             }
 
             // Assert
-            Assert.Equal(gameTypeId, gameType.Id);
-            Assert.Equal(gameTypeName, gameType.GameTypeName);
+            Assert.Equal(1, response);
+            Assert.Equal(playerId, player.Id);
+            Assert.Equal("Test", player.FirstName);
         }
 
         [Fact]
-        public void CanGetSingleGameType()
+        public void CanGetSinglePlayer()
         {
             // Arrange
-            // This is a guid from one of the seeded game types
-            var gameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0");
-            GameType? gameType = null;
+            // This is a guid from one of the seeded players
+            var playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
+            Player? player;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                gameType = unitOfWork.GameTypes.GetById(gameTypeId);
+                player = unitOfWork.Players.GetById(playerId);
 
-                // If the gameType.Id matches the gameTypeId we've successfully retrieved the gameType from the database
-                Assert.Equal(gameTypeId, gameType.Id);
+                // If the player.Id matches the playerId we've successfully retrieved the player from the database
+                Assert.Equal(playerId, player.Id);
             }
         }
 
         [Fact]
-        public void CanUpdateSingleGameType()
+        public void CanUpdateSinglePlayer()
         {
             // Arrange
-            // This is a guid from one of the seeded game types
-            var seasonId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0");
-            GameType? gameType = null;
+            // This is a guid from one of the seeded players
+            var playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
+            Player? player;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                gameType = unitOfWork.GameTypes.GetById(seasonId);
+                player = unitOfWork.Players.GetById(playerId);
 
-                gameType.GameTypeName = "Amended Game Type Name";
+                player.FirstName = "Amended Name";
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
                 Assert.Equal(1, unitOfWork.Save());
@@ -78,20 +78,20 @@ namespace TournamentManager.Tests.RepositoryTests
         }
 
         [Fact]
-        public void CannotAddTwoGameTypesWithSameName()
+        public void CannotAddTwoPlayersWithSameName()
         {
             // Arrange
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                // Make up a random gameType name
-                string gameTypeName = Guid.NewGuid().ToString();
-                unitOfWork.GameTypes.Add(new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = true });
+                // Make up a random player name
+                string tournamentDirectorId = Guid.NewGuid().ToString();
+                unitOfWork.Players.Add(new Player { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Player", TournamentDirectorId = tournamentDirectorId });
                 unitOfWork.Save();
 
                 // Act and Assert
-                var secondGameType = new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = false };
-                unitOfWork.GameTypes.Add(secondGameType);
+                var secondPlayer = new Player { Id = Guid.NewGuid(), FirstName = "Another", LastName = "Player", TournamentDirectorId = tournamentDirectorId };
+                unitOfWork.Players.Add(secondPlayer);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 

@@ -6,71 +6,79 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.RepositoryTests
 {
-    public class PlayerTests : IClassFixture<TestDatabaseFixture>
+    public class ResultRepositoryTests : IClassFixture<TestDatabaseFixture>
     {
         private readonly TestDatabaseFixture _fixture;
 
-        public PlayerTests(TestDatabaseFixture fixture)
+        public ResultRepositoryTests(TestDatabaseFixture fixture)
         {
             _fixture = fixture;
         }
 
         [Fact]
-        public void CanAddPlayer()
+        public void CanAddResult()
         {
             // Arrange
-            var playerId = Guid.NewGuid();
-            var player = new Player { Id = playerId, FirstName = "Test", LastName = "Player" };
+            var resultId = Guid.NewGuid();
+            var result = new Result
+            {
+                Id = resultId,
+                GameId = new Guid("c9a29408-0b4e-44a8-8a23-c51ddb8b360a"),
+                PlayerId = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),
+                Position = 11,
+                Cash = 0d,
+                Points = 15d
+            };
+
             int response = 0;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                unitOfWork.Players.Add(player);
+                unitOfWork.Results.Add(result);
                 response = unitOfWork.Save();
             }
 
             // Assert
             Assert.Equal(1, response);
-            Assert.Equal(playerId, player.Id);
-            Assert.Equal("Test", player.FirstName);
+            Assert.Equal(resultId, result.Id);
         }
 
         [Fact]
-        public void CanGetSinglePlayer()
+        public void CanGetSingleResult()
         {
             // Arrange
-            // This is a guid from one of the seeded players
-            var playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
-            Player? player;
+            // This is a guid from one of the seeded results
+            var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
+            Result? result;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                player = unitOfWork.Players.GetById(playerId);
+                result = unitOfWork.Results.GetById(resultId);
 
-                // If the player.Id matches the playerId we've successfully retrieved the player from the database
-                Assert.Equal(playerId, player.Id);
+                // If the result.Id matches the resultId we've successfully retrieved the result from the database
+                Assert.Equal(resultId, result.Id);
             }
         }
 
         [Fact]
-        public void CanUpdateSinglePlayer()
+        public void CanUpdateSingleResult()
         {
             // Arrange
-            // This is a guid from one of the seeded players
-            var playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
-            Player? player;
+            // This is a guid from one of the seeded results
+            var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
+            Result? result;
 
             using (var context = _fixture.CreateContext())
             {
                 // Act and Assert
                 var unitOfWork = new UnitOfWork(context);
-                player = unitOfWork.Players.GetById(playerId);
+                result = unitOfWork.Results.GetById(resultId);
 
-                player.FirstName = "Amended Name";
+                result.Cash = 1000d;
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
                 Assert.Equal(1, unitOfWork.Save());
@@ -78,20 +86,20 @@ namespace TournamentManager.Tests.RepositoryTests
         }
 
         [Fact]
-        public void CannotAddTwoPlayersWithSameName()
+        public void CannotAddAPlayerToTheSameGameResultsTwice()
         {
             // Arrange
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
-                // Make up a random player name
-                string tournamentDirectorId = Guid.NewGuid().ToString();
-                unitOfWork.Players.Add(new Player { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Player", TournamentDirectorId = tournamentDirectorId });
+                Guid gameId = new Guid("87450acd-ca09-40c2-883b-aad03402f9dc");
+                Guid playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
+                unitOfWork.Results.Add(new Result { Id = Guid.NewGuid(), GameId = gameId, PlayerId = playerId, Position = 1, Points = 200, Cash = 200 });
                 unitOfWork.Save();
 
                 // Act and Assert
-                var secondPlayer = new Player { Id = Guid.NewGuid(), FirstName = "Another", LastName = "Player", TournamentDirectorId = tournamentDirectorId };
-                unitOfWork.Players.Add(secondPlayer);
+                var secondResult = new Result { Id = Guid.NewGuid(), GameId = gameId, PlayerId = playerId, Position = 2, Points = 175, Cash = 150 };
+                unitOfWork.Results.Add(secondResult);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 
