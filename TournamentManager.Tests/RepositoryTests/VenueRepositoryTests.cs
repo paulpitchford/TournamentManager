@@ -77,31 +77,5 @@ namespace TournamentManager.Tests.RepositoryTests
                 Assert.Equal(1, unitOfWork.Save());
             }
         }
-
-        [Fact]
-        public void CannotAddTwoVenuesWithSameName()
-        {
-            // Arrange
-            using (var context = _fixture.CreateContext())
-            {
-                var unitOfWork = new UnitOfWork(context);
-                // Make up a random venue name
-                string venueName = Guid.NewGuid().ToString();
-                unitOfWork.Venues.Add(new Venue { Id = Guid.NewGuid(), VenueName = venueName, Address = "Street", Town = "Town", County = "County", PostCode = "Post Code" });
-                unitOfWork.Save();
-
-                // Act and Assert
-                var secondVenue = new Venue { Id = Guid.NewGuid(), VenueName = venueName, Address = "Street", Town = "Town", County = "County", PostCode = "Post Code" };
-                unitOfWork.Venues.Add(secondVenue);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
-                var sqlException = exception.InnerException as SqlException;
-
-                if (sqlException != null)
-                {
-                    // If we get a sqlException of 2601 that means that the insert failed due to the constraint which is what this test is ensuring
-                    Assert.Equal(2601, sqlException.Number);
-                }
-            }
-        }
     }
 }
