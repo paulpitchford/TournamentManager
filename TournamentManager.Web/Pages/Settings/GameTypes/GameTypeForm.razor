@@ -1,0 +1,38 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (GameType != null)
+{
+    <EditForm Model="GameType" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="game-type-name" class="col-sm-2 col-form-label">Game Type Name</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="game-type-name" @bind-Value="GameType.GameTypeName" />
+                <ValidationMessage For="() => GameType.GameTypeName" />
+            </div>
+        </div>
+
+        <div class="row mb-3 d-flex align-items-center">
+            <label for="award-points" class="col-sm-2 col-form-label">Award Points</label>
+            <div class="col-md-2">
+                <InputCheckbox class="form-check-input" @bind-Value="GameType.AwardPoints" id="award-points" />
+                <ValidationMessage For="@(() => GameType.AwardPoints)" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    GameType? GameType { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

@@ -1,0 +1,20 @@
+﻿@page "/settings/gametypes/"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Game Types</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<LoadingIndicator @bind-Visible="gridLoading">
+    <DataGrid TItem="GameType" Data="@GameTypes" @bind-SelectedRow="@selectedGameType" Responsive PageSize="10" Hoverable ShowPager>
+        <DataGridColumns>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(GameType.GameTypeName)" Caption="Game Type" />
+            <DataGridColumn Field="@nameof(GameType.AwardPoints)" Caption="Award Points" />
+        </DataGridColumns>
+        <ButtonRowTemplate>
+            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+            <Button Color="Color.Secondary" Disabled="(selectedGameType is null)" Clicked="(() => Edit(selectedGameType!.Id))">Edit</Button>
+        </ButtonRowTemplate>
+    </DataGrid>
+</LoadingIndicator>

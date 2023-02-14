@@ -1,0 +1,14 @@
+﻿@page "/settings/gametypes/{Id:guid}"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Game Type - Edit</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Edit</h3>
+
+<LoadingIndicator @bind-bind-Visible="formLoading">
+    <CascadingValue Value="GameType">
+        <GameTypeForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+    </CascadingValue>
+</LoadingIndicator>

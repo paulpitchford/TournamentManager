@@ -3,40 +3,40 @@ using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Web.Components;
 using TournamentManager.Web.Services;
 
-namespace TournamentManager.Web.Pages.Settings.Seasons
+namespace TournamentManager.Web.Pages.Settings.GameTypes
 {
     public partial class Edit
     {
-        [Inject] 
+        [Inject]
         WebApiService _apiClient { get; set; } = default!;
 
-        [Inject] 
+        [Inject]
         NavigationManager _navManager { get; set; } = default!;
-        
+
         [Parameter]
         public Guid Id { get; set; }
-        Season? Season { get; set; }
+        GameType? GameType { get; set; }
         bool formLoading;
 
         protected override async Task OnInitializedAsync()
         {
             formLoading = true;
-            Season = await _apiClient.httpClient.GetFromJsonAsync<Season>($"/api/Seasons/{Id}");
+            GameType = await _apiClient.httpClient.GetFromJsonAsync<GameType>($"/api/GameTypes/{Id}");
             formLoading = false;
         }
 
         async Task OnSubmit()
         {
-            if (Season != null)
+            if (GameType != null)
             {
                 try
                 {
-                    var response = await _apiClient.httpClient.PutAsJsonAsync<Season>($"/api/Seasons/{Id}", Season);
+                    var response = await _apiClient.httpClient.PutAsJsonAsync<GameType>($"/api/GameTypes/{Id}", GameType);
                     bool updated = await response.Content.ReadFromJsonAsync<bool>();
 
                     if (updated)
                     {
-                        _navManager.NavigateTo("/settings/seasons");
+                        _navManager.NavigateTo("/settings/gametypes");
                     }
                 }
                 catch (Exception ex)
@@ -50,7 +50,7 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
 
         void OnCancel()
         {
-            _navManager.NavigateTo("/settings/seasons");
+            _navManager.NavigateTo("/settings/gametypes");
         }
     }
 }

@@ -3,7 +3,7 @@ using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Web.Components;
 using TournamentManager.Web.Services;
 
-namespace TournamentManager.Web.Pages.Settings.Seasons
+namespace TournamentManager.Web.Pages.Settings.GameTypes
 {
     public partial class Create
     {
@@ -13,17 +13,17 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
         [Inject]
         NavigationManager _navManager { get; set; } = default!;
 
-        Season Season { get; set; } = new();
+        GameType GameType { get; set; } = new();
 
         async Task OnSubmit()
         {
             try
             {
-                var response = await _apiClient.httpClient.PostAsJsonAsync<Season>("/api/Seasons/", Season);
-                int seasonId = await response.Content.ReadFromJsonAsync<int>();
-                if (seasonId > 0)
+                var response = await _apiClient.httpClient.PostAsJsonAsync<GameType>("/api/GameTypes/", GameType);
+                int gameTypeId = await response.Content.ReadFromJsonAsync<int>();
+                if (gameTypeId > 0)
                 {
-                    _navManager.NavigateTo("/settings/seasons");
+                    _navManager.NavigateTo("/settings/gametypes");
                 }
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
 
         void OnCancel()
         {
-            _navManager.NavigateTo("/settings/seasons");
+            _navManager.NavigateTo("/settings/gametypes");
         }
     }
 }

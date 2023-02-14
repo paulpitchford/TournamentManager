@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentManager.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentManager.DataAccess", "TournamentManager.DataAccess\TournamentManager.DataAccess.csproj", "{E88E13C6-2FC1-41D1-B690-19A264D2A9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentManager.Tests", "TournamentManager.Tests\TournamentManager.Tests.csproj", "{3D665540-C135-4968-A1DF-67B32600BCEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentManager.Tests", "TournamentManager.Tests\TournamentManager.Tests.csproj", "{3D665540-C135-4968-A1DF-67B32600BCEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

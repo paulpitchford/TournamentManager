@@ -3,7 +3,7 @@ using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Web.Components;
 using TournamentManager.Web.Services;
 
-namespace TournamentManager.Web.Pages.Settings.Seasons
+namespace TournamentManager.Web.Pages.Settings.GameTypes
 {
     public partial class Index
     {
@@ -14,15 +14,15 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
         NavigationManager _navigationManager { get; set; } = default!;
 
         bool gridLoading;
-        IEnumerable<Season>? Seasons;
-        Season? selectedSeason;
+        IEnumerable<GameType>? GameTypes;
+        GameType? selectedGameType;
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 gridLoading = true;
-                Seasons = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Season>>("/api/Seasons/");
+                GameTypes = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<GameType>>("/api/GameTypes/");
                 gridLoading = false;
             }
             catch (Exception ex)
@@ -36,12 +36,12 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
 
         void CreateNew()
         {
-            _navigationManager.NavigateTo("/settings/seasons/create");
+            _navigationManager.NavigateTo("/settings/gametypes/create");
         }
 
         void Edit(Guid Id)
         {
-            _navigationManager.NavigateTo($"/settings/seasons/{Id}");
+            _navigationManager.NavigateTo($"/settings/gametypes/{Id}");
         }
     }
 }
