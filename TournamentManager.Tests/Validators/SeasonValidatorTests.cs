@@ -6,7 +6,7 @@ namespace TournamentManager.Tests.Validators
 {
     public class SeasonValidatorTests
     {
-        private SeasonValidator validator = default!;
+        private SeasonValidator validator;
 
         public SeasonValidatorTests()
         {
