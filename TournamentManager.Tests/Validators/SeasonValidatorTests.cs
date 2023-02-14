@@ -28,6 +28,19 @@ namespace TournamentManager.Tests.Validators
         }
 
         [Fact]
+        public void ShouldNotHaveErrorWhenSeasonIsSpecified()
+        {
+            // Arrange
+            Season season = new Season { SeasonName = "A New Season" };
+
+            // Act
+            var result = validator.TestValidate(season);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(p => p.SeasonName);
+        }
+
+        [Fact]
         public void ShouldHaveErrorWhenSeasonNameIsGreaterThan50Characters()
         {
             // Arrange
@@ -51,6 +64,19 @@ namespace TournamentManager.Tests.Validators
 
             // Assert
             result.ShouldHaveValidationErrorFor(p => p.SeasonName);
+        }
+
+        [Fact]
+        public void ShouldNotHaveErrorWhenStartDateSpecified()
+        {
+            // Arrange
+            Season season = new Season { StartDate = DateTime.Today };
+
+            // Act
+            var result = validator.TestValidate(season);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(p => p.StartDate);
         }
 
         [Fact]
