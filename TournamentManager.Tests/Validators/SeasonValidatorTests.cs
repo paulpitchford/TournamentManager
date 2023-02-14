@@ -17,10 +17,12 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenSeasonNameIsNull()
         {
-            // Act
+            // Arrange
             Season season = new Season { };
+
+            // Act
             var result = validator.TestValidate(season);
-            
+
             // Assert
             result.ShouldHaveValidationErrorFor(p => p.SeasonName);
         }
@@ -28,8 +30,10 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenSeasonNameIsGreaterThan50Characters()
         {
-            // Act
+            // Arrange
             Season season = new Season { SeasonName = "p".PadLeft(51, 'p') };
+
+            // Act
             var result = validator.TestValidate(season);
 
             // Assert
@@ -39,8 +43,10 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenStartDateIsNull()
         {
-            // Act
+            // Arrange
             Season season = new Season { };
+
+            // Act
             var result = validator.TestValidate(season);
 
             // Assert
@@ -50,8 +56,10 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenStartDateIsMin()
         {
-            // Act
+            // Arrange
             Season season = new Season { StartDate = DateTime.MinValue };
+
+            // Act
             var result = validator.TestValidate(season);
 
             // Assert
