@@ -33,7 +33,6 @@ namespace TournamentManager.DataAccess.UnitOfWork
 
         public int Save()
         {
-            // TODO: Manage index errors where we're set up unique identifiers
             return _context.SaveChanges();
         }
     }

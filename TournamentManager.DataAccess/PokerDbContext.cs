@@ -80,7 +80,6 @@ namespace TournamentManager.DataAccess
             modelBuilder.Entity<Venue>().Property(v => v.WebAddress).HasMaxLength(255);
             modelBuilder.Entity<Venue>().Property(v => v.FacebookAddress).HasMaxLength(255);
             modelBuilder.Entity<Venue>().Property(v => v.ExtraInformation).HasMaxLength(255);
-            modelBuilder.Entity<Venue>().HasIndex(s => s.VenueName).IsUnique();
             modelBuilder.Entity<Venue>().HasData
             (
                 new Venue
