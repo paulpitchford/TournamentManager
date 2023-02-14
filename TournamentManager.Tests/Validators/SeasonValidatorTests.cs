@@ -8,12 +8,15 @@ namespace TournamentManager.Tests.Validators
     {
         private SeasonValidator validator = default!;
 
-        [Fact]
-        public void ShouldHaveErrorWhenSeasonNameIsNull()
+        public SeasonValidatorTests()
         {
             // Arrange 
             validator = new SeasonValidator();
+        }
 
+        [Fact]
+        public void ShouldHaveErrorWhenSeasonNameIsNull()
+        {
             // Act
             Season season = new Season { };
             var result = validator.TestValidate(season);
@@ -25,9 +28,6 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenSeasonNameIsGreaterThan50Characters()
         {
-            // Arrange 
-            validator = new SeasonValidator();
-
             // Act
             Season season = new Season { SeasonName = "p".PadLeft(51, 'p') };
             var result = validator.TestValidate(season);
@@ -39,9 +39,6 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenStartDateIsNull()
         {
-            // Arrange 
-            validator = new SeasonValidator();
-
             // Act
             Season season = new Season { };
             var result = validator.TestValidate(season);
@@ -53,9 +50,6 @@ namespace TournamentManager.Tests.Validators
         [Fact]
         public void ShouldHaveErrorWhenStartDateIsMin()
         {
-            // Arrange 
-            validator = new SeasonValidator();
-
             // Act
             Season season = new Season { StartDate = DateTime.MinValue };
             var result = validator.TestValidate(season);
