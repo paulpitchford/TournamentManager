@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using TournamentManager.Infrastructure.Entities;
 
-namespace TournamentManager.Web.Validators
+namespace TournamentManager.Infrastructure.Validators
 {
     public class VenueValiator : AbstractValidator<Venue>
     {

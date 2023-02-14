@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using TournamentManager.Infrastructure.Entities;
 
-namespace PokerTournament.Client.Validators
+namespace PokerTournament.Infrastructure.Validators
 {
     public class SeasonValidator : AbstractValidator<Season>
     {
