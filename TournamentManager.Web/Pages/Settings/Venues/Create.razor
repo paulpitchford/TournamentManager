@@ -1,0 +1,12 @@
+﻿@page "/settings/venues/create"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Venue - Create</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Create</h3>
+
+<CascadingValue Value="Venue">
+    <VenueForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+</CascadingValue>

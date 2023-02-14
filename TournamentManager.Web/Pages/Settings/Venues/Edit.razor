@@ -1,0 +1,14 @@
+﻿@page "/settings/venues/{Id:guid}"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Venue - Edit</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Edit</h3>
+
+<LoadingIndicator @bind-bind-Visible="formLoading">
+    <CascadingValue Value="Venue">
+        <VenueForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+    </CascadingValue>
+</LoadingIndicator>

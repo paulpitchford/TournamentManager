@@ -1,0 +1,94 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (Venue != null)
+{
+    <EditForm Model="Venue" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="venue-name" class="col-sm-2 col-form-label">Venue Name</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="venue-name" @bind-Value="Venue.VenueName" />
+                <ValidationMessage For="() => Venue.VenueName" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="address" class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-10">
+                <InputTextArea class="form-control" id="address" @bind-Value="Venue.Address" />
+                <ValidationMessage For="() => Venue.Address" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="town" class="col-sm-2 col-form-label">Town</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="town" @bind-Value="Venue.Town" />
+                <ValidationMessage For="() => Venue.Town" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="county" class="col-sm-2 col-form-label">County</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="county" @bind-Value="Venue.County" />
+                <ValidationMessage For="() => Venue.County" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="post-code" class="col-sm-2 col-form-label">Post Code</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="post-code" @bind-Value="Venue.PostCode" />
+                <ValidationMessage For="() => Venue.PostCode" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="phone-number" class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="phone-number" @bind-Value="Venue.PhoneNumber" />
+                <ValidationMessage For="() => Venue.PhoneNumber" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="web-address" class="col-sm-2 col-form-label">Web Address</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="web-address" @bind-Value="Venue.WebAddress" />
+                <ValidationMessage For="() => Venue.WebAddress" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="facebook-address" class="col-sm-2 col-form-label">Facebook Address</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="facebook-address" @bind-Value="Venue.FacebookAddress" />
+                <ValidationMessage For="() => Venue.FacebookAddress" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="extra-information" class="col-sm-2 col-form-label">Extra Information</label>
+            <div class="col-sm-10">
+                <InputTextArea class="form-control" id="extra-information" @bind-Value="Venue.ExtraInformation" />
+                <ValidationMessage For="() => Venue.ExtraInformation" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    Venue? Venue { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

@@ -1,0 +1,23 @@
+﻿@page "/settings/venues/"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Venues</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<LoadingIndicator @bind-Visible="gridLoading">
+    <DataGrid TItem="Venue" Data="@Venues" @bind-SelectedRow="@selectedVenue" Responsive PageSize="10" Hoverable ShowPager>
+        <DataGridColumns>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(Venue.VenueName)" Caption="Venue" />
+            <DataGridColumn Field="@nameof(Venue.PhoneNumber)" Caption="Phone Number" />
+            <DataGridColumn Field="@nameof(Venue.WebAddress)" Caption="Website" />
+            <DataGridColumn Field="@nameof(Venue.FacebookAddress)" Caption="Facebook" />
+        </DataGridColumns>
+        <ButtonRowTemplate>
+            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+            <Button Color="Color.Secondary" Disabled="(selectedVenue is null)" Clicked="(() => Edit(selectedVenue!.Id))">Edit</Button>
+        </ButtonRowTemplate>
+    </DataGrid>
+</LoadingIndicator>
+

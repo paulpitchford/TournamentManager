@@ -72,7 +72,7 @@ namespace TournamentManager.DataAccess
 
             #region Venue
             modelBuilder.Entity<Venue>().Property(v => v.VenueName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Venue>().Property(v => v.Address).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Venue>().Property(v => v.Address).IsRequired().HasMaxLength(255);
             modelBuilder.Entity<Venue>().Property(v => v.Town).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Venue>().Property(v => v.County).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Venue>().Property(v => v.PostCode).IsRequired().HasMaxLength(50);
