@@ -1,0 +1,14 @@
+﻿@page "/settings/players/{Id:guid}"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Player - Edit</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Edit</h3>
+
+<LoadingIndicator @bind-bind-Visible="formLoading">
+    <CascadingValue Value="Player">
+        <PlayerForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+    </CascadingValue>
+</LoadingIndicator>

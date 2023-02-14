@@ -11,7 +11,7 @@ namespace TournamentManager.Infrastructure.Entities
         public Guid Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public Guid? TournamentDirectorId { get; set; }
+        public string? TournamentDirectorId { get; set; }
 
         public virtual ICollection<Result> Results { get; set; } = new HashSet<Result>();
     }

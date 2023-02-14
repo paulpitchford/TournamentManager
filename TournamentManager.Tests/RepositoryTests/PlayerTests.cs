@@ -85,7 +85,7 @@ namespace TournamentManager.Tests.RepositoryTests
             {
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random player name
-                Guid tournamentDirectorId = Guid.NewGuid();
+                string tournamentDirectorId = Guid.NewGuid().ToString();
                 unitOfWork.Players.Add(new Player { Id = Guid.NewGuid(), FirstName = "Test", LastName = "Player", TournamentDirectorId = tournamentDirectorId });
                 unitOfWork.Save();
 

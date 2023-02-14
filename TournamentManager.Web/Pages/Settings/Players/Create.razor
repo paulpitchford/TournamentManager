@@ -1,0 +1,12 @@
+﻿@page "/settings/players/create"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Player - Create</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Create</h3>
+
+<CascadingValue Value="Player">
+    <PlayerForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+</CascadingValue>

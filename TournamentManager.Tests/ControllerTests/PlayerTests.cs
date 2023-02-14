@@ -19,7 +19,7 @@ namespace TournamentManager.Tests.ControllerTests
         {
             // Arrange
             var playerId = Guid.NewGuid();
-            var tournameDirectorId = Guid.NewGuid();
+            var tournameDirectorId = Guid.NewGuid().ToString();
             var player = new Player { Id = playerId, FirstName = "First", LastName = "Last", TournamentDirectorId = tournameDirectorId };
             int response = 0;
 

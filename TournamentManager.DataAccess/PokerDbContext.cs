@@ -112,8 +112,9 @@ namespace TournamentManager.DataAccess
             #endregion
 
             #region Player
-            modelBuilder.Entity<Player>().Property(p => p.FirstName).IsRequired();
-            modelBuilder.Entity<Player>().Property(p => p.LastName).IsRequired();
+            modelBuilder.Entity<Player>().Property(p => p.FirstName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Player>().Property(p => p.LastName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Player>().Property(p => p.TournamentDirectorId).HasMaxLength(36).IsFixedLength(true);
             modelBuilder.Entity<Player>().HasIndex(s => s.TournamentDirectorId).IsUnique();
             modelBuilder.Entity<Player>().HasData
             (
@@ -122,7 +123,7 @@ namespace TournamentManager.DataAccess
                     Id = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd"),
                     FirstName = "Paul",
                     LastName = "Pitchford",
-                    TournamentDirectorId = new Guid("2f5bafda-b39e-4b87-84af-73f92b1dfecc")
+                    TournamentDirectorId = "2f5bafda-b39e-4b87-84af-73f92b1dfecc"
                 }, 
                 new Player
                 {

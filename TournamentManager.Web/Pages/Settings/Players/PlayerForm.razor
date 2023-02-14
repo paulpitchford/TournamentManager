@@ -1,0 +1,44 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (Player != null)
+{
+    <EditForm Model="Player" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="first-name" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="first-name" @bind-Value="Player.FirstName" />
+                <ValidationMessage For="() => Player.FirstName" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="last-name" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="last-name" @bind-Value="Player.LastName" />
+                <ValidationMessage For="() => Player.LastName" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="tournament-director-id" class="col-sm-2 col-form-label">Tournament Director Id</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="tournament-director-id" @bind-Value="Player.TournamentDirectorId" />
+                <ValidationMessage For="() => Player.TournamentDirectorId" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    Player? Player { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}
