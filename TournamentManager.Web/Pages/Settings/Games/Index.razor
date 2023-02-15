@@ -25,7 +25,7 @@
         <DataGridColumns>
             <DataGridCommandColumn />
             <DataGridColumn Field="@nameof(Game.GameTitle)" Caption="Game" />
-            <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:d}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
+            <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:g}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
             <DataGridColumn Field="GameType.GameTypeName" Caption="Game Type" />
             <DataGridColumn Field="Venue.VenueName" Caption="Venue" />
         </DataGridColumns>
