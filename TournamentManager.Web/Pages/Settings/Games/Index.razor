@@ -1,0 +1,37 @@
+﻿@page "/settings/games/"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Games</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<div class="row mb-3">
+    <label for="season" class="col-sm-1 col-form-label">Season</label>
+    <div class="col-sm-11">
+        <InputSelect class="form-control" @bind-Value="selectedSeasonId" id="season" @bind-Value:after="OnSeasonChanged">
+            @if (Seasons != null)
+            {
+                foreach (Season season in Seasons)
+                {
+                    <option value="@season.Id">@season.SeasonName</option>
+                }
+            }
+        </InputSelect>
+    </div>
+</div>
+
+<LoadingIndicator @bind-Visible="gridLoading">
+    <DataGrid TItem="Game" Data="@Games" @bind-SelectedRow="@selectedGame" Responsive PageSize="10" Hoverable ShowPager>
+        <DataGridColumns>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(Game.GameTitle)" Caption="Game" />
+            <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:d}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
+            <DataGridColumn Field="GameType.GameTypeName" Caption="Game Type" />
+            <DataGridColumn Field="Venue.VenueName" Caption="Venue" />
+        </DataGridColumns>
+        <ButtonRowTemplate>
+            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+            <Button Color="Color.Secondary" Disabled="(selectedGame is null)" Clicked="(() => Edit(selectedGame!.Id))">Edit</Button>
+        </ButtonRowTemplate>
+    </DataGrid>
+</LoadingIndicator>
