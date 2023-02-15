@@ -13,9 +13,9 @@
         public double Buyin { get; set; }
         public double Fee { get; set; }
 
-        public virtual Season Season { get; set; } = default!;
-        public virtual GameType GameType { get; set; } = default!;
-        public virtual Venue Venue { get; set; } = default!;
+        public virtual Season? Season { get; set; }
+        public virtual GameType? GameType { get; set; }
+        public virtual Venue? Venue { get; set; }
         public virtual ICollection<Result> Results { get; set; } = new HashSet<Result>();
     }
 }
