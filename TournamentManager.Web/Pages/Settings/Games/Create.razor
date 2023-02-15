@@ -1,0 +1,12 @@
+﻿@page "/settings/games/create"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Game - Create</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Create</h3>
+
+<CascadingValue Value="Game">
+    <GameForm OnSubmit="OnSubmit" OnCancel="OnCancel" GameTypes="GameTypes" Venues="Venues" Seasons="Seasons" />
+</CascadingValue>

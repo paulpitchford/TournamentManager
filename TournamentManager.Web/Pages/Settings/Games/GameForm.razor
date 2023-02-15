@@ -1,0 +1,133 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (Game != null)
+{
+    <EditForm Model="Game" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="game-title" class="col-sm-2 col-form-label">Game Title</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="game-title" @bind-Value="Game.GameTitle" />
+                <ValidationMessage For="() => Game.GameTitle" />
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <label for="season" class="col-sm-2 col-form-label">Season</label>
+            <div class="col-sm-10">
+                <InputSelect class="form-control" id="season" @bind-Value="Game.SeasonId">
+                    @if (Seasons != null)
+                    {
+                        foreach (Season season in Seasons)
+                        {
+                            <option value="@season.Id">@season.SeasonName</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => Game.SeasonId" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="gametype" class="col-sm-2 col-form-label">Game Type</label>
+            <div class="col-sm-10">
+                <InputSelect class="form-control" id="gametype" @bind-Value="Game.GameTypeId">
+                    @if (GameTypes != null)
+                    {
+                        foreach (GameType gameType in GameTypes)
+                        {
+                            <option value="@gameType.Id">@gameType.GameTypeName</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => Game.GameTypeId" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="venue" class="col-sm-2 col-form-label">Venue</label>
+            <div class="col-sm-10">
+                <InputSelect class="form-control" id="venue" @bind-Value="Game.VenueId">
+                    @if (Venues != null)
+                    {
+                        foreach (Venue venue in Venues)
+                        {
+                            <option value="@venue.Id">@venue.VenueName</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => Game.VenueId" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="game-date" class="col-sm-2 col-form-label">Game Date</label>
+            <div class="col-sm-10">
+                <DateEdit id="game-date" TValue="DateTime" @bind-Date="Game.GameDateTime" InputMode="DateInputMode.DateTime" />
+                <ValidationMessage For="() => Game.GameDateTime" />
+            </div>
+        </div>
+
+        <div class="row mb-3 d-flex align-items-center">
+            <label for="publish-results" class="col-sm-2 col-form-label">Publish Results</label>
+            <div class="col-md-4">
+                <InputCheckbox id="publish-results" class="form-check-input" @bind-Value="Game.PublishResults" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="details" class="col-sm-2 col-form-label">Game Details</label>
+            <div class="col-sm-10">
+                <InputTextArea rows="3" class="form-control" id="details" @bind-Value="Game.GameDetails" />
+                <ValidationMessage For="() => Game.GameDetails" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="buy-in" class="col-sm-2 col-form-label">Buy-in</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <div class="input-group-text">£</div>
+                    <InputNumber class="form-control" id="buy-in" @bind-Value="Game.Buyin" />
+                    <ValidationMessage For="() => Game.Buyin" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="fee" class="col-sm-2 col-form-label">Fee</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <div class="input-group-text">£</div>
+                    <InputNumber class="form-control" id="fee" @bind-Value="Game.Fee" />
+                    <ValidationMessage For="() => Game.Fee" />
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    Game? Game { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public IEnumerable<Season>? Seasons { get; set; }
+
+    [Parameter]
+    public IEnumerable<GameType>? GameTypes { get; set; }
+
+    [Parameter]
+    public IEnumerable<Venue>? Venues { get; set; }
+}
