@@ -27,7 +27,8 @@ namespace TournamentManager.DataAccess
                 {
                     Id = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"),
                     SeasonName = "Season One",
-                    StartDate = new DateTime(2021, 1, 1)
+                    StartDate = new DateTime(2021, 1, 1),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf")
                 },
                 new Season
                 {
@@ -463,6 +464,216 @@ namespace TournamentManager.DataAccess
                     Position = 10,
                     Cash = 0,
                     Points = 15
+                }
+            );
+            #endregion
+
+            #region PointStructure
+            modelBuilder.Entity<PointStructure>().Property(ps => ps.DefaultPoints).IsRequired();
+            modelBuilder.Entity<PointStructure>().HasData
+            (
+                new PointStructure
+                {
+                    Id = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    DefaultPoints = 15
+                },
+                new PointStructure
+                {
+                    Id = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    DefaultPoints = 15
+                }
+            );
+            #endregion
+
+            #region PointPosition
+            // Set a unique constraint on PointStructureId and Position so that the position can't be added to the same point structure twice
+            modelBuilder.Entity<PointPosition>().Property(pp => pp.PointStructureId).IsRequired();
+            modelBuilder.Entity<PointPosition>().Property(pp => pp.Position).IsRequired();
+            modelBuilder.Entity<PointPosition>().Property(pp => pp.Points).IsRequired();
+            modelBuilder.Entity<PointPosition>().Property(pp => pp.MultiplierType).IsRequired();
+            modelBuilder.Entity<PointPosition>().Property(pp => pp.MultiplierValue).IsRequired();
+            modelBuilder.Entity<PointPosition>().HasIndex(pp => new { pp.PointStructureId, pp.Position }).IsUnique();
+            modelBuilder.Entity<PointPosition>().HasData
+            (
+                new PointPosition
+                {
+                    Id = new Guid("150d3953-4f20-444b-8da4-e30b2f3b20d6"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 1,
+                    Points = 25,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("cb27ed5a-7254-4d5c-81e7-34b5eafadf25"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 2,
+                    Points = 18,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("69b8ccd9-56dc-466c-88cc-a03c0116fc6c"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 3,
+                    Points = 15,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("966eb214-c0ef-474d-bd24-231c75a6f920"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 4,
+                    Points = 12,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("9679aa37-8b2d-4f7a-9c8f-ed9cf970183e"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 5,
+                    Points = 10,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("7e2929a3-3164-4cf7-bf34-51963621fae2"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 6,
+                    Points = 8,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("63081e77-146a-42dc-be8f-8af1a75d14c6"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 7,
+                    Points = 6,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("59a6663c-ad03-419a-a5c9-6f46a8aece8f"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 8,
+                    Points = 4,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("46c18cf8-8b1c-4637-a0bc-4c7fe24a697b"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 9,
+                    Points = 2,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                }, 
+                new PointPosition
+                {
+                    Id = new Guid("32cfd599-293a-495f-80a4-394beb142a4b"),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
+                    Position = 10,
+                    Points = 0,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.PlayerCount,
+                    MultiplierValue = 0
+                },
+                new PointPosition
+                {
+                    Id = new Guid("758a4d7d-88b6-49dd-be6e-4c4faa8fd377"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 1,
+                    Points = 25,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("5e5197ac-7cbb-47a4-b5b3-02b186ddfa90"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 2,
+                    Points = 18,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("732679d6-5207-46c9-80da-d5584d8f80bd"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 3,
+                    Points = 15,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("d29caced-7f45-4a1f-b3ef-1cf96ecde27a"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 4,
+                    Points = 12,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("64badb29-ca8f-47aa-ae6c-870b36dd7821"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 5,
+                    Points = 10,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("165fe14f-5014-431f-a7af-c6d5d6fdc95b"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 6,
+                    Points = 8,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("ca7d357f-e064-4bd3-a2a0-cae82251e096"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 7,
+                    Points = 6,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("1c2cc86a-cb56-4611-ae84-656b067dafd1"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 8,
+                    Points = 4,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("4d668d17-cd09-4549-8c4a-6569ded77d97"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 9,
+                    Points = 2,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
+                },
+                new PointPosition
+                {
+                    Id = new Guid("1ffb54d2-2148-4e3d-992a-7bcbeac844a9"),
+                    PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
+                    Position = 10,
+                    Points = 0,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierValue = 10
                 }
             );
             #endregion
