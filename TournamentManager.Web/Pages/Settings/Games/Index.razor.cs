@@ -1,5 +1,4 @@
-﻿using Blazorise;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Web.Components;
 using TournamentManager.Web.Services;
@@ -21,7 +20,9 @@ namespace TournamentManager.Web.Pages.Settings.Games
         Game? selectedGame;
 
         IEnumerable<Season>? Seasons;
-        Guid? SelectedSeasonId;
+
+        [Parameter]
+        public Guid? SelectedSeasonId { get; set; }
         Guid? SelectedGameTypeId { get; set; }
         Guid? SelectedVenueId { get; set; }
 

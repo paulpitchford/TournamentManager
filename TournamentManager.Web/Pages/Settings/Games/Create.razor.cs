@@ -33,7 +33,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
                 int gameId = await response.Content.ReadFromJsonAsync<int>();
                 if (gameId > 0)
                 {
-                    _navManager.NavigateTo("/settings/games");
+                    _navManager.NavigateTo($"/settings/games/season/{Game.SeasonId}");
                 }
             }
             catch (Exception ex)
