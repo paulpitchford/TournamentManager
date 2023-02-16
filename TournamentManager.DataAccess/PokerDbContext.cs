@@ -10,6 +10,8 @@ namespace TournamentManager.DataAccess
         public DbSet<Game> Games { get; set; }
         public DbSet<GameType> GameTypes { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<PointStructure> PointStructures { get; set; }
+        public DbSet<PointPosition> PointPositions { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Venue> Venues { get; set; }
@@ -20,6 +22,7 @@ namespace TournamentManager.DataAccess
             #region Season
             modelBuilder.Entity<Season>().Property(s => s.SeasonName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Season>().Property(s => s.StartDate).IsRequired();
+            modelBuilder.Entity<Season>().Property(s => s.PointStructureId).IsRequired();
             modelBuilder.Entity<Season>().HasIndex(s => s.SeasonName).IsUnique();
             modelBuilder.Entity<Season>().HasData
             (
@@ -34,12 +37,14 @@ namespace TournamentManager.DataAccess
                 {
                     Id = new Guid("7a0cf45d-7423-4aea-b7a5-aa0c571d5b05"),
                     SeasonName = "Season Two",
-                    StartDate = new DateTime(2022, 1, 1)
+                    StartDate = new DateTime(2022, 1, 1),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf")
                 }, new Season
                 {
                     Id = new Guid("e007944b-bda8-42bf-9d1e-1d7894f98ff5"),
                     SeasonName = "Season Three",
-                    StartDate = new DateTime(2023, 1, 1)
+                    StartDate = new DateTime(2023, 1, 1),
+                    PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf")
                 }
             );
             #endregion
@@ -470,17 +475,20 @@ namespace TournamentManager.DataAccess
 
             #region PointStructure
             modelBuilder.Entity<PointStructure>().Property(ps => ps.DefaultPoints).IsRequired();
+            modelBuilder.Entity<PointStructure>().Property(ps => ps.PointStructureDescription).HasMaxLength(50).IsRequired();
             modelBuilder.Entity<PointStructure>().HasData
             (
                 new PointStructure
                 {
                     Id = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
-                    DefaultPoints = 15
+                    DefaultPoints = 15,
+                    PointStructureDescription = "Points multiplied by player count + 15"
                 },
                 new PointStructure
                 {
                     Id = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
-                    DefaultPoints = 15
+                    DefaultPoints = 15,
+                    PointStructureDescription = "Value multiplier of 10 + 15"
                 }
             );
             #endregion
@@ -493,6 +501,7 @@ namespace TournamentManager.DataAccess
             modelBuilder.Entity<PointPosition>().Property(pp => pp.MultiplierType).IsRequired();
             modelBuilder.Entity<PointPosition>().Property(pp => pp.MultiplierValue).IsRequired();
             modelBuilder.Entity<PointPosition>().HasIndex(pp => new { pp.PointStructureId, pp.Position }).IsUnique();
+            modelBuilder.Entity<PointPosition>().HasOne(pp => pp.PointStructure).WithMany(ps => ps.PointPositions).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PointPosition>().HasData
             (
                 new PointPosition

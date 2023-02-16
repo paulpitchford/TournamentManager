@@ -14,16 +14,20 @@ namespace TournamentManager.DataAccess.UnitOfWork
             Games = new GamesRepository(context);
             GameTypes = new GameTypesRepository(_context);
             Players = new PlayersRepository(_context);
-            Results = new ResultsRepository(_context); 
+            PointStructures = new PointStructureRepository(_context);
+            PointPositions = new PointPositionRepository(_context);
+            Results = new ResultsRepository(_context);
             Seasons = new SeasonsRepository(_context);
-            Venues = new VenuesRepository(_context);  
+            Venues = new VenuesRepository(_context);
         }
 
         public IGamesRepository Games { get; set; }
         public IGameTypesRepository GameTypes { get; set; }
         public IPlayersRepository Players { get; set; }
+        public IPointStructureRepository PointStructures { get; set; }
+        public IPointPositionRepository PointPositions { get; set; }
         public IResultsRepository Results { get; set; }
-        public ISeasonsRepository Seasons  { get; private set; }
+        public ISeasonsRepository Seasons { get; private set; }
         public IVenuesRepository Venues { get; set; }
 
         public void Dispose()

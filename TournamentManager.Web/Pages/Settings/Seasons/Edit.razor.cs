@@ -16,12 +16,14 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
         [Parameter]
         public Guid Id { get; set; }
         Season? Season { get; set; }
+        IEnumerable<PointStructure>? PointStructures { get; set; }
         bool formLoading;
 
         protected override async Task OnInitializedAsync()
         {
             formLoading = true;
             Season = await _apiClient.httpClient.GetFromJsonAsync<Season>($"/api/Seasons/{Id}");
+            PointStructures = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<PointStructure>>("/api/PointStructures/");
             formLoading = false;
         }
 

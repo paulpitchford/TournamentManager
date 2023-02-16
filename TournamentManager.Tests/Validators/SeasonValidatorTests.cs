@@ -91,5 +91,31 @@ namespace TournamentManager.Tests.Validators
             // Assert
             result.ShouldHaveValidationErrorFor(p => p.SeasonName);
         }
+
+        [Fact]
+        public void ShouldHaveErrorWhenPointStructureIdIsNull()
+        {
+            // Arrange
+            Season season = new Season { };
+
+            // Act
+            var result = validator.TestValidate(season);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(p => p.PointStructureId);
+        }
+
+        [Fact]
+        public void ShouldNotHaveErrorWhenPointStructureIdIsSpecified()
+        {
+            // Arrange
+            Season season = new Season { PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
+
+            // Act
+            var result = validator.TestValidate(season);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(p => p.PointStructureId);
+        }
     }
 }

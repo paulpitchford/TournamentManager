@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TournamentManager.DataAccess;
 
@@ -11,9 +12,11 @@ using TournamentManager.DataAccess;
 namespace TournamentManager.DataAccess.Migrations
 {
     [DbContext(typeof(PokerDbContext))]
-    partial class PokerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230216195330_PointStructure-Description")]
+    partial class PointStructureDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -526,9 +529,7 @@ namespace TournamentManager.DataAccess.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("PointStructureDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -538,14 +539,12 @@ namespace TournamentManager.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
-                            DefaultPoints = 15.0,
-                            PointStructureDescription = "Points multiplied by player count + 15"
+                            DefaultPoints = 15.0
                         },
                         new
                         {
                             Id = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
-                            DefaultPoints = 15.0,
-                            PointStructureDescription = "Value multiplier of 10 + 15"
+                            DefaultPoints = 15.0
                         });
                 });
 

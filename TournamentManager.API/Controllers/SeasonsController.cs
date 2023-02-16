@@ -42,6 +42,7 @@ namespace TournamentManager.API.Controllers
             {
                 oldSeason.SeasonName = season.SeasonName;
                 oldSeason.StartDate = season.StartDate;
+                oldSeason.PointStructureId = season.PointStructureId;
                 _unitOfWork.Save();
                 return true;
             }

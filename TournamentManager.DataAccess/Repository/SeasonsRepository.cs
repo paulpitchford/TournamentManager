@@ -10,7 +10,7 @@ namespace TournamentManager.DataAccess.Repository
 
         public IEnumerable<Season> GetAllByDateDesc()
         {
-            return _context.Seasons.TagWith($"Season Repo: GetAllByDateDesc").OrderByDescending(s => s.StartDate);
+            return _context.Seasons.Include(s => s.PointStructure).TagWith($"Season Repo: GetAllByDateDesc").OrderByDescending(s => s.StartDate);
         }
     }
 }

@@ -14,6 +14,13 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
         NavigationManager _navManager { get; set; } = default!;
 
         Season Season { get; set; } = new();
+        IEnumerable<PointStructure>? PointStructures { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            Season = new Season { StartDate = DateTime.Today };
+            PointStructures = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<PointStructure>>("/api/PointStructures/");
+        }
 
         async Task OnSubmit()
         {

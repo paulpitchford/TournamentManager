@@ -20,7 +20,7 @@ namespace TournamentManager.Tests.ControllerTests
             // Arrange
             var seasonId = Guid.NewGuid();
             var seasonName = Guid.NewGuid().ToString();
-            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
+            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
             int response = 0;
 
             // Act

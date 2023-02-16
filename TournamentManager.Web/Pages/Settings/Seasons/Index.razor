@@ -11,6 +11,7 @@
             <DataGridCommandColumn />
             <DataGridColumn Field="@nameof(Season.SeasonName)" Caption="Season" />
             <DataGridColumn Field="@nameof(Season.StartDate)" Caption="Start Date" DisplayFormat="{0:d}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
+            <DataGridColumn Field="PointStructure.PointStructureDescription" Caption="Point Structure" />
         </DataGridColumns>
         <ButtonRowTemplate>
             <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
