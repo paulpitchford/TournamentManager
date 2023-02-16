@@ -42,6 +42,7 @@ namespace TournamentManager.API.Controllers
             {
                 oldGameType.GameTypeName = gameType.GameTypeName;
                 oldGameType.AwardPoints = gameType.AwardPoints;
+                oldGameType.IsDefault = gameType.IsDefault;
                 _unitOfWork.Save();
                 return true;
             }

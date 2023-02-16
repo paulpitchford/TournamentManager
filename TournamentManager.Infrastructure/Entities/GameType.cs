@@ -12,6 +12,9 @@ namespace TournamentManager.Infrastructure.Entities
         public string? GameTypeName { get; set; }
         public bool AwardPoints { get; set; }
 
+        // Primarily there will be a more popular game type. Here we can set the default game type to aid adding new games.
+        public bool IsDefault { get; set; }
+
         public ICollection<Game> Games { get; set; } = new HashSet<Game>();
     }
 }

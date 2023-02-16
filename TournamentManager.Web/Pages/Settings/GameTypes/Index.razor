@@ -11,6 +11,7 @@
             <DataGridCommandColumn />
             <DataGridColumn Field="@nameof(GameType.GameTypeName)" Caption="Game Type" />
             <DataGridColumn Field="@nameof(GameType.AwardPoints)" Caption="Award Points" />
+            <DataGridColumn Field="@nameof(GameType.IsDefault)" Caption="Default Type?" />
         </DataGridColumns>
         <ButtonRowTemplate>
             <Button Color="Color.Primary" Clicked="CreateNew">New</Button>

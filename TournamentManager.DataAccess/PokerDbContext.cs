@@ -44,28 +44,33 @@ namespace TournamentManager.DataAccess
             #endregion
 
             #region GameType
-            modelBuilder.Entity<GameType>().Property(s => s.GameTypeName).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<GameType>().Property(s => s.AwardPoints).IsRequired();
-            modelBuilder.Entity<GameType>().HasIndex(s => s.GameTypeName).IsUnique();
+            modelBuilder.Entity<GameType>().Property(gt => gt.GameTypeName).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<GameType>().Property(gt => gt.AwardPoints).IsRequired();
+            modelBuilder.Entity<GameType>().HasIndex(gt => gt.GameTypeName).IsUnique();
+            // This unique constraint ensures that there is only one record in the table that is set to true
+            modelBuilder.Entity<GameType>().HasIndex(gt => new { gt.IsDefault }).IsUnique().HasFilter("[IsDefault] = 1");
             modelBuilder.Entity<GameType>().HasData
             (
                 new GameType
-                { 
+                {
                     Id = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"),
                     GameTypeName = "League",
-                    AwardPoints = true
+                    AwardPoints = true,
+                    IsDefault = true
                 },
                 new GameType
                 {
                     Id = new Guid("6117db2a-2143-460d-a5cf-7d038caa3c33"),
                     GameTypeName = "Final",
-                    AwardPoints = false
+                    AwardPoints = false,
+                    IsDefault = false
                 },
                 new GameType
                 {
                     Id = new Guid("0bd6aac9-ad90-4fdb-9725-ae363f0d9171"),
                     GameTypeName = "Special",
-                    AwardPoints = false
+                    AwardPoints = false,
+                    IsDefault = false
                 }
             );
             #endregion
@@ -114,7 +119,7 @@ namespace TournamentManager.DataAccess
             modelBuilder.Entity<Player>().Property(p => p.FirstName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Player>().Property(p => p.LastName).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Player>().Property(p => p.TournamentDirectorId).HasMaxLength(36).IsFixedLength(true);
-            modelBuilder.Entity<Player>().HasIndex(s => s.TournamentDirectorId).IsUnique();
+            modelBuilder.Entity<Player>().HasIndex(p => p.TournamentDirectorId).IsUnique();
             modelBuilder.Entity<Player>().HasData
             (
                 new Player
@@ -123,7 +128,7 @@ namespace TournamentManager.DataAccess
                     FirstName = "Paul",
                     LastName = "Pitchford",
                     TournamentDirectorId = "2f5bafda-b39e-4b87-84af-73f92b1dfecc"
-                }, 
+                },
                 new Player
                 {
                     Id = new Guid("02f03bbe-dcc3-47c6-bc17-a0dc30822f57"),

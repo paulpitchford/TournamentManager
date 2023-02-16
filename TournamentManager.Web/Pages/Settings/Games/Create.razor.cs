@@ -23,6 +23,24 @@ namespace TournamentManager.Web.Pages.Settings.Games
             Seasons = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Season>>("/api/Seasons/");
             GameTypes = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<GameType>>("/api/GameTypes/");
             Venues = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Venue>>("/api/Venues/");
+
+            // We're probably going to be entering games for the newsest season in the database from the list of seasons above.
+            if (Seasons != null)
+            {
+                // They're in date descending order, so just take the first.
+                Game.SeasonId = Seasons.First().Id;
+            }
+
+            // Get the current set default game type
+            if (GameTypes != null)
+            {
+                // There will be 0 or 1 results due to the unique constraint in the DbContext for IsDefault
+                GameType? gameType = GameTypes.Where(gt => gt.IsDefault).FirstOrDefault();
+                if (gameType != null)
+                {
+                    Game.GameTypeId= gameType.Id;
+                }
+            }
         }
 
         async Task OnSubmit()

@@ -102,5 +102,31 @@ namespace TournamentManager.Tests.RepositoryTests
                 }
             }
         }
+
+        [Fact]
+        public void CannotAddTwoGameTypesWithIsDefaultTrue()
+        {
+            // Arrange
+            using (var context = _fixture.CreateContext())
+            {
+                var unitOfWork = new UnitOfWork(context);
+                // Make up a random season name
+                string gameTypeName = Guid.NewGuid().ToString();
+                
+                // Act and Assert
+                // The seed data already has a game type where IsDefault = true so there is no need to create two objects in this test.
+                // We can just add this second one and the test should pass because we should get the SQL Exception 2601.
+                var secondGameType = new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = false, IsDefault = true };
+                unitOfWork.GameTypes.Add(secondGameType);
+                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                var sqlException = exception.InnerException as SqlException;
+
+                if (sqlException != null)
+                {
+                    // If we get a sqlException of 2601 that means that the insert failed due to the constraint which is what this test is ensuring
+                    Assert.Equal(2601, sqlException.Number);
+                }
+            }
+        }
     }
 }
