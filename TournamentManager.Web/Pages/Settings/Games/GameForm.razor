@@ -18,6 +18,7 @@
             <label for="season" class="col-sm-2 col-form-label">Season</label>
             <div class="col-sm-10">
                 <InputSelect class="form-control" id="season" @bind-Value="Game.SeasonId">
+                    <option value="">Select Season...</option>
                     @if (Seasons != null)
                     {
                         foreach (Season season in Seasons)
@@ -34,6 +35,7 @@
             <label for="gametype" class="col-sm-2 col-form-label">Game Type</label>
             <div class="col-sm-10">
                 <InputSelect class="form-control" id="gametype" @bind-Value="Game.GameTypeId">
+                    <option value="">Select Game Type...</option>
                     @if (GameTypes != null)
                     {
                         foreach (GameType gameType in GameTypes)
@@ -50,6 +52,7 @@
             <label for="venue" class="col-sm-2 col-form-label">Venue</label>
             <div class="col-sm-10">
                 <InputSelect class="form-control" id="venue" @bind-Value="Game.VenueId">
+                    <option value="">Select Venue...</option>
                     @if (Venues != null)
                     {
                         foreach (Venue venue in Venues)
