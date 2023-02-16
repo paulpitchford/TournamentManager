@@ -16,10 +16,15 @@ namespace TournamentManager.Web.Pages.Settings.Games
 
         bool gridLoading;
         IEnumerable<Game>? Games;
+        IEnumerable<GameType>? GameTypes { get; set; }
+        IEnumerable<Venue>? Venues { get; set; }
         Game? selectedGame;
 
         IEnumerable<Season>? Seasons;
-        Guid? selectedSeasonId;
+        Guid? SelectedSeasonId;
+        Guid? SelectedGameTypeId { get; set; }
+        Guid? SelectedVenueId { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,7 +32,9 @@ namespace TournamentManager.Web.Pages.Settings.Games
             {
                 gridLoading = true;
                 Seasons = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Season>>("/api/Seasons/");
-                await ApplyFilter();
+                GameTypes = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<GameType>>("/api/GameTypes/");
+                Venues = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Venue>>("/api/Venues/");
+                await FilterGrid();
                 gridLoading = false;
             }
             catch (Exception ex)
@@ -39,16 +46,34 @@ namespace TournamentManager.Web.Pages.Settings.Games
             }
         }
 
-        async Task ApplyFilter()
+        async Task FilterGrid()
         {
-            if (Seasons != null)
+            if (SelectedSeasonId == null)
             {
-                if (selectedSeasonId == null)
+                if (Seasons != null)
                 {
-                    // The seasons come through in descending order so we just take the first Id
-                    selectedSeasonId = Seasons.First().Id;
+                    SelectedSeasonId = Seasons.First().Id;
                 }
-                Games = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Game>>($"/api/Games/GetGamesBySeason/{selectedSeasonId}");
+            }
+
+            Games = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Game>>($"/api/Games/");
+
+            if (Games != null)
+            {
+                if (SelectedSeasonId != null)
+                {
+                    Games = Games.Where(q => q.SeasonId == SelectedSeasonId).ToList();
+                }
+
+                if (SelectedGameTypeId != null)
+                {
+                    Games = Games.Where(q => q.GameTypeId == SelectedGameTypeId).ToList();
+                }
+
+                if (SelectedVenueId != null)
+                {
+                    Games = Games.Where(q => q.VenueId == SelectedVenueId).ToList();
+                }
             }
         }
 
@@ -64,7 +89,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
 
         async Task OnSeasonChanged()
         {
-            await ApplyFilter();
+            await FilterGrid();
         }
     }
 }

@@ -5,21 +5,61 @@
 
 <AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
 
-<div class="row mb-3">
-    <label for="season" class="col-sm-1 col-form-label">Season</label>
-    <div class="col-sm-11">
-        <InputSelect class="form-control" @bind-Value="selectedSeasonId" id="season" @bind-Value:after="OnSeasonChanged">
-            @if (Seasons != null)
-            {
-                foreach (Season season in Seasons)
-                {
-                    <option value="@season.Id">@season.SeasonName</option>
-                }
-            }
-        </InputSelect>
+<div class="row">
+    <div class="col-4">
+        <div class="row mb-3">
+            <label for="title" class="col-sm-3 col-form-label">Season</label>
+            <div class="col-sm-9">
+                <InputSelect @bind-Value="@SelectedSeasonId" @bind-Value:after="FilterGrid" class="form-control">
+                    <option>Filter by Season...</option>
+                    @if (Seasons != null)
+                    {
+                        foreach (Season season in Seasons)
+                        {
+                            <SelectItem Value="@season.Id">@season.SeasonName</SelectItem>
+                        }
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="row mb-3">
+            <label for="title" class="col-sm-3 col-form-label">Game Type</label>
+            <div class="col-sm-9">
+                <InputSelect @bind-Value="@SelectedGameTypeId" @bind-Value:after="FilterGrid" class="form-control">
+                    <option>Filter Game Type...</option>
+                    @if (GameTypes != null)
+                    {
+                        foreach (GameType gameType in GameTypes)
+                        {
+                            <SelectItem Value="@gameType.Id">@gameType.GameTypeName</SelectItem>
+                        }
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="row mb-3">
+            <label for="title" class="col-sm-3 col-form-label">Venue</label>
+            <div class="col-sm-9">
+                <InputSelect @bind-Value="@SelectedVenueId" @bind-Value:after="FilterGrid" class="form-control">
+                    <option>Filter by Venue...</option>
+                    @if (Venues != null)
+                    {
+                        foreach (Venue venue in Venues)
+                        {
+                            <SelectItem Value="@venue.Id">@venue.VenueName</SelectItem>
+                        }
+                    }
+                </InputSelect>
+            </div>
+        </div>
     </div>
 </div>
 
+<div class="row">
 <LoadingIndicator @bind-Visible="gridLoading">
     <DataGrid TItem="Game" Data="@Games" @bind-SelectedRow="@selectedGame" Responsive PageSize="10" Hoverable ShowPager>
         <DataGridColumns>
@@ -35,3 +75,4 @@
         </ButtonRowTemplate>
     </DataGrid>
 </LoadingIndicator>
+</div>
