@@ -1,6 +1,7 @@
 ﻿@using TournamentManager.Infrastructure.Entities
 @using TournamentManager.Infrastructure.Enums;
 @using TournamentManager.Infrastructure.Extensions;
+@using TournamentManager.Infrastructure.Interfaces;
 
 @if (PointStructure != null)
 {
@@ -27,56 +28,77 @@
         <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
     </EditForm>
 
+    <hr />
+
     <EditForm Model="pointPosition" OnValidSubmit="AddPosition">
+        <div class="row">
+            <div class="col-3">
+                <InputNumber class="form-control" id="position" @bind-Value="pointPosition.Position" disabled />
+            </div>
+
+            <div class="col-3">
+                <InputNumber class="form-control" id="points" @bind-Value="pointPosition.Points" />
+            </div>
+
+            <div class="col-3">
+                <InputSelect class="form-control" id="multiplier-type" @bind-Value="pointPosition.MultiplierType">
+                    @foreach (PointPositionMultiplierType multiplierType in Enum.GetValues(typeof(PointPositionMultiplierType)))
+                    {
+                        <SelectItem Value="@multiplierType">@multiplierType.GetDisplayName()</SelectItem>
+                    }
+                </InputSelect>
+            </div>
+            @if (pointPosition.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+            {
+                <div class="col-3">
+                    <InputNumber class="form-control" id="multiplier-value" @bind-Value="pointPosition.MultiplierValue" />
+                </div>
+            }
+            else
+            {
+                pointPosition.MultiplierValue = 0;
+            }
+        </div>
+
         <button class="btn btn-primary" type="submit">Add Position</button>
 
-        <InputNumber @bind-Value="pointPosition.Position" />
-        <InputNumber @bind-Value="pointPosition.Points" />
-        <InputSelect @bind-Value="pointPosition.MultiplierType">
-            @foreach (PointPositionMultiplierType multiplierType in Enum.GetValues(typeof(PointPositionMultiplierType)))
-            {
-                <SelectItem Value="@multiplierType">@multiplierType.GetDisplayName()</SelectItem>
-            }
-        </InputSelect>
-        @if (pointPosition.MultiplierType == PointPositionMultiplierType.MultiplierValue)
-        {
-            <InputNumber @bind-Value="pointPosition.MultiplierValue" />
-        }
-        else
-        {
-            pointPosition.MultiplierValue = 0;
-        }
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Position</th>
-                    <th>Points</th>
-                    <th>Multiplier Type</th>
-                    <th>Multiplier Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (PointPosition position in PointStructure.PointPositions.OrderBy(p => p.Position))
-                {
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@position.Position</td>
-                        <td>@position.Points</td>
-                        <td>@position.MultiplierType.GetDisplayName()</td>
-                        <td>
-                            @if (position.MultiplierType == PointPositionMultiplierType.MultiplierValue)
-                            {
-                                @position.MultiplierValue
-                            }
-                        </td>
+                        <th>Position</th>
+                        <th>Points</th>
+                        <th>Multiplier Type</th>
+                        <th>Multiplier Value</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (PointPosition position in PointStructure.PointPositions.OrderBy(p => p.Position))
+                    {
+                        <tr>
+                            <td>@position.Position</td>
+                            <td>@position.Points</td>
+                            <td>@position.MultiplierType.GetDisplayName()</td>
+                            <td>
+                                @if (position.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+                                {
+                                    @position.MultiplierValue
+                                }
+                            </td>
+                            <td><button class="btn btn-sm btn-danger" @onclick="() => RemovePoints(position)" type="button">Remove</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </EditForm>
 }
 
 @code {
+    [Inject]
+    IPoints _points { get; set; } = default!;
+
     [CascadingParameter]
     PointStructure? PointStructure { get; set; }
 
@@ -87,13 +109,32 @@
     public EventCallback OnCancel { get; set; }
 
     PointPosition pointPosition = new PointPosition();
+    int currentPosition;
+
+    protected override void OnInitialized()
+    {
+        currentPosition = 1;
+        pointPosition = new PointPosition { Position = currentPosition };
+    }
 
     private void AddPosition()
     {
         if (PointStructure != null)
         {
             PointStructure.PointPositions.Add(pointPosition);
-            pointPosition = new PointPosition();
+            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            pointPosition = new PointPosition { Position = currentPosition };
+
+        }
+    }
+
+    private void RemovePoints(PointPosition points)
+    {
+        if (PointStructure != null)
+        {
+            PointStructure.PointPositions.Remove(points);
+            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            pointPosition.Position = currentPosition;
         }
     }
 }
