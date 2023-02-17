@@ -1,4 +1,6 @@
 ﻿@using TournamentManager.Infrastructure.Entities
+@using TournamentManager.Infrastructure.Enums;
+@using TournamentManager.Infrastructure.Extensions;
 
 @if (PointStructure != null)
 {
@@ -24,6 +26,54 @@
         <button class="btn btn-primary" type="submit">Save</button>
         <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
     </EditForm>
+
+    <EditForm Model="pointPosition" OnValidSubmit="AddPosition">
+        <button class="btn btn-primary" type="submit">Add Position</button>
+
+        <InputNumber @bind-Value="pointPosition.Position" />
+        <InputNumber @bind-Value="pointPosition.Points" />
+        <InputSelect @bind-Value="pointPosition.MultiplierType">
+            @foreach (PointPositionMultiplierType multiplierType in Enum.GetValues(typeof(PointPositionMultiplierType)))
+            {
+                <SelectItem Value="@multiplierType">@multiplierType.GetDisplayName()</SelectItem>
+            }
+        </InputSelect>
+        @if (pointPosition.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+        {
+            <InputNumber @bind-Value="pointPosition.MultiplierValue" />
+        }
+        else
+        {
+            pointPosition.MultiplierValue = 0;
+        }
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Points</th>
+                    <th>Multiplier Type</th>
+                    <th>Multiplier Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (PointPosition position in PointStructure.PointPositions.OrderBy(p => p.Position))
+                {
+                    <tr>
+                        <td>@position.Position</td>
+                        <td>@position.Points</td>
+                        <td>@position.MultiplierType.GetDisplayName()</td>
+                        <td>
+                            @if (position.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+                            {
+                                @position.MultiplierValue
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </EditForm>
 }
 
 @code {
@@ -35,4 +85,15 @@
 
     [Parameter]
     public EventCallback OnCancel { get; set; }
+
+    PointPosition pointPosition = new PointPosition();
+
+    private void AddPosition()
+    {
+        if (PointStructure != null)
+        {
+            PointStructure.PointPositions.Add(pointPosition);
+            pointPosition = new PointPosition();
+        }
+    }
 }
