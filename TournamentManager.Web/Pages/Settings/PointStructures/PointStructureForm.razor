@@ -111,10 +111,22 @@
     PointPosition pointPosition = new PointPosition();
     int currentPosition;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        currentPosition = 1;
-        pointPosition = new PointPosition { Position = currentPosition };
+        if (PointStructure != null)
+        {
+            // Here we check if we're loading some positions already from an existing points structure
+            // or whether we're creating a new structure with no positions added
+            if (PointStructure.PointPositions.Count > 0)
+            {
+                currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            }
+            else
+            {
+                currentPosition = 1;
+            }
+            pointPosition = new PointPosition { Position = currentPosition };
+        }
     }
 
     private void AddPosition()
