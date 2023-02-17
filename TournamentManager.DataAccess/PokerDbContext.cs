@@ -24,6 +24,7 @@ namespace TournamentManager.DataAccess
             modelBuilder.Entity<Season>().Property(s => s.StartDate).IsRequired();
             modelBuilder.Entity<Season>().Property(s => s.PointStructureId).IsRequired();
             modelBuilder.Entity<Season>().HasIndex(s => s.SeasonName).IsUnique();
+            modelBuilder.Entity<Season>().HasOne(s => s.PointStructure).WithMany(s => s.Seasons).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Season>().HasData
             (
                 new Season

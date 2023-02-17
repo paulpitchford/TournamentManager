@@ -28,19 +28,26 @@
         <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
     </EditForm>
 
-    <hr />
+    <div class="row">
+        <div class=col-12>
+            <h3 style="margin-top: 20px;">Point Structure</h3>
+        </div>
+    </div>
 
     <EditForm Model="pointPosition" OnValidSubmit="AddPosition">
-        <div class="row">
-            <div class="col-3">
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
+                <label for="position" class="form-label">Position</label>
                 <InputNumber class="form-control" id="position" @bind-Value="pointPosition.Position" disabled />
             </div>
 
-            <div class="col-3">
+            <div class="col-2">
+                <label for="points" class="form-label">Points</label>
                 <InputNumber class="form-control" id="points" @bind-Value="pointPosition.Points" />
             </div>
 
-            <div class="col-3">
+            <div class="col-2">
+                <label for="multiplier-type" class="form-label">Multiplier</label>
                 <InputSelect class="form-control" id="multiplier-type" @bind-Value="pointPosition.MultiplierType">
                     @foreach (PointPositionMultiplierType multiplierType in Enum.GetValues(typeof(PointPositionMultiplierType)))
                     {
@@ -50,7 +57,8 @@
             </div>
             @if (pointPosition.MultiplierType == PointPositionMultiplierType.MultiplierValue)
             {
-                <div class="col-3">
+                <div class="col-2">
+                    <label for="multiplier-value" class="form-label">Multiplier Value</label>
                     <InputNumber class="form-control" id="multiplier-value" @bind-Value="pointPosition.MultiplierValue" />
                 </div>
             }
@@ -58,11 +66,16 @@
             {
                 pointPosition.MultiplierValue = 0;
             }
+
+            <div class="col-1">
+                <label for="add-button" class="form-label">&nbsp;</label>
+                <button id="add-button" class="btn btn-primary form-control" type="submit">Add</button>
+            </div>
         </div>
+    </EditForm>
 
-        <button class="btn btn-primary" type="submit">Add Position</button>
-
-        <div class="row">
+    <div class="row">
+        <div class="col-12">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -92,7 +105,7 @@
                 </tbody>
             </table>
         </div>
-    </EditForm>
+    </div>
 }
 
 @code {

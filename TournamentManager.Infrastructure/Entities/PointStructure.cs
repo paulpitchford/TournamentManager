@@ -13,6 +13,7 @@ namespace TournamentManager.Infrastructure.Entities
         // If no points are added to a position, this is the default amount that will be used
         public double DefaultPoints { get; set; }
 
+        public virtual ICollection<Season> Seasons { get; set; } = new HashSet<Season>();
         public virtual ICollection<PointPosition> PointPositions { get; set; } = new HashSet<PointPosition>();
     }
 }
