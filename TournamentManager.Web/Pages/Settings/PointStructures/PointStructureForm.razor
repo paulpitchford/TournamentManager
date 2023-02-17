@@ -1,0 +1,38 @@
+﻿@using TournamentManager.Infrastructure.Entities
+
+@if (PointStructure != null)
+{
+    <EditForm Model="PointStructure" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="point-structure-description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="point-structure-description" @bind-Value="PointStructure.PointStructureDescription" />
+                <ValidationMessage For="() => PointStructure.PointStructureDescription" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="default-points" class="col-sm-2 col-form-label">Default Points</label>
+            <div class="col-sm-10">
+                <InputNumber class="form-control" id="default-points" @bind-Value="PointStructure.DefaultPoints" />
+                <ValidationMessage For="() => PointStructure.DefaultPoints" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+}
+
+@code {
+    [CascadingParameter]
+    PointStructure? PointStructure { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}
