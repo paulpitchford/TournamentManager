@@ -6,6 +6,7 @@ namespace TournamentManager.Infrastructure.Enums
     {
         [Display(Name= "Player Count")]
         PlayerCount,
-        Value
+        [Display(Name = "Multiplier Value")]
+        MultiplierValue
     }
 }

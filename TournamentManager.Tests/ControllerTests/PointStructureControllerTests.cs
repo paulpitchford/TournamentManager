@@ -60,6 +60,7 @@ namespace TournamentManager.Tests.ControllerTests
                 pointStructure = controller.GetPointStructure(pointStructureId);
 
                 // If the pointStructure.Id matches the pointStructureId we've successfully retrieved the pointStructure from the database
+                Assert.True(pointStructure != null);
                 Assert.Equal(pointStructureId, pointStructure.Id);
             }
         }
@@ -80,9 +81,13 @@ namespace TournamentManager.Tests.ControllerTests
                 var controller = new PointStructuresController(unitOfWork);
 
                 pointStructure = controller.GetPointStructure(pointStructureId);
-                pointStructure.PointStructureDescription = pointStructureDescription;
+                if (pointStructure != null)
+                {
+                    pointStructure.PointStructureDescription = pointStructureDescription;
+                }
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
+                Assert.True(pointStructure != null);
                 Assert.True(controller.UpdatePointStructure(pointStructureId, pointStructure));
             }
         }

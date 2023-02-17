@@ -600,7 +600,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 1,
                     Points = 25,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -609,7 +609,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 2,
                     Points = 18,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -618,7 +618,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 3,
                     Points = 15,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -627,7 +627,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 4,
                     Points = 12,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -636,7 +636,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 5,
                     Points = 10,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -645,7 +645,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 6,
                     Points = 8,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -654,7 +654,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 7,
                     Points = 6,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -663,7 +663,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 8,
                     Points = 4,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -672,7 +672,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 9,
                     Points = 2,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 },
                 new PointPosition
@@ -681,7 +681,7 @@ namespace TournamentManager.DataAccess
                     PointStructureId = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
                     Position = 10,
                     Points = 0,
-                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.Value,
+                    MultiplierType = Infrastructure.Enums.PointPositionMultiplierType.MultiplierValue,
                     MultiplierValue = 10
                 }
             );
