@@ -1,4 +1,5 @@
-﻿using TournamentManager.Tests.Fixtures;
+﻿using TournamentManager.Infrastructure.Exceptions;
+using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.BusinessLogicTests
 {
@@ -72,6 +73,17 @@ namespace TournamentManager.Tests.BusinessLogicTests
 
             // Assert
             Assert.Equal(4, missingNumber);
+        }
+
+        [Fact]
+        public void ThrowExceptionIfZeroFoundInListOfInt()
+        {
+            // Arrange 
+            List<int> numbers = Enumerable.Range(0, 10).ToList();
+            int missingNumber = 0;
+            
+            // Act & Assert
+            Assert.Throws<SortedPositionListContainsZeroException>(() => missingNumber = _fixture.Points.NextPosition(numbers));
         }
     }
 }

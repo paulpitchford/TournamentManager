@@ -1,4 +1,5 @@
-﻿using TournamentManager.Infrastructure.Interfaces;
+﻿using TournamentManager.Infrastructure.Exceptions;
+using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.Infrastructure.BusinessLogic
 {
@@ -16,6 +17,10 @@ namespace TournamentManager.Infrastructure.BusinessLogic
             int expected = 1;
             foreach (int number in numbers)
             {
+                if (number == 0)
+                {
+                    throw new SortedPositionListContainsZeroException("The position list should not contain a item of 0.");
+                }
                 if (number == expected)
                 {
                     expected++;
