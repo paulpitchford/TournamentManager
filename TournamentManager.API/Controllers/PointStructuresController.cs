@@ -30,9 +30,9 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet("{Id}")]
-        public PointStructure GetPointStructure(Guid Id)
+        public PointStructure? GetPointStructure(Guid Id)
         {
-            return _unitOfWork.PointStructures.GetById(Id);
+            return _unitOfWork.PointStructures.GetPointStructureWithPoints(Id);
         }
 
         [HttpPut("{Id}")]

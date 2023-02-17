@@ -14,5 +14,10 @@ namespace TournamentManager.DataAccess.Repository
         {
             return _context.PointStructures.OrderBy(ps => ps.PointStructureDescription).TagWith($"Point Structure Repo: GetAllAscening");
         }
+
+        public PointStructure? GetPointStructureWithPoints(Guid Id)
+        {
+            return _context.PointStructures.Include(ps => ps.PointPositions).Where(ps => ps.Id == Id).FirstOrDefault();
+        }
     }
 }
