@@ -16,52 +16,97 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Game> GetAllGames()
+        public ActionResult<IEnumerable<Game>> GetAllGames()
         {
-            return _unitOfWork.Games.GetAllAscending();
+            try
+            {
+                IEnumerable<Game> Games = _unitOfWork.Games.GetAllAscending();
+                return Ok(Games);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpGet]
-        [Route("GetGamesBySeason/{seasonId}")]
-        public IEnumerable<Game> GetGamesBySeason(Guid seasonId)
+        [Route("GetGamesByGame/{gameId}")]
+        public ActionResult<IEnumerable<Game>> GetGamesByGame(Guid gameId)
         {
-            return _unitOfWork.Games.GetGamesBySeasonDescending(seasonId);
+            try
+            {
+                IEnumerable<Game> Games = _unitOfWork.Games.GetGamesBySeasonAscending(gameId);
+                return Ok(Games);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
-
+        
         [HttpPost]
-        public int AddGame([FromBody] Game game)
+        public ActionResult<int> AddGame([FromBody] Game game)
         {
-            _unitOfWork.Games.Add(game);
-            return _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Games.Add(game);
+                return Ok(_unitOfWork.Save());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error saving your data: {ex.Message}");
+            }
         }
 
         [HttpGet("{Id}")]
-        public Game GetGame(Guid Id)
+        public ActionResult<Game> GetGame(Guid Id)
         {
-            return _unitOfWork.Games.GetById(Id);
+            try
+            {
+                Game game = _unitOfWork.Games.GetById(Id);
+                if (game != null)
+                {
+                    return game;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPut("{Id}")]
-        public bool UpdateGame(Guid Id, [FromBody] Game game)
+        public ActionResult<bool> UpdateGame(Guid Id, [FromBody] Game game)
         {
-            Game? oldGame = _unitOfWork.Games.GetById(Id);
-            if (oldGame != null)
+            try
             {
-                oldGame.SeasonId = game.SeasonId;
-                oldGame.VenueId = game.VenueId;
-                oldGame.GameTypeId = game.GameTypeId;
-                oldGame.GameTitle = game.GameTitle;
-                oldGame.GameDateTime = game.GameDateTime;
-                oldGame.PublishResults = game.PublishResults;
-                oldGame.GameDetails = game.GameDetails;
-                oldGame.Buyin = game.Buyin;
-                oldGame.Fee = game.Fee;
-                _unitOfWork.Save();
-                return true;
+                Game? oldGame = _unitOfWork.Games.GetById(Id);
+                if (oldGame != null)
+                {
+                    oldGame.SeasonId = game.SeasonId;
+                    oldGame.VenueId = game.VenueId;
+                    oldGame.GameTypeId = game.GameTypeId;
+                    oldGame.GameTitle = game.GameTitle;
+                    oldGame.GameDateTime = game.GameDateTime;
+                    oldGame.PublishResults = game.PublishResults;
+                    oldGame.GameDetails = game.GameDetails;
+                    oldGame.Buyin = game.Buyin;
+                    oldGame.Fee = game.Fee;
+                    _unitOfWork.Save();
+                    return true;
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
     }
