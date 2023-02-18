@@ -38,11 +38,34 @@ namespace TournamentManager.API.Controllers
         [HttpPut("{Id}")]
         public bool UpdatePointStructure(Guid Id, [FromBody] PointStructure pointStructure)
         {
-            PointStructure? oldPointStructure = _unitOfWork.PointStructures.GetById(Id);
+            PointStructure? oldPointStructure = _unitOfWork.PointStructures.GetPointStructureWithPoints(Id);
+            // Update the structure
             if (oldPointStructure != null)
             {
                 oldPointStructure.DefaultPoints = pointStructure.DefaultPoints;
                 oldPointStructure.PointStructureDescription = pointStructure.PointStructureDescription;
+
+                // Loop over the children from the page and see if any need adding or updating
+                foreach (PointPosition position in pointStructure.PointPositions)
+                {
+                    if (position.Id == Guid.Empty)
+                    {
+                        position.PointStructureId = pointStructure.Id;
+                        _unitOfWork.PointPositions.Add(position);
+                    }
+                    // We don't need to worry about updates as we're only adding and removing from this collection of entities
+                }
+
+                // Now loop over the old collection and see if any have been removed
+                foreach (PointPosition oldPosition in oldPointStructure.PointPositions)
+                {
+                    PointPosition? position = pointStructure.PointPositions.Where(pp => pp.Id == oldPosition.Id).FirstOrDefault();
+                    if (position == null)
+                    {
+                        _unitOfWork.PointPositions.Remove(oldPosition);
+                    }
+                }
+
                 _unitOfWork.Save();
                 return true;
             }
