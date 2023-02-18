@@ -1,4 +1,5 @@
-﻿using TournamentManager.API.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using TournamentManager.API.Controllers;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Tests.Fixtures;
@@ -93,7 +94,6 @@ namespace TournamentManager.Tests.ControllerTests
         public void CanGetResultsByGameId()
         {
             // Arrange
-            List<Result> results = new List<Result>();
             Guid gameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be");
             
             // Act and Assert
@@ -103,10 +103,12 @@ namespace TournamentManager.Tests.ControllerTests
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                results = controller.GetResultsByGame(gameId).ToList();
+                var results = controller.GetResultsByGame(gameId);
+                OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(results);
+                IEnumerable<Result> model = Assert.IsAssignableFrom<IEnumerable<Result>>(okObjectResult.Value);
 
                 // If the result.Id matches the resultId we've successfully retrieved the result from the database
-                Assert.True(results.Count >= 1);
+                Assert.True(model.Count >= 1);
             }
         }
 

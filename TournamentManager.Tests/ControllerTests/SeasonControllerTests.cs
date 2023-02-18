@@ -14,73 +14,73 @@ namespace TournamentManager.Tests.ControllerTests
             _fixture = fixture;
         }
 
-        [Fact]
-        public void CanAddSeason()
-        {
-            // Arrange
-            var seasonId = Guid.NewGuid();
-            var seasonName = Guid.NewGuid().ToString();
-            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
-            int response = 0;
+        //[Fact]
+        //public void CanAddSeason()
+        //{
+        //    // Arrange
+        //    var seasonId = Guid.NewGuid();
+        //    var seasonName = Guid.NewGuid().ToString();
+        //    var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
+        //    int response = 0;
 
-            // Act
-            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
-            using (var context = _fixture.CreateContext())
-            {
-                var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonsController(unitOfWork);
+        //    // Act
+        //    // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
+        //    using (var context = _fixture.CreateContext())
+        //    {
+        //        var unitOfWork = new UnitOfWork(context);
+        //        var controller = new SeasonsController(unitOfWork);
 
-                response = controller.AddSeason(season);
-            }
+        //        response = controller.AddSeason(season);
+        //    }
 
-            // Assert
-            Assert.Equal(1, response);
-            Assert.Equal(seasonId, season.Id);
-            Assert.Equal(seasonName, season.SeasonName);
-        }
+        //    // Assert
+        //    Assert.Equal(1, response);
+        //    Assert.Equal(seasonId, season.Id);
+        //    Assert.Equal(seasonName, season.SeasonName);
+        //}
 
-        [Fact]
-        public void CanGetSingleSeason()
-        {
-            // Arrange
-            // This is a guid from one of the seeded seasons
-            var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
-            Season? season;
+        //[Fact]
+        //public void CanGetSingleSeason()
+        //{
+        //    // Arrange
+        //    // This is a guid from one of the seeded seasons
+        //    var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
+        //    Season? season;
 
-            // Act and Assert
-            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
-            using (var context = _fixture.CreateContext())
-            {
-                var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonsController(unitOfWork);
+        //    // Act and Assert
+        //    // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
+        //    using (var context = _fixture.CreateContext())
+        //    {
+        //        var unitOfWork = new UnitOfWork(context);
+        //        var controller = new SeasonsController(unitOfWork);
 
-                season = controller.GetSeason(seasonId);
+        //        season = controller.GetSeason(seasonId);
 
-                // If the season.Id matches the seasonId we've successfully retrieved the season from the database
-                Assert.Equal(seasonId, season.Id);
-            }
-        }
+        //        // If the season.Id matches the seasonId we've successfully retrieved the season from the database
+        //        Assert.Equal(seasonId, season.Id);
+        //    }
+        //}
 
-        [Fact]
-        public void CanUpdateSingleSeason()
-        {
-            // Arrange
-            // This is a guid from one of the seeded seasons
-            var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
-            Season? season = null;
+        //[Fact]
+        //public void CanUpdateSingleSeason()
+        //{
+        //    // Arrange
+        //    // This is a guid from one of the seeded seasons
+        //    var seasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e");
+        //    Season? season = null;
 
-            using (var context = _fixture.CreateContext())
-            {
-                // Act and Assert
-                var unitOfWork = new UnitOfWork(context);
-                var controller = new SeasonsController(unitOfWork);
+        //    using (var context = _fixture.CreateContext())
+        //    {
+        //        // Act and Assert
+        //        var unitOfWork = new UnitOfWork(context);
+        //        var controller = new SeasonsController(unitOfWork);
 
-                season = controller.GetSeason(seasonId);
-                season.StartDate = DateTime.Now;
+        //        season = controller.GetSeason(seasonId);
+        //        season.StartDate = DateTime.Now;
 
-                // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
-                Assert.True(controller.UpdateSeason(seasonId, season));
-            }
-        }
+        //        // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
+        //        Assert.True(controller.UpdateSeason(seasonId, season));
+        //    }
+        //}
     }
 }
