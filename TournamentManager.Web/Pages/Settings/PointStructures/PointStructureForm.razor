@@ -111,7 +111,7 @@
 
 @code {
     [Inject]
-    IPosition _points { get; set; } = default!;
+    IPositionFactory _positionFactory { get; set; } = default!;
 
     [CascadingParameter]
     PointStructure? PointStructure { get; set; }
@@ -133,7 +133,7 @@
             // or whether we're creating a new structure with no positions added
             if (PointStructure.PointPositions.Count > 0)
             {
-                currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+                currentPosition = _positionFactory.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
             }
             else
             {
@@ -148,7 +148,7 @@
         if (PointStructure != null)
         {
             PointStructure.PointPositions.Add(pointPosition);
-            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            currentPosition = _positionFactory.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
             pointPosition = new PointPosition { Position = currentPosition };
 
         }
@@ -159,7 +159,7 @@
         if (PointStructure != null)
         {
             PointStructure.PointPositions.Remove(points);
-            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            currentPosition = _positionFactory.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
             pointPosition.Position = currentPosition;
         }
     }

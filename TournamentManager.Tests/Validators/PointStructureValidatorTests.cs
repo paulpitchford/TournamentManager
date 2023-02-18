@@ -7,16 +7,16 @@ using TournamentManager.Tests.Fixtures;
 
 namespace TournamentManager.Tests.Validators
 {
-    public class PointStructureValidatorTests : IClassFixture<PointsFixture>
+    public class PointStructureValidatorTests : IClassFixture<PositionFactoryFixtures>
     {
-        private PointsFixture _fixture;
+        private PositionFactoryFixtures _fixture;
 
         private PointStructureValidator validator;
 
-        public PointStructureValidatorTests(PointsFixture fixture)
+        public PointStructureValidatorTests(PositionFactoryFixtures fixture)
         {
             _fixture = fixture;
-            validator = new PointStructureValidator(_fixture.Points);
+            validator = new PointStructureValidator(_fixture.PositionFactory);
         }
 
         [Fact]

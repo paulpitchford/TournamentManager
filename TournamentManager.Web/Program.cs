@@ -1,8 +1,8 @@
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using TournamentManager.Infrastructure.Interfaces;
 using TournamentManager.Infrastructure.BusinessLogic;
+using TournamentManager.Infrastructure.Interfaces;
 using TournamentManager.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +21,7 @@ builder.Services.AddBlazorise(options =>
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<WebApiService>();
-builder.Services.AddTransient<IPosition, TournamentManager.Infrastructure.BusinessLogic.Position>();
+builder.Services.AddTransient<IPositionFactory, PositionFactory>();
 
 var app = builder.Build();
 
