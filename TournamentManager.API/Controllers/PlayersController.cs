@@ -16,39 +16,76 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Player> GetAllPlayers()
+        public ActionResult<IEnumerable<Player>> GetAllPlayers()
         {
-            return _unitOfWork.Players.GetAllAscending();
+            try
+            {
+                IEnumerable<Player> Players = _unitOfWork.Players.GetAllAscending();
+                return Ok(Players);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPost]
-        public int AddPlayer([FromBody] Player player)
+        public ActionResult<int> AddPlayer([FromBody] Player player)
         {
-            _unitOfWork.Players.Add(player);
-            return _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Players.Add(player);
+                return Ok(_unitOfWork.Save());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error saving your data: {ex.Message}");
+            }
         }
 
         [HttpGet("{Id}")]
-        public Player GetPlayer(Guid Id)
+        public ActionResult<Player> GetPlayer(Guid Id)
         {
-            return _unitOfWork.Players.GetById(Id);
+            try
+            {
+                Player player = _unitOfWork.Players.GetById(Id);
+                if (player != null)
+                {
+                    return player;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPut("{Id}")]
-        public bool UpdatePlayer(Guid Id, [FromBody] Player player)
+        public ActionResult<bool> UpdatePlayer(Guid Id, [FromBody] Player player)
         {
-            Player? oldPlayer = _unitOfWork.Players.GetById(Id);
-            if (oldPlayer != null)
+            try
             {
-                oldPlayer.FirstName = player.FirstName;
-                oldPlayer.LastName = player.LastName;
-                oldPlayer.TournamentDirectorId = player.TournamentDirectorId;
-                _unitOfWork.Save();
-                return true;
+                Player? oldPlayer = _unitOfWork.Players.GetById(Id);
+                if (oldPlayer != null)
+                {
+                    oldPlayer.FirstName = player.FirstName;
+                    oldPlayer.LastName = player.LastName;
+                    oldPlayer.TournamentDirectorId = player.TournamentDirectorId;
+                    _unitOfWork.Save();
+                    return true;
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
     }
