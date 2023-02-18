@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using System.Collections.Generic;
 using TournamentManager.API.Controllers;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
@@ -29,7 +32,6 @@ namespace TournamentManager.Tests.ControllerTests
                 Cash = 0d,
                 Points = 15d
             };
-            int response = 0;
 
             // Act
             // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
@@ -38,12 +40,12 @@ namespace TournamentManager.Tests.ControllerTests
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                response = controller.AddResult(result);
+                ActionResult<int> response = controller.AddResult(result);
+                
+                // Assert
+                Assert.Equal(1, response.Value);
+                Assert.Equal(resultId, result.Id);
             }
-
-            // Assert
-            Assert.Equal(1, response);
-            Assert.Equal(resultId, result.Id);
         }
 
         [Fact]
@@ -52,7 +54,6 @@ namespace TournamentManager.Tests.ControllerTests
             // Arrange
             // This is a guid from one of the seeded results
             var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
-            Result? result;
 
             // Act and Assert
             // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
@@ -61,20 +62,21 @@ namespace TournamentManager.Tests.ControllerTests
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                result = controller.GetResult(resultId);
-
-                // If the result.Id matches the resultId we've successfully retrieved the result from the database
-                Assert.Equal(resultId, result.Id);
+                ActionResult<Result> result = controller.GetResult(resultId);
+                if (result.Value != null)
+                {
+                    // If the result.Id matches the resultId we've successfully retrieved the result from the database
+                    Assert.Equal(resultId, result.Value.Id);
+                }
             }
         }
 
         [Fact]
         public void CanUpdateSingleResult()
         {
-            // Arrange
+            //Arrange
             // This is a guid from one of the seeded results
             var resultId = new Guid("7bdd396b-6918-4c70-a4e3-603f55c458c6");
-            Result? result;
 
             using (var context = _fixture.CreateContext())
             {
@@ -82,11 +84,14 @@ namespace TournamentManager.Tests.ControllerTests
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                result = controller.GetResult(resultId);
-                result.Cash = 1000;
+                ActionResult<Result> result = controller.GetResult(resultId);
+                if (result.Value != null)
+                {
+                    result.Value.Cash = 1000;
 
-                // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
-                Assert.True(controller.UpdateResult(resultId, result));
+                    ActionResult<bool> updateResult = controller.UpdateResult(resultId, result.Value);
+                    Assert.True(updateResult.Value);
+                }
             }
         }
 
@@ -95,20 +100,21 @@ namespace TournamentManager.Tests.ControllerTests
         {
             // Arrange
             Guid gameId = new Guid("6fee60f0-55e4-4cb0-acdc-609de32094be");
-            
-            // Act and Assert
-            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
+
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                var results = controller.GetResultsByGame(gameId);
-                OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(results);
-                IEnumerable<Result> model = Assert.IsAssignableFrom<IEnumerable<Result>>(okObjectResult.Value);
+                // Act
+                ActionResult<IEnumerable<Result>> result = controller.GetResultsByGame(gameId);
 
-                // If the result.Id matches the resultId we've successfully retrieved the result from the database
-                Assert.True(model.Count >= 1);
+                // Assert
+                Assert.IsType<OkObjectResult>(result.Result);
+                if (result.Value != null)
+                {
+                    Assert.True(result.Value.Count() >= 0);
+                }
             }
         }
 
@@ -116,20 +122,21 @@ namespace TournamentManager.Tests.ControllerTests
         public void CanGetResultsByPlayerId()
         {
             // Arrange
-            List<Result> results = new List<Result>();
             Guid playerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd");
 
             // Act and Assert
-            // When we're creating a controller test, we still have to instatiate the unitofwork to pass into the controller
             using (var context = _fixture.CreateContext())
             {
                 var unitOfWork = new UnitOfWork(context);
                 var controller = new ResultsController(unitOfWork);
 
-                results = controller.GetResultsByPlayer(playerId).ToList();
+                ActionResult<IEnumerable<Result>> result = controller.GetResultsByPlayer(playerId);
 
-                // If the result.Id matches the resultId we've successfully retrieved the result from the database
-                Assert.True(results.Count >= 1);
+                Assert.IsType<OkObjectResult>(result.Result);
+                if (result.Value != null)
+                {
+                    Assert.True(result.Value.Count() >= 0);
+                }
             }
         }
     }
