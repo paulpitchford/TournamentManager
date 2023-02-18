@@ -16,38 +16,75 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Season> GetAllSeasons()
+        public ActionResult<Season> GetAllSeasons()
         {
-            return _unitOfWork.Seasons.GetAllByDateDesc();
+            try
+            {
+                IEnumerable<Season> Seasons = _unitOfWork.Seasons.GetAllByDateDesc();
+                return Ok(Seasons);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPost]
-        public int AddSeason([FromBody] Season season)
+        public ActionResult<int> AddSeason([FromBody] Season season)
         {
-            _unitOfWork.Seasons.Add(season);
-            return _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Seasons.Add(season);
+                return Ok(_unitOfWork.Save());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error saving your data: {ex.Message}");
+            }
         }
 
         [HttpGet("{Id}")]
-        public Season GetSeason(Guid Id)
+        public ActionResult<Season> GetSeason(Guid Id)
         {
-            return _unitOfWork.Seasons.GetById(Id);
+            try
+            {
+                Season season = _unitOfWork.Seasons.GetById(Id);
+                if (season != null)
+                {
+                    return season;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPut("{Id}")]
-        public bool UpdateSeason(Guid Id, [FromBody] Season season)
+        public ActionResult<bool> UpdateSeason(Guid Id, [FromBody] Season season)
         {
-            Season? oldSeason = _unitOfWork.Seasons.GetById(Id);
-            if (oldSeason != null)
+            try
             {
-                oldSeason.SeasonName = season.SeasonName;
-                oldSeason.StartDate = season.StartDate;
-                _unitOfWork.Save();
-                return true;
+                Season? oldSeason = _unitOfWork.Seasons.GetById(Id);
+                if (oldSeason != null)
+                {
+                    oldSeason.SeasonName = season.SeasonName;
+                    oldSeason.StartDate = season.StartDate;
+                    _unitOfWork.Save();
+                    return true;
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
     }
