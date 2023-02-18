@@ -16,7 +16,7 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Season> GetAllSeasons()
+        public ActionResult<IEnumerable<Season>> GetAllSeasons()
         {
             try
             {

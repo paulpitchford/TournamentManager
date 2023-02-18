@@ -16,7 +16,7 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<Venue> GetAllVenues()
+        public ActionResult<IEnumerable<Venue>> GetAllVenues()
         {
             try
             {
