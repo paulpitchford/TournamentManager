@@ -1,0 +1,165 @@
+﻿@using TournamentManager.Infrastructure.Entities
+@using TournamentManager.Infrastructure.Enums;
+@using TournamentManager.Infrastructure.Extensions;
+@using TournamentManager.Infrastructure.Interfaces;
+
+@if (PointStructure != null)
+{
+    <EditForm Model="PointStructure" OnValidSubmit="OnSubmit">
+        <FluentValidationValidator />
+
+        <div class="row mb-3">
+            <label for="point-structure-description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+                <InputText class="form-control" id="point-structure-description" @bind-Value="PointStructure.PointStructureDescription" />
+                <ValidationMessage For="() => PointStructure.PointStructureDescription" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="default-points" class="col-sm-2 col-form-label">Default Points</label>
+            <div class="col-sm-10">
+                <InputNumber class="form-control" id="default-points" @bind-Value="PointStructure.DefaultPoints" />
+                <ValidationMessage For="() => PointStructure.DefaultPoints" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
+    </EditForm>
+
+    <div class="row">
+        <div class=col-12>
+            <h3 style="margin-top: 20px;">Point Structure</h3>
+        </div>
+    </div>
+
+    <EditForm Model="pointPosition" OnValidSubmit="AddPosition">
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
+                <label for="position" class="form-label">Position</label>
+                <InputNumber class="form-control" id="position" @bind-Value="pointPosition.Position" disabled />
+            </div>
+
+            <div class="col-2">
+                <label for="points" class="form-label">Points</label>
+                <InputNumber class="form-control" id="points" @bind-Value="pointPosition.Points" />
+            </div>
+
+            <div class="col-2">
+                <label for="multiplier-type" class="form-label">Multiplier</label>
+                <InputSelect class="form-control" id="multiplier-type" @bind-Value="pointPosition.MultiplierType">
+                    @foreach (PointPositionMultiplierType multiplierType in Enum.GetValues(typeof(PointPositionMultiplierType)))
+                    {
+                        <SelectItem Value="@multiplierType">@multiplierType.GetDisplayName()</SelectItem>
+                    }
+                </InputSelect>
+            </div>
+            @if (pointPosition.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+            {
+                <div class="col-2">
+                    <label for="multiplier-value" class="form-label">Multiplier Value</label>
+                    <InputNumber class="form-control" id="multiplier-value" @bind-Value="pointPosition.MultiplierValue" />
+                </div>
+            }
+            else
+            {
+                pointPosition.MultiplierValue = 0;
+            }
+
+            <div class="col-1">
+                <label for="add-button" class="form-label">&nbsp;</label>
+                <button id="add-button" class="btn btn-primary form-control" type="submit">Add</button>
+            </div>
+        </div>
+    </EditForm>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Points</th>
+                        <th>Multiplier Type</th>
+                        <th>Multiplier Value</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (PointPosition position in PointStructure.PointPositions.OrderBy(p => p.Position))
+                    {
+                        <tr>
+                            <td>@position.Position</td>
+                            <td>@position.Points</td>
+                            <td>@position.MultiplierType.GetDisplayName()</td>
+                            <td>
+                                @if (position.MultiplierType == PointPositionMultiplierType.MultiplierValue)
+                                {
+                                    @position.MultiplierValue
+                                }
+                            </td>
+                            <td><button class="btn btn-sm btn-danger" @onclick="() => RemovePoints(position)" type="button">Remove</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    IPoints _points { get; set; } = default!;
+
+    [CascadingParameter]
+    PointStructure? PointStructure { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    PointPosition pointPosition = new PointPosition();
+    int currentPosition;
+
+    protected override void OnParametersSet()
+    {
+        if (PointStructure != null)
+        {
+            // Here we check if we're loading some positions already from an existing points structure
+            // or whether we're creating a new structure with no positions added
+            if (PointStructure.PointPositions.Count > 0)
+            {
+                currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            }
+            else
+            {
+                currentPosition = 1;
+            }
+            pointPosition = new PointPosition { Position = currentPosition };
+        }
+    }
+
+    private void AddPosition()
+    {
+        if (PointStructure != null)
+        {
+            PointStructure.PointPositions.Add(pointPosition);
+            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            pointPosition = new PointPosition { Position = currentPosition };
+
+        }
+    }
+
+    private void RemovePoints(PointPosition points)
+    {
+        if (PointStructure != null)
+        {
+            PointStructure.PointPositions.Remove(points);
+            currentPosition = _points.NextPosition(PointStructure.PointPositions.Select(p => p.Position).ToList());
+            pointPosition.Position = currentPosition;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+﻿@page "/settings/pointstructures/{Id:guid}"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Point Structures - Edit</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Edit</h3>
+
+<LoadingIndicator @bind-bind-Visible="formLoading">
+    <CascadingValue Value="PointStructure">
+        <PointStructureForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+    </CascadingValue>
+</LoadingIndicator>

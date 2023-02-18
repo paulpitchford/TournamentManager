@@ -9,6 +9,7 @@ namespace PokerTournament.Infrastructure.Validators
         {
             RuleFor(s => s.SeasonName).NotEmpty().WithMessage("Please enter a season name").MaximumLength(50).WithMessage("The maximum character length is 50");
             RuleFor(s => s.StartDate).NotEmpty().GreaterThan(DateTime.MinValue).WithMessage("Please select a valid season start date");
+            RuleFor(s => s.PointStructureId).NotNull().WithMessage("Please select a point structure");
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TournamentManager.DataAccess;
 
@@ -11,9 +12,11 @@ using TournamentManager.DataAccess;
 namespace TournamentManager.DataAccess.Migrations
 {
     [DbContext(typeof(PokerDbContext))]
-    partial class PokerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230216195703_PointStructure-Description-IsRequired")]
+    partial class PointStructureDescriptionIsRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -954,9 +957,9 @@ namespace TournamentManager.DataAccess.Migrations
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Season", b =>
                 {
                     b.HasOne("TournamentManager.Infrastructure.Entities.PointStructure", "PointStructure")
-                        .WithMany("Seasons")
+                        .WithMany()
                         .HasForeignKey("PointStructureId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PointStructure");
@@ -980,8 +983,6 @@ namespace TournamentManager.DataAccess.Migrations
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.PointStructure", b =>
                 {
                     b.Navigation("PointPositions");
-
-                    b.Navigation("Seasons");
                 });
 
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Season", b =>

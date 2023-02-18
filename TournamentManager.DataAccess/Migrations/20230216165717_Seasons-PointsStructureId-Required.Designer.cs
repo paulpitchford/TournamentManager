@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TournamentManager.DataAccess;
 
@@ -11,9 +12,11 @@ using TournamentManager.DataAccess;
 namespace TournamentManager.DataAccess.Migrations
 {
     [DbContext(typeof(PokerDbContext))]
-    partial class PokerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230216165717_Seasons-PointsStructureId-Required")]
+    partial class SeasonsPointsStructureIdRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,11 +528,6 @@ namespace TournamentManager.DataAccess.Migrations
                     b.Property<double>("DefaultPoints")
                         .HasColumnType("float");
 
-                    b.Property<string>("PointStructureDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
 
                     b.ToTable("PointStructures");
@@ -538,14 +536,12 @@ namespace TournamentManager.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf"),
-                            DefaultPoints = 15.0,
-                            PointStructureDescription = "Points multiplied by player count + 15"
+                            DefaultPoints = 15.0
                         },
                         new
                         {
                             Id = new Guid("341891db-1c50-4c99-aee9-b90b33d10be1"),
-                            DefaultPoints = 15.0,
-                            PointStructureDescription = "Value multiplier of 10 + 15"
+                            DefaultPoints = 15.0
                         });
                 });
 
@@ -924,7 +920,7 @@ namespace TournamentManager.DataAccess.Migrations
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.PointPosition", b =>
                 {
                     b.HasOne("TournamentManager.Infrastructure.Entities.PointStructure", "PointStructure")
-                        .WithMany("PointPositions")
+                        .WithMany("Positions")
                         .HasForeignKey("PointStructureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -954,9 +950,9 @@ namespace TournamentManager.DataAccess.Migrations
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Season", b =>
                 {
                     b.HasOne("TournamentManager.Infrastructure.Entities.PointStructure", "PointStructure")
-                        .WithMany("Seasons")
+                        .WithMany()
                         .HasForeignKey("PointStructureId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PointStructure");
@@ -979,9 +975,7 @@ namespace TournamentManager.DataAccess.Migrations
 
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.PointStructure", b =>
                 {
-                    b.Navigation("PointPositions");
-
-                    b.Navigation("Seasons");
+                    b.Navigation("Positions");
                 });
 
             modelBuilder.Entity("TournamentManager.Infrastructure.Entities.Season", b =>

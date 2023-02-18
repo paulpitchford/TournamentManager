@@ -1,0 +1,21 @@
+﻿@page "/settings/pointstructures/"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Point Structures</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<LoadingIndicator @bind-Visible="gridLoading">
+    <DataGrid TItem="PointStructure" Data="@PointStructures" @bind-SelectedRow="@selectedPointStructure" Responsive PageSize="10" Hoverable ShowPager>
+        <DataGridColumns>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(PointStructure.PointStructureDescription)" Caption="Description" />
+            <DataGridColumn Field="@nameof(PointStructure.DefaultPoints)" Caption="Default Points" />
+        </DataGridColumns>
+        <ButtonRowTemplate>
+            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+            <Button Color="Color.Secondary" Disabled="(selectedPointStructure is null)" Clicked="(() => Edit(selectedPointStructure!.Id))">Edit</Button>
+        </ButtonRowTemplate>
+    </DataGrid>
+</LoadingIndicator>
+

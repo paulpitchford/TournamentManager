@@ -21,7 +21,7 @@ namespace TournamentManager.Tests.RepositoryTests
             // Arrange
             var seasonId = Guid.NewGuid();
             var seasonName = Guid.NewGuid().ToString();
-            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today };
+            var season = new Season { Id = seasonId, SeasonName = seasonName, StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
             int response = 0;
 
             using (var context = _fixture.CreateContext())
@@ -87,11 +87,11 @@ namespace TournamentManager.Tests.RepositoryTests
                 var unitOfWork = new UnitOfWork(context);
                 // Make up a random season name
                 string seasonName = Guid.NewGuid().ToString();
-                unitOfWork.Seasons.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today });
+                unitOfWork.Seasons.Add(new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") });
                 unitOfWork.Save();
 
                 // Act and Assert
-                var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today };
+                var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
                 unitOfWork.Seasons.Add(secondSeason);
                 var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;

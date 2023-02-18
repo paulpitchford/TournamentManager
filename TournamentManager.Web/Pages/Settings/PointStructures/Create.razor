@@ -1,0 +1,12 @@
+﻿@page "/settings/pointstructures/create"
+@inherits PokerBaseComponent
+
+<PageTitle>Settings - Point Structure - Create</PageTitle>
+
+<AlertComponent AlertIsVisible="@AlertIsVisible" Message="@Message" AlertMessageType="@MessageType" />
+
+<h3>Create</h3>
+
+<CascadingValue Value="PointStructure">
+    <PointStructureForm OnSubmit="OnSubmit" OnCancel="OnCancel" />
+</CascadingValue>
