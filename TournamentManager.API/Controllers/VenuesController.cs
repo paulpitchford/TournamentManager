@@ -16,45 +16,82 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Venue> GetAllVenues()
+        public ActionResult<IEnumerable<Venue>> GetAllVenues()
         {
-            return _unitOfWork.Venues.GetAllAscending();
+            try
+            {
+                IEnumerable<Venue> Venues = _unitOfWork.Venues.GetAllAscending();
+                return Ok(Venues);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPost]
-        public int AddVenue([FromBody] Venue venue)
+        public ActionResult<int> AddVenue([FromBody] Venue venue)
         {
-            _unitOfWork.Venues.Add(venue);
-            return _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Venues.Add(venue);
+                return Ok(_unitOfWork.Save());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error saving your data: {ex.Message}");
+            }
         }
 
         [HttpGet("{Id}")]
-        public Venue GetVenue(Guid Id)
+        public ActionResult<Venue> GetVenue(Guid Id)
         {
-            return _unitOfWork.Venues.GetById(Id);
+            try
+            {
+                Venue venue = _unitOfWork.Venues.GetById(Id);
+                if (venue != null)
+                {
+                    return Ok(venue);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPut("{Id}")]
-        public bool UpdateVenue(Guid Id, [FromBody] Venue venue)
+        public ActionResult<bool> UpdateVenue(Guid Id, [FromBody] Venue venue)
         {
-            Venue? oldVenue = _unitOfWork.Venues.GetById(Id);
-            if (oldVenue != null)
+            try
             {
-                oldVenue.VenueName = venue.VenueName;
-                oldVenue.Address = venue.Address;
-                oldVenue.Town = venue.Town;
-                oldVenue.County = venue.County;
-                oldVenue.PostCode = venue.PostCode;
-                oldVenue.PhoneNumber= venue.PhoneNumber;
-                oldVenue.WebAddress = venue.WebAddress;
-                oldVenue.FacebookAddress = venue.FacebookAddress;
-                oldVenue.ExtraInformation = venue.ExtraInformation;
-                _unitOfWork.Save();
-                return true;
+                Venue? oldVenue = _unitOfWork.Venues.GetById(Id);
+                if (oldVenue != null)
+                {
+                    oldVenue.VenueName = venue.VenueName;
+                    oldVenue.Address = venue.Address;
+                    oldVenue.Town = venue.Town;
+                    oldVenue.County = venue.County;
+                    oldVenue.PostCode = venue.PostCode;
+                    oldVenue.PhoneNumber = venue.PhoneNumber;
+                    oldVenue.WebAddress = venue.WebAddress;
+                    oldVenue.FacebookAddress = venue.FacebookAddress;
+                    oldVenue.ExtraInformation = venue.ExtraInformation;
+                    _unitOfWork.Save();
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
     }

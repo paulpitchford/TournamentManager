@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TournamentManager.DataAccess.Migrations;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
 
@@ -17,48 +18,93 @@ namespace TournamentManager.API.Controllers
 
         [HttpGet]
         [Route("GetResultsByGame/{gameId}")]
-        public IEnumerable<Result> GetResultsByGame(Guid gameId)
+        public ActionResult<IEnumerable<Result>> GetResultsByGame(Guid gameId)
         {
-            return _unitOfWork.Results.GetResultsByGame(gameId);
+            try
+            {
+                IEnumerable<Result> Results = _unitOfWork.Results.GetResultsByGame(gameId);
+                return Ok(Results);
+            }
+            catch ( Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpGet]
         [Route("GetResultsByPlayer/{playerId}")]
-        public IEnumerable<Result> GetResultsByPlayer(Guid playerId)
+        public ActionResult<IEnumerable<Result>> GetResultsByPlayer(Guid playerId)
         {
-            return _unitOfWork.Results.GetResultsByPlayer(playerId);
+            try
+            {
+                IEnumerable<Result> Results = _unitOfWork.Results.GetResultsByPlayer(playerId);
+                return Ok(Results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPost]
-        public int AddResult([FromBody] Result result)
+        public ActionResult<int> AddResult([FromBody] Result result)
         {
-            _unitOfWork.Results.Add(result);
-            return _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Results.Add(result);
+                return Ok(_unitOfWork.Save());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error saving your data: {ex.Message}");
+            }
         }
 
         [HttpGet("{Id}")]
-        public Result GetResult(Guid Id)
+        public ActionResult<Result> GetResult(Guid Id)
         {
-            return _unitOfWork.Results.GetById(Id);
+            try
+            {
+                Result result = _unitOfWork.Results.GetById(Id);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
+            }
         }
 
         [HttpPut("{Id}")]
-        public bool UpdateResult(Guid Id, [FromBody] Result result)
+        public ActionResult<bool> UpdateResult(Guid Id, [FromBody] Result result)
         {
-            Result? oldResult = _unitOfWork.Results.GetById(Id);
-            if (oldResult != null)
+            try
             {
-                oldResult.GameId = result.GameId;
-                oldResult.PlayerId = result.PlayerId;
-                oldResult.Position = result.Position;
-                oldResult.Cash = result.Cash;
-                oldResult.Points = result.Points;
-                _unitOfWork.Save();
-                return true;
+                Result? oldResult = _unitOfWork.Results.GetById(Id);
+                if (oldResult != null)
+                {
+                    oldResult.GameId = result.GameId;
+                    oldResult.PlayerId = result.PlayerId;
+                    oldResult.Position = result.Position;
+                    oldResult.Cash = result.Cash;
+                    oldResult.Points = result.Points;
+                    _unitOfWork.Save();
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
     }
