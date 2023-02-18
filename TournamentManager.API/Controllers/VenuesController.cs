@@ -51,7 +51,7 @@ namespace TournamentManager.API.Controllers
                 Venue venue = _unitOfWork.Venues.GetById(Id);
                 if (venue != null)
                 {
-                    return venue;
+                    return Ok(venue);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace TournamentManager.API.Controllers
                     oldVenue.FacebookAddress = venue.FacebookAddress;
                     oldVenue.ExtraInformation = venue.ExtraInformation;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {

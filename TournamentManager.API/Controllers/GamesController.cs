@@ -66,7 +66,7 @@ namespace TournamentManager.API.Controllers
                 Game game = _unitOfWork.Games.GetById(Id);
                 if (game != null)
                 {
-                    return game;
+                    return Ok(game);
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace TournamentManager.API.Controllers
                     oldGame.Buyin = game.Buyin;
                     oldGame.Fee = game.Fee;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {

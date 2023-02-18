@@ -68,7 +68,7 @@ namespace TournamentManager.API.Controllers
                 Result result = _unitOfWork.Results.GetById(Id);
                 if (result != null)
                 {
-                    return result;
+                    return Ok(result);
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace TournamentManager.API.Controllers
                     oldResult.Cash = result.Cash;
                     oldResult.Points = result.Points;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {

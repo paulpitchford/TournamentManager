@@ -51,7 +51,7 @@ namespace TournamentManager.API.Controllers
                 GameType gameType = _unitOfWork.GameTypes.GetById(Id);
                 if (gameType != null)
                 {
-                    return gameType;
+                    return Ok(gameType);
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace TournamentManager.API.Controllers
                     oldGameType.AwardPoints = gameType.AwardPoints;
                     oldGameType.IsDefault = gameType.IsDefault;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {

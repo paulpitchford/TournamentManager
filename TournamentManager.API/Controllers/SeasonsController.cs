@@ -51,7 +51,7 @@ namespace TournamentManager.API.Controllers
                 Season season = _unitOfWork.Seasons.GetById(Id);
                 if (season != null)
                 {
-                    return season;
+                    return Ok(season);
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace TournamentManager.API.Controllers
                     oldSeason.SeasonName = season.SeasonName;
                     oldSeason.StartDate = season.StartDate;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {

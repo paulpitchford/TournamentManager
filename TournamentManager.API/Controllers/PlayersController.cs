@@ -51,7 +51,7 @@ namespace TournamentManager.API.Controllers
                 Player player = _unitOfWork.Players.GetById(Id);
                 if (player != null)
                 {
-                    return player;
+                    return Ok(player);
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace TournamentManager.API.Controllers
                     oldPlayer.LastName = player.LastName;
                     oldPlayer.TournamentDirectorId = player.TournamentDirectorId;
                     _unitOfWork.Save();
-                    return true;
+                    return Ok(true);
                 }
                 else
                 {
