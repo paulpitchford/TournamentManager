@@ -7,8 +7,8 @@ namespace TournamentManager.Infrastructure.Validators
 {
     public class PointStructureValidator : AbstractValidator<PointStructure>
     {
-        private readonly IPoints _points;
-        public PointStructureValidator(IPoints points)
+        private readonly IPosition _points;
+        public PointStructureValidator(IPosition points)
         {
             _points = points;
 

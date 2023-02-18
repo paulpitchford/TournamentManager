@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TournamentManager.Infrastructure.Interfaces
 {
-    public interface IPoints
+    public interface IPosition
     {
         public int NextPosition(List<int> numbers);
     }

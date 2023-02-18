@@ -21,7 +21,7 @@ builder.Services.AddBlazorise(options =>
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<WebApiService>();
-builder.Services.AddTransient<IPoints, Points>();
+builder.Services.AddTransient<IPosition, TournamentManager.Infrastructure.BusinessLogic.Position>();
 
 var app = builder.Build();
 

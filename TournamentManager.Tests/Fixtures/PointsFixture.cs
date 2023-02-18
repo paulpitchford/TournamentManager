@@ -5,11 +5,11 @@ namespace TournamentManager.Tests.Fixtures
 
     public class PointsFixture
     {
-        public Points Points { get; set; }
+        public Position Points { get; set; }
 
         public PointsFixture()
         {
-            Points = new Points();
+            Points = new Position();
         }
     }
 }

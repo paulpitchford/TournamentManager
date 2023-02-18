@@ -3,7 +3,7 @@ using TournamentManager.Infrastructure.Interfaces;
 
 namespace TournamentManager.Infrastructure.BusinessLogic
 {
-    public class Points : IPoints
+    public class Position : IPoints
     {
         public int NextPosition(List<int> numbers)
         {
