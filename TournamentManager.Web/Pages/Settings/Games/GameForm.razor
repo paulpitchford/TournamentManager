@@ -128,6 +128,31 @@
                 <InputNumber class="form-control" id="position" @bind-Value="result.Position" disabled />
             </div>
 
+            <div class="col-4">
+                <label for="player" class="form-label">Player</label>
+                <InputSelect class="form-control" id="player" @bind-Value="result.PlayerId" @bind-Value:after="OnPlayerChanged">
+                    <option value="">Select Player...</option>
+                    @if (Players != null)
+                    {
+                        foreach (Player player in Players)
+                        {
+                            <option value="@player.Id">@player.FirstName @player.LastName</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => Game.VenueId" />
+            </div>
+
+            <div class="col-2">
+                <label for="points" class="form-label">Points</label>
+                <InputNumber class="form-control" id="points" @bind-Value="result.Points" disabled />
+            </div>
+
+            <div class="col-2">
+                <label for="cash" class="form-label">Cash</label>
+                <InputNumber class="form-control" id="cash" @bind-Value="result.Cash" />
+            </div>
+
             <div class="col-1">
                 <label for="add-button" class="form-label">&nbsp;</label>
                 <button id="add-button" class="btn btn-primary form-control" type="submit">Add</button>
@@ -185,6 +210,12 @@
 
     [Parameter]
     public IEnumerable<Venue>? Venues { get; set; }
+
+    [Parameter]
+    public IEnumerable<Player>? Players { get; set; }
+
+    [Parameter]
+    public EventCallback OnPlayerChanged { get; set; }
 
     Result result = new Result();
     int currentPosition;

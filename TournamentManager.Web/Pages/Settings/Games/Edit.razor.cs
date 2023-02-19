@@ -19,6 +19,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
         IEnumerable<Season>? Seasons { get; set; }
         IEnumerable<GameType>? GameTypes { get; set; }
         IEnumerable<Venue>? Venues { get; set; }
+        IEnumerable<Player>? Players { get; set; }
 
         bool formLoading;
 
@@ -30,6 +31,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
             Seasons = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Season>>("/api/Seasons/");
             GameTypes = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<GameType>>("/api/GameTypes/");
             Venues = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Venue>>("/api/Venues/");
+            Players = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Player>>("/api/Players");
             formLoading = false;
         }
 
@@ -59,6 +61,11 @@ namespace TournamentManager.Web.Pages.Settings.Games
         void OnCancel()
         {
             _navManager.NavigateTo("/settings/games");
+        }
+
+        void OnPlayerChanged()
+        {
+
         }
     }
 }
