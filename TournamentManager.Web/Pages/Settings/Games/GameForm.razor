@@ -1,4 +1,5 @@
 ﻿@using TournamentManager.Infrastructure.Entities
+@using TournamentManager.Infrastructure.Interfaces;
 
 @if (Game != null)
 {
@@ -113,9 +114,60 @@
         <button class="btn btn-primary" type="submit">Save</button>
         <button class="btn btn-secondary" type="button" @onclick="OnCancel">Back</button>
     </EditForm>
+
+    <div class="row">
+        <div class=col-12>
+            <h3 style="margin-top: 20px;">Results</h3>
+        </div>
+    </div>
+
+    <EditForm Model="result" OnValidSubmit="AddResult">
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-2">
+                <label for="position" class="form-label">Position</label>
+                <InputNumber class="form-control" id="position" @bind-Value="result.Position" disabled />
+            </div>
+
+            <div class="col-1">
+                <label for="add-button" class="form-label">&nbsp;</label>
+                <button id="add-button" class="btn btn-primary form-control" type="submit">Add</button>
+            </div>
+        </div>
+    </EditForm>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Player</th>
+                        <th>Points</th>
+                        <th>Cash</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Result result in Game.Results.OrderBy(p => p.Position))
+                    {
+                        <tr>
+                            <td>@result.Position</td>
+                            <td>@result.Player.FirstName @result.Player.LastName</td>
+                            <td>@result.Points</td>
+                            <td>@result.Cash</td>
+                            <td><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button">Remove</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 
 @code {
+    [Inject]
+    IPositionFactory _positionFactory { get; set; } = default!;
+
     [CascadingParameter]
     Game? Game { get; set; }
 
@@ -133,4 +185,46 @@
 
     [Parameter]
     public IEnumerable<Venue>? Venues { get; set; }
+
+    Result result = new Result();
+    int currentPosition;
+
+    protected override void OnParametersSet()
+    {
+        if (Game != null)
+        {
+            // Here we check if we're loading some positions already from an existing game
+            // or whether we're creating a new game with no positions added
+            if (Game.Results.Count > 0)
+            {
+                currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
+            }
+            else
+            {
+                currentPosition = 1;
+            }
+            result = new Result { Position = currentPosition };
+        }
+    }
+
+    private void AddResult()
+    {
+        if (Game != null)
+        {
+            Game.Results.Add(result);
+            currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
+            result = new Result { Position = currentPosition };
+
+        }
+    }
+
+    private void RemoveResult(Result selectedResult)
+    {
+        if (Game != null)
+        {
+            Game.Results.Remove(selectedResult);
+            currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
+            result.Position = currentPosition;
+        }
+    }
 }

@@ -9,5 +9,7 @@ namespace TournamentManager.Infrastructure.Interfaces
 
         IEnumerable<Game> GetGamesBySeasonDescending(Guid SeasonId);
         IEnumerable<Game> GetGamesBySeasonAscending(Guid SeasonId);
+
+        Game? GetGameWithResults(Guid Id);
     }
 }

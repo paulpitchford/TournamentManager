@@ -29,5 +29,14 @@ namespace TournamentManager.DataAccess.Repository
         {
             return _context.Games.Include(g => g.Venue).Include(q => q.GameType).Include(g => g.Season).Where(g => g.SeasonId == SeasonId).TagWith($"Game Repo: GetGamesBySeasonDescending(SeasonId)").OrderByDescending(g => g.GameDateTime);
         }
+
+        public Game? GetGameWithResults(Guid Id)
+        {
+            return _context.Games.Include(g => g.Venue)
+                                 .Include(q => q.GameType)
+                                 .Include(g => g.Season)
+                                 .Include(g => g.Results).ThenInclude(r => r.Player)
+                                 .Where(g => g.Id == Id).FirstOrDefault();
+        }
     }
 }

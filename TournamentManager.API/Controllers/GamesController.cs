@@ -63,7 +63,7 @@ namespace TournamentManager.API.Controllers
         {
             try
             {
-                Game game = _unitOfWork.Games.GetById(Id);
+                Game? game = _unitOfWork.Games.GetGameWithResults(Id);
                 if (game != null)
                 {
                     return Ok(game);
