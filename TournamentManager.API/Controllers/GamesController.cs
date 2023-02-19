@@ -43,7 +43,7 @@ namespace TournamentManager.API.Controllers
                 return BadRequest($"There was an error retrieving data from the server: {ex.Message}");
             }
         }
-        
+
         [HttpPost]
         public ActionResult<int> AddGame([FromBody] Game game)
         {
@@ -96,6 +96,29 @@ namespace TournamentManager.API.Controllers
                     oldGame.GameDetails = game.GameDetails;
                     oldGame.Buyin = game.Buyin;
                     oldGame.Fee = game.Fee;
+
+                    // Loop over the children from the page and see if any need adding or updating
+                    foreach (Result result in game.Results)
+                    {
+                        // We're adding this result if the Guid is empty
+                        if (result.Id == Guid.Empty)
+                        {
+                            result.GameId = game.Id;
+                            _unitOfWork.Results.Add(result);
+                        }
+                        // We don't need to worry about updates as we're only adding and removing from this collection of entities
+                    }
+
+                    // Now loop over the old collection and see if any have been removed
+                    foreach (Result oldResult in oldGame.Results)
+                    {
+                        Result? result = game.Results.Where(r => r.Id == oldResult.Id).FirstOrDefault();
+                        if (result == null)
+                        {
+                            _unitOfWork.Results.Remove(oldResult);
+                        }
+                    }
+
                     _unitOfWork.Save();
                     return Ok(true);
                 }
