@@ -12,22 +12,22 @@ namespace TournamentManager.DataAccess.Repository
 
         public IEnumerable<Game> GetAllAscending()
         {
-            return _context.Games.Include(g => g.Venue).Include(q => q.GameType).Include(g => g.Season).TagWith($"Game Repo: GetAllAscending").OrderBy(g => g.GameDateTime);
+            return _context.Games.Include(g => g.Venue).Include(g => g.GameType).Include(g => g.Season).Include(g => g.Results).TagWith($"Game Repo: GetAllAscending").OrderBy(g => g.GameDateTime);
         }
 
         public IEnumerable<Game> GetAllDescending()
         {
-            return _context.Games.Include(g => g.Venue).Include(q => q.GameType).Include(g => g.Season).TagWith($"Game Repo: GetAllAscending").OrderByDescending(g => g.GameDateTime);
+            return _context.Games.Include(g => g.Venue).Include(g => g.GameType).Include(g => g.Season).Include(g => g.Results).TagWith($"Game Repo: GetAllAscending").OrderByDescending(g => g.GameDateTime);
         }
 
         public IEnumerable<Game> GetGamesBySeasonAscending(Guid SeasonId)
         {
-            return _context.Games.Include(g => g.Venue).Include(q => q.GameType).Include(g => g.Season).Where(g => g.SeasonId == SeasonId).TagWith($"Game Repo: GetGamesBySeasonAscending(SeasonId)").OrderBy(g => g.GameDateTime);
+            return _context.Games.Include(g => g.Venue).Include(g => g.GameType).Include(g => g.Season).Include(g => g.Results).Where(g => g.SeasonId == SeasonId).TagWith($"Game Repo: GetGamesBySeasonAscending(SeasonId)").OrderBy(g => g.GameDateTime);
         }
 
         public IEnumerable<Game> GetGamesBySeasonDescending(Guid SeasonId)
         {
-            return _context.Games.Include(g => g.Venue).Include(q => q.GameType).Include(g => g.Season).Where(g => g.SeasonId == SeasonId).TagWith($"Game Repo: GetGamesBySeasonDescending(SeasonId)").OrderByDescending(g => g.GameDateTime);
+            return _context.Games.Include(g => g.Venue).Include(g => g.GameType).Include(g => g.Season).Include(g => g.Results).Where(g => g.SeasonId == SeasonId).TagWith($"Game Repo: GetGamesBySeasonDescending(SeasonId)").OrderByDescending(g => g.GameDateTime);
         }
 
         public Game? GetGameWithResults(Guid Id)

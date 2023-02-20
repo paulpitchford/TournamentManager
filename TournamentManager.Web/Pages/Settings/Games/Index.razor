@@ -61,19 +61,34 @@
 </div>
 
 <div class="row">
-<LoadingIndicator @bind-Visible="gridLoading">
-    <DataGrid TItem="Game" Data="@Games" @bind-SelectedRow="@selectedGame" Responsive PageSize="10" Hoverable ShowPager>
-        <DataGridColumns>
-            <DataGridCommandColumn />
-            <DataGridColumn Field="@nameof(Game.GameTitle)" Caption="Game" />
-            <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:g}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
-            <DataGridColumn Field="GameType.GameTypeName" Caption="Game Type" />
-            <DataGridColumn Field="Venue.VenueName" Caption="Venue" />
-        </DataGridColumns>
-        <ButtonRowTemplate>
-            <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
-            <Button Color="Color.Secondary" Disabled="(selectedGame is null)" Clicked="(() => Edit(selectedGame!.Id))">Edit</Button>
-        </ButtonRowTemplate>
-    </DataGrid>
-</LoadingIndicator>
+    <LoadingIndicator @bind-Visible="gridLoading">
+        <DataGrid TItem="Game" Data="@Games" @bind-SelectedRow="@selectedGame" Responsive PageSize="10" Hoverable ShowPager>
+            <DataGridColumns>
+                <DataGridCommandColumn />
+                <DataGridColumn Field="@nameof(Game.GameTitle)" Caption="Game" />
+                <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:g}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
+                <DataGridColumn Field="GameType.GameTypeName" Caption="Game Type" />
+                <DataGridColumn Field="Venue.VenueName" Caption="Venue" />
+                <DataGridColumn Caption ="Players">
+                    <DisplayTemplate>
+                        @context!.Results.Count
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn Caption ="Points">
+                    <DisplayTemplate>
+                        @context!.Results.Sum(g => g.Points)
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn Caption="Cash">
+                    <DisplayTemplate>
+                        @context!.Results.Sum(g => g.Cash)
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+            <ButtonRowTemplate>
+                <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
+                <Button Color="Color.Secondary" Disabled="(selectedGame is null)" Clicked="(() => Edit(selectedGame!.Id))">Edit</Button>
+            </ButtonRowTemplate>
+        </DataGrid>
+    </LoadingIndicator>
 </div>
