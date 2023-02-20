@@ -62,10 +62,5 @@ namespace TournamentManager.Web.Pages.Settings.Games
         {
             _navManager.NavigateTo("/settings/games");
         }
-
-        void OnPlayerChanged()
-        {
-
-        }
     }
 }

@@ -214,9 +214,6 @@
     [Parameter]
     public IEnumerable<Player>? Players { get; set; }
 
-    [Parameter]
-    public EventCallback OnPlayerChanged { get; set; }
-
     Result result = new Result();
     int currentPosition;
 
@@ -256,6 +253,15 @@
             Game.Results.Remove(selectedResult);
             currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
             result.Position = currentPosition;
+        }
+    }
+
+    private void OnPlayerChanged()
+    {
+        if (Players != null)
+        {
+            // Pass the player entity onto the result as we need to bind to the first name and last name once the result item is added to the collection.
+            result.Player = Players.Where(p => p.Id == result.PlayerId).First();
         }
     }
 }
