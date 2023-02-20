@@ -122,6 +122,8 @@
     </div>
 
     <EditForm Model="result" OnValidSubmit="AddResult">
+        <FluentValidationValidator />
+
         <div class="row" style="margin-bottom:10px;">
             <div class="col-2">
                 <label for="position" class="form-label">Position</label>
@@ -140,12 +142,13 @@
                         }
                     }
                 </InputSelect>
-                <ValidationMessage For="() => Game.VenueId" />
+                <ValidationMessage For="() => result.PlayerId" />
             </div>
 
             <div class="col-2">
                 <label for="cash" class="form-label">Cash</label>
                 <InputNumber class="form-control" id="cash" @bind-Value="result.Cash" />
+                <ValidationMessage For="() => result.Cash" />
             </div>
 
             <div class="col-1">
@@ -172,7 +175,7 @@
                     {
                         <tr>
                             <td>@result.Position</td>
-                            <td>@result.Player.FirstName @result.Player.LastName</td>
+                            <td>@result.Player!.FirstName @result.Player!.LastName</td>
                             <td>@result.Points</td>
                             <td>@result.Cash</td>
                             <td><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button">Remove</button></td>

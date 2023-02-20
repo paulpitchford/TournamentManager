@@ -84,7 +84,7 @@ namespace TournamentManager.API.Controllers
         {
             try
             {
-                Game? oldGame = _unitOfWork.Games.GetById(Id);
+                Game? oldGame = _unitOfWork.Games.GetGameWithResults(Id);
                 if (oldGame != null)
                 {
                     oldGame.SeasonId = game.SeasonId;
@@ -104,6 +104,18 @@ namespace TournamentManager.API.Controllers
                         if (result.Id == Guid.Empty)
                         {
                             result.GameId = game.Id;
+
+                            // TODO: Fix this rubbish
+                            // This line needs to be here - even though I hate it:
+                            // 1. On the Game Edit page, so the list of results can use the player's name, when the player is selected
+                            //    We populate Result.Player with the selected Player entity.
+                            //
+                            // 2. For some reason, this makes entity framework think that it's a new entity (it adds it to the change tracker as added).
+                            //    If you remove it here, the change tracker no longer detects it as new and ignores it basically. Which is desired.
+                            //
+                            // However, it doesn't feel normal to be having to remove it here.
+                            result.Player = null;
+                            
                             _unitOfWork.Results.Add(result);
                         }
                         // We don't need to worry about updates as we're only adding and removing from this collection of entities

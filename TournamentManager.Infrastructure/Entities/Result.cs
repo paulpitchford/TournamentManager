@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TournamentManager.Infrastructure.Entities
@@ -15,7 +16,8 @@ namespace TournamentManager.Infrastructure.Entities
         public double Cash { get; set; }
         public double Points { get; set; }
 
-        public virtual Game Game { get; set; } = default!;
-        public virtual Player Player { get; set; } = default!;
+        public virtual Game? Game { get; set; }
+
+        public virtual Player? Player { get; set; }
     }
 }
