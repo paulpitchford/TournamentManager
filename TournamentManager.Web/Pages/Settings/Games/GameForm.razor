@@ -242,33 +242,38 @@
 
     private void AddResult()
     {
-        if (Game != null && Game.Season != null)
+        if (Game != null && Game.Season != null && Game.GameType != null)
         {
             Game.Results.Add(result);
             currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
             result = new Result { Position = currentPosition };
 
-            // Loop over all results in the Game collection and update the points for each place now we've added a new item:
-            foreach (Result gameResult in Game.Results)
+            if (Game.GameType.AwardPoints)
             {
-                gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+                // Loop over all results in the Game collection and update the points for each place now we've added a new item:
+                foreach (Result gameResult in Game.Results)
+                {
+                    gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+                }
             }
-
         }
     }
 
     private void RemoveResult(Result selectedResult)
     {
-        if (Game != null && Game.Season != null)
+        if (Game != null && Game.Season != null && Game.GameType != null)
         {
             Game.Results.Remove(selectedResult);
             currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
             result.Position = currentPosition;
 
-            // Loop over all results in the Game collection and update the points for each place now we've removed an item:
-            foreach (Result gameResult in Game.Results)
+            if (Game.GameType.AwardPoints)
             {
-                gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+                // Loop over all results in the Game collection and update the points for each place now we've removed an item:
+                foreach (Result gameResult in Game.Results)
+                {
+                    gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+                }
             }
         }
     }
