@@ -17,7 +17,8 @@ namespace TournamentManager.Infrastructure.BusinessLogic
                 PointPosition? pointPosition = pointStructure.PointPositions.Where(pp => pp.Position== position).FirstOrDefault();
 
                 // If it is use it
-                if (pointPosition != null) { 
+                if (pointPosition != null) 
+                { 
                     if (pointPosition.MultiplierType == Enums.PointPositionMultiplierType.PlayerCount)
                     {
                         points += (playerCount * pointPosition.Points);
