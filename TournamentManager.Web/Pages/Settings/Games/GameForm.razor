@@ -144,11 +144,6 @@
             </div>
 
             <div class="col-2">
-                <label for="points" class="form-label">Points</label>
-                <InputNumber class="form-control" id="points" @bind-Value="result.Points" disabled />
-            </div>
-
-            <div class="col-2">
                 <label for="cash" class="form-label">Cash</label>
                 <InputNumber class="form-control" id="cash" @bind-Value="result.Cash" />
             </div>
@@ -237,22 +232,34 @@
 
     private void AddResult()
     {
-        if (Game != null)
+        if (Game != null && Game.Season != null)
         {
             Game.Results.Add(result);
             currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
             result = new Result { Position = currentPosition };
+
+            // Loop over all results in the Game collection and update the points for each place now we've added a new item:
+            foreach (Result gameResult in Game.Results)
+            {
+                gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+            }
 
         }
     }
 
     private void RemoveResult(Result selectedResult)
     {
-        if (Game != null)
+        if (Game != null && Game.Season != null)
         {
             Game.Results.Remove(selectedResult);
             currentPosition = _positionFactory.NextPosition(Game.Results.Select(p => p.Position).ToList());
             result.Position = currentPosition;
+
+            // Loop over all results in the Game collection and update the points for each place now we've removed an item:
+            foreach (Result gameResult in Game.Results)
+            {
+                gameResult.Points = _positionFactory.CalculatePoints(gameResult.Position, Game.Results.Count, Game.Season.PointStructure);
+            }
         }
     }
 

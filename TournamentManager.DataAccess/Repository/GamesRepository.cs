@@ -34,7 +34,7 @@ namespace TournamentManager.DataAccess.Repository
         {
             return _context.Games.Include(g => g.Venue)
                                  .Include(q => q.GameType)
-                                 .Include(g => g.Season)
+                                 .Include(g => g.Season).ThenInclude(s => s!.PointStructure).ThenInclude(ps => ps!.PointPositions)
                                  .Include(g => g.Results).ThenInclude(r => r.Player)
                                  .Where(g => g.Id == Id).FirstOrDefault();
         }
