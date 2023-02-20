@@ -30,12 +30,12 @@ namespace TournamentManager.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetGamesByGame/{gameId}")]
-        public ActionResult<IEnumerable<Game>> GetGamesByGame(Guid gameId)
+        [Route("GetGamesByGame/{seasonId}")]
+        public ActionResult<IEnumerable<Game>> GetGamesByGame(Guid seasonId)
         {
             try
             {
-                IEnumerable<Game> Games = _unitOfWork.Games.GetGamesBySeasonAscending(gameId);
+                IEnumerable<Game> Games = _unitOfWork.Games.GetGamesBySeasonAscending(seasonId);
                 return Ok(Games);
             }
             catch (Exception ex)

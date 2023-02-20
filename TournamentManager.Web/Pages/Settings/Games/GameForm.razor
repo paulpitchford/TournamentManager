@@ -136,7 +136,7 @@
                 <div class="col-4">
                     <label for="player" class="form-label">Player</label>
                     <InputSelect class="form-control" id="player" @bind-Value="result.PlayerId" @bind-Value:after="OnPlayerChanged">
-                        <option value="">Select Player...</option>
+                        <option value="@Guid.Empty">Select Player...</option>
                         @if (Players != null)
                         {
                             foreach (Player player in Players)
@@ -145,12 +145,11 @@
                             }
                         }
                     </InputSelect>
-                    <ValidationMessage For="() => result.PlayerId" />
                 </div>
 
                 <div class="col-1">
                     <label for="add-player-button" class="form-label">&nbsp;</label>
-                    <button id="add-player-button" class="btn btn-primary form-control" type="button" @onclick="LoadPlayerForm">Add Player</button>
+                    <button id="add-player-button" class="btn btn-success form-control" type="button" @onclick="LoadPlayerForm"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
                 </div>
 
                 <div class="col-2">
@@ -161,7 +160,7 @@
 
                 <div class="col-1">
                     <label for="add-button" class="form-label">&nbsp;</label>
-                    <button id="add-button" class="btn btn-primary form-control" type="submit">Add Result</button>
+                    <button id="add-button" class="btn btn-primary form-control" type="submit"><i class="fas fa-plus-square"></i></button>
                 </div>
             </div>
         </EditForm>
@@ -186,7 +185,7 @@
                                 <td>@result.Player!.FirstName @result.Player!.LastName</td>
                                 <td>@result.Points</td>
                                 <td>@result.Cash</td>
-                                <td><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button">Remove</button></td>
+                                <td><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button"><i class="fas fa-trash-alt"></i></button></td>
                             </tr>
                         }
                     </tbody>

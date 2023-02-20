@@ -17,6 +17,7 @@
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="Blazorise" Version="1.2.0" />
     <PackageReference Include="Blazorise.Bootstrap" Version="1.2.0" />
+    <PackageReference Include="Blazorise.Components" Version="1.2.0" />
     <PackageReference Include="Blazorise.Datagrid" Version="1.2.0" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.0" />
     <PackageReference Include="Blazorise.LoadingIndicator" Version="1.2.0" />

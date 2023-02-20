@@ -35,8 +35,8 @@ namespace TournamentManager.Web.Pages.Settings.Games
                 Seasons = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Season>>("/api/Seasons/");
                 GameTypes = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<GameType>>("/api/GameTypes/");
                 Venues = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Venue>>("/api/Venues/");
-                await FilterGrid();
                 gridLoading = false;
+                await FilterGrid();
             }
             catch (Exception ex)
             {
@@ -57,6 +57,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
                 }
             }
 
+            gridLoading = true;
             Games = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Game>>($"/api/Games/");
 
             if (Games != null)
@@ -76,6 +77,7 @@ namespace TournamentManager.Web.Pages.Settings.Games
                     Games = Games.Where(q => q.VenueId == SelectedVenueId).ToList();
                 }
             }
+            gridLoading = false;
         }
 
         void CreateNew()

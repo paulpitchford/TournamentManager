@@ -240,19 +240,6 @@ namespace TournamentManager.Tests.Validators
         }
 
         [Fact]
-        public void ShouldHaveErrorWhenFeeIsNull()
-        {
-            // Arrange
-            Game game = new Game { };
-
-            // Act
-            var result = validator.TestValidate(game);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(g => g.Fee);
-        }
-
-        [Fact]
         public void ShouldNotHaveErrorWhenFeeIsSpecified()
         {
             // Arrange

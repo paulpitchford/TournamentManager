@@ -14,7 +14,7 @@ namespace TournamentManager.Infrastructure.Validators
             RuleFor(s => s.GameDateTime).NotEmpty().GreaterThan(DateTime.MinValue).WithMessage("Please select a valid season game date");
             RuleFor(s => s.GameDetails).NotEmpty().WithMessage("Please enter the game details").MaximumLength(255).WithMessage("The maximum character length is 255");
             RuleFor(s => s.Buyin).NotEmpty().WithMessage("Please enter a buy-in");
-            RuleFor(s => s.Fee).NotEmpty().WithMessage("Please enter a buy-in");
+            RuleFor(s => s.Fee).NotNull().WithMessage("Please enter a buy-in");
 
         }
     }

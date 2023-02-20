@@ -69,7 +69,7 @@
                 <DataGridColumn Field="@nameof(Game.GameDateTime)" Caption="Game Date" DisplayFormat="{0:g}" DisplayFormatProvider="@System.Globalization.CultureInfo.GetCultureInfo("en-GB")" />
                 <DataGridColumn Field="GameType.GameTypeName" Caption="Game Type" />
                 <DataGridColumn Field="Venue.VenueName" Caption="Venue" />
-                <DataGridColumn Caption ="Players">
+@*                <DataGridColumn Caption ="Players">
                     <DisplayTemplate>
                         @context!.Results.Count
                     </DisplayTemplate>
@@ -83,7 +83,7 @@
                     <DisplayTemplate>
                         @context!.Results.Sum(g => g.Cash)
                     </DisplayTemplate>
-                </DataGridColumn>
+                </DataGridColumn>*@
             </DataGridColumns>
             <ButtonRowTemplate>
                 <Button Color="Color.Primary" Clicked="CreateNew">New</Button>
