@@ -19,8 +19,10 @@ namespace TournamentManager.Web.Pages.Settings.Games
         Game? Game { get; set; }
         IEnumerable<Season>? Seasons { get; set; }
         IEnumerable<GameType>? GameTypes { get; set; }
-        IEnumerable<Venue>? Venues { get; set; }
+        IEnumerable<Venue>? Venues { get; set; }    
         IEnumerable<Player>? Players { get; set; }
+
+        Player? NewPlayer { get; set; } = new Player();
 
         bool formLoading;
 
@@ -62,6 +64,22 @@ namespace TournamentManager.Web.Pages.Settings.Games
         void OnCancel()
         {
             _navManager.NavigateTo("/settings/games");
+        }
+
+        async Task SubmitPlayer()
+        {
+            // Save the player
+            if (NewPlayer != null)
+            {
+                var response = await _apiClient.httpClient.PostAsJsonAsync<Player>("/api/Players/", NewPlayer);
+                int playerId = await response.Content.ReadFromJsonAsync<int>();
+                if (playerId > 0)
+                {
+                    // Refresh the player list
+                    Players = await _apiClient.httpClient.GetFromJsonAsync<IEnumerable<Player>>("/api/Players");
+                    NewPlayer = new Player();
+                }
+            }
         }
     }
 }

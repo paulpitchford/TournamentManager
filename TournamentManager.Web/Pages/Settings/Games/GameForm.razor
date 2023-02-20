@@ -148,6 +148,11 @@
                     <ValidationMessage For="() => result.PlayerId" />
                 </div>
 
+                <div class="col-1">
+                    <label for="add-player-button" class="form-label">&nbsp;</label>
+                    <button id="add-player-button" class="btn btn-primary form-control" type="button" @onclick="LoadPlayerForm">Add Player</button>
+                </div>
+
                 <div class="col-2">
                     <label for="cash" class="form-label">Cash</label>
                     <InputNumber class="form-control" id="cash" @bind-Value="result.Cash" />
@@ -156,7 +161,7 @@
 
                 <div class="col-1">
                     <label for="add-button" class="form-label">&nbsp;</label>
-                    <button id="add-button" class="btn btn-primary form-control" type="submit">Add</button>
+                    <button id="add-button" class="btn btn-primary form-control" type="submit">Add Result</button>
                 </div>
             </div>
         </EditForm>
@@ -189,6 +194,20 @@
             </div>
         </div>
     }
+
+    // Add player model - hopefully we can just reuse our create Player page and then refresh the Players property with a new list of players
+    <Modal @bind-Visible="@playerModalVisible">
+        <ModalContent Centered Size="ModalSize.Large">
+            <ModalHeader>
+                <ModalTitle>New Player</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+                <CascadingValue Value="Player">
+                    <TournamentManager.Web.Pages.Settings.Players.PlayerForm OnCancel="CloseModal" OnSubmit="SavePlayer" />
+                </CascadingValue>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
 }
 
 @code {
@@ -219,8 +238,16 @@
     [Parameter]
     public IEnumerable<Player>? Players { get; set; }
 
+    [Parameter]
+    public Player? Player { get; set; }
+
+    [Parameter]
+    public EventCallback SubmitPlayer { get; set; }
+
     Result result = new Result();
     int currentPosition;
+
+    private bool playerModalVisible;
 
     protected override void OnParametersSet()
     {
@@ -285,5 +312,21 @@
             // Pass the player entity onto the result as we need to bind to the first name and last name once the result item is added to the collection.
             result.Player = Players.Where(p => p.Id == result.PlayerId).First();
         }
+    }
+
+    private void LoadPlayerForm()
+    {
+        playerModalVisible = true;
+    }
+
+    private async Task SavePlayer()
+    {
+        await SubmitPlayer.InvokeAsync();
+        playerModalVisible = false;
+    }
+
+    private void CloseModal()
+    {
+        playerModalVisible = false;
     }
 }
