@@ -29,20 +29,16 @@ namespace TournamentManager.Web.Pages.Settings.GameTypes
         {
             if (GameType != null)
             {
-                try
-                {
-                    var response = await _apiClient.httpClient.PutAsJsonAsync<GameType>($"/api/GameTypes/{Id}", GameType);
-                    bool updated = await response.Content.ReadFromJsonAsync<bool>();
+                var response = await _apiClient.httpClient.PutAsJsonAsync<GameType>($"/api/GameTypes/{Id}", GameType);
 
-                    if (updated)
-                    {
-                        _navManager.NavigateTo("/settings/gametypes");
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    _navManager.NavigateTo("/settings/gametypes");
                 }
-                catch (Exception ex)
+                else
                 {
                     AlertIsVisible = true;
-                    Message = ex.Message;
+                    Message = await response.Content.ReadAsStringAsync();
                     MessageType = AlertMessageType.Danger;
                 }
             }

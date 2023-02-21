@@ -24,29 +24,20 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
 
         async Task OnSubmit()
         {
-            try
-            {
-                var response = await _apiClient.httpClient.PostAsJsonAsync<Season>("/api/Seasons/", Season);
+            var response = await _apiClient.httpClient.PostAsJsonAsync<Season>("/api/Seasons/", Season);
 
-                if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
+            {
+                int seasonId = await response.Content.ReadFromJsonAsync<int>();
+                if (seasonId > 0)
                 {
-                    int seasonId = await response.Content.ReadFromJsonAsync<int>();
-                    if (seasonId > 0)
-                    {
-                        _navManager.NavigateTo("/settings/seasons");
-                    }
-                }
-                else
-                {
-                    AlertIsVisible = true;
-                    Message = await response.Content.ReadAsStringAsync();
-                    MessageType = AlertMessageType.Danger;
+                    _navManager.NavigateTo("/settings/seasons");
                 }
             }
-            catch (Exception ex)
+            else
             {
                 AlertIsVisible = true;
-                Message = ex.Message;
+                Message = await response.Content.ReadAsStringAsync();
                 MessageType = AlertMessageType.Danger;
             }
         }

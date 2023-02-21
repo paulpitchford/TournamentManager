@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.AspNetCore.Mvc;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
 
@@ -36,6 +37,11 @@ namespace TournamentManager.API.Controllers
             {
                 _unitOfWork.GameTypes.Add(gameType);
                 return Ok(_unitOfWork.Save());
+            }
+            catch (UniqueConstraintException)
+            {
+                // There is only one unique constraint on the gametype entity so we can statically return an error message
+                return BadRequest("This game type name has been used already and must be unique.");
             }
             catch (Exception ex)
             {

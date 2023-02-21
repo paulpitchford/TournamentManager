@@ -17,19 +17,20 @@ namespace TournamentManager.Web.Pages.Settings.GameTypes
 
         async Task OnSubmit()
         {
-            try
+            var response = await _apiClient.httpClient.PostAsJsonAsync<GameType>("/api/GameTypes/", GameType);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await _apiClient.httpClient.PostAsJsonAsync<GameType>("/api/GameTypes/", GameType);
                 int gameTypeId = await response.Content.ReadFromJsonAsync<int>();
                 if (gameTypeId > 0)
                 {
                     _navManager.NavigateTo("/settings/gametypes");
                 }
             }
-            catch (Exception ex)
+            else
             {
                 AlertIsVisible = true;
-                Message = ex.Message;
+                Message = await response.Content.ReadAsStringAsync();
                 MessageType = AlertMessageType.Danger;
             }
         }
