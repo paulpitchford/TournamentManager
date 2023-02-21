@@ -45,19 +45,20 @@ namespace TournamentManager.Web.Pages.Settings.Games
 
         async Task OnSubmit()
         {
-            try
+            var response = await _apiClient.httpClient.PostAsJsonAsync<Game>("/api/Games/", Game);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await _apiClient.httpClient.PostAsJsonAsync<Game>("/api/Games/", Game);
                 int gameId = await response.Content.ReadFromJsonAsync<int>();
                 if (gameId > 0)
                 {
                     _navManager.NavigateTo($"/settings/games/season/{Game.SeasonId}");
                 }
             }
-            catch (Exception ex)
+            else
             {
                 AlertIsVisible = true;
-                Message = ex.Message;
+                Message = await response.Content.ReadAsStringAsync();
                 MessageType = AlertMessageType.Danger;
             }
         }

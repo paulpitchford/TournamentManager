@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.AspNetCore.Mvc;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
 
@@ -51,6 +52,11 @@ namespace TournamentManager.API.Controllers
             {
                 _unitOfWork.Games.Add(game);
                 return Ok(_unitOfWork.Save());
+            }
+            catch (UniqueConstraintException)
+            {
+                // There is only one unique constraint on the result entity so we can statically return an error message
+                return BadRequest("Your results list has a player entered twice. Each player should only have one result. Please check and try again.");
             }
             catch (Exception ex)
             {
@@ -138,6 +144,11 @@ namespace TournamentManager.API.Controllers
                 {
                     return NotFound();
                 }
+            }
+            catch (UniqueConstraintException)
+            {
+                // There is only one unique constraint on the result entity so we can statically return an error message
+                return BadRequest("Your results list has a player entered twice. Each player should only have one result. Please check and try again.");
             }
             catch (Exception ex)
             {

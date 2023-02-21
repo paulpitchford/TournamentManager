@@ -41,20 +41,16 @@ namespace TournamentManager.Web.Pages.Settings.Games
         {
             if (Game != null)
             {
-                try
-                {
-                    var response = await _apiClient.httpClient.PutAsJsonAsync<Game>($"/api/Games/{Id}", Game);
-                    bool updated = await response.Content.ReadFromJsonAsync<bool>();
+                var response = await _apiClient.httpClient.PutAsJsonAsync<Game>($"/api/Games/{Id}", Game);
 
-                    if (updated)
-                    {
-                        _navManager.NavigateTo("/settings/games");
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    _navManager.NavigateTo("/settings/games");
                 }
-                catch (Exception ex)
+                else
                 {
                     AlertIsVisible = true;
-                    Message = ex.Message;
+                    Message = await response.Content.ReadAsStringAsync();
                     MessageType = AlertMessageType.Danger;
                 }
             }

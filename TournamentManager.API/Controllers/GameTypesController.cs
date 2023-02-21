@@ -89,6 +89,11 @@ namespace TournamentManager.API.Controllers
                     return NotFound();
                 }
             }
+            catch (UniqueConstraintException)
+            {
+                // There is only one unique constraint on the result entity so we can statically return an error message
+                return BadRequest("This game type name has been used already and must be unique.");
+            }
             catch (Exception ex)
             {
                 return BadRequest($"There was an error saving your data: {ex.Message}");
