@@ -11,6 +11,7 @@ What I'm hoping to learn along the way:
 4. SignalR
 5. .net Maui
 6. Authentication and authorisation across the different app types
+7. Tailwindcss
 
 Further goals
 1. Multi tenancy
