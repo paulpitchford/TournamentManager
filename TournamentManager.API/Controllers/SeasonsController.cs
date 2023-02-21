@@ -40,6 +40,7 @@ namespace TournamentManager.API.Controllers
             }
             catch (UniqueConstraintException)
             {
+                // There is only one unique constraint on the season entity so we can statically return an error message
                 return BadRequest("This season name has been used already and must be unique.");
             }
             catch (Exception ex)
