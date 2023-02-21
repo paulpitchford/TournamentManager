@@ -17,19 +17,20 @@ namespace TournamentManager.Web.Pages.Settings.Players
 
         async Task OnSubmit()
         {
-            try
+            var response = await _apiClient.httpClient.PostAsJsonAsync<Player>("/api/Players/", Player);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await _apiClient.httpClient.PostAsJsonAsync<Player>("/api/Players/", Player);
                 int playerId = await response.Content.ReadFromJsonAsync<int>();
                 if (playerId > 0)
                 {
                     _navManager.NavigateTo("/settings/players");
                 }
             }
-            catch (Exception ex)
+            else
             {
                 AlertIsVisible = true;
-                Message = ex.Message;
+                Message = await response.Content.ReadAsStringAsync();
                 MessageType = AlertMessageType.Danger;
             }
         }

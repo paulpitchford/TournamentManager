@@ -29,20 +29,16 @@ namespace TournamentManager.Web.Pages.Settings.Players
         {
             if (Player != null)
             {
-                try
-                {
-                    var response = await _apiClient.httpClient.PutAsJsonAsync<Player>($"/api/Players/{Id}", Player);
-                    bool updated = await response.Content.ReadFromJsonAsync<bool>();
+                var response = await _apiClient.httpClient.PutAsJsonAsync<Player>($"/api/Players/{Id}", Player);
 
-                    if (updated)
-                    {
-                        _navManager.NavigateTo("/settings/players");
-                    }
+                if (response.IsSuccessStatusCode)
+                {
+                    _navManager.NavigateTo("/settings/players");
                 }
-                catch (Exception ex)
+                else
                 {
                     AlertIsVisible = true;
-                    Message = ex.Message;
+                    Message = await response.Content.ReadAsStringAsync();
                     MessageType = AlertMessageType.Danger;
                 }
             }

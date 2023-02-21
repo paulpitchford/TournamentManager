@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.AspNetCore.Mvc;
 using TournamentManager.DataAccess.Migrations;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
@@ -53,6 +54,11 @@ namespace TournamentManager.API.Controllers
             {
                 _unitOfWork.Results.Add(result);
                 return Ok(_unitOfWork.Save());
+            }
+            catch (UniqueConstraintException)
+            {
+                // There is only one unique constraint on the result entity so we can statically return an error message
+                return BadRequest("This player already has a result entered for this game. A player can only have one result.");
             }
             catch (Exception ex)
             {
