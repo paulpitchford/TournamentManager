@@ -32,9 +32,8 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
             if (Season != null)
             {
                 var response = await _apiClient.httpClient.PutAsJsonAsync<Season>($"/api/Seasons/{Id}", Season);
-                bool updated = response.IsSuccessStatusCode;
 
-                if (updated)
+                if (response.IsSuccessStatusCode)
                 {
                     _navManager.NavigateTo("/settings/seasons");
                 }

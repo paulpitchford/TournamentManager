@@ -27,9 +27,8 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
             try
             {
                 var response = await _apiClient.httpClient.PostAsJsonAsync<Season>("/api/Seasons/", Season);
-                bool updated = response.IsSuccessStatusCode;
 
-                if (updated)
+                if (response.IsSuccessStatusCode)
                 {
                     int seasonId = await response.Content.ReadFromJsonAsync<int>();
                     if (seasonId > 0)
