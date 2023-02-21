@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityFramework.Exceptions.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using TournamentManager.Infrastructure.Entities;
 
 namespace TournamentManager.DataAccess
@@ -15,6 +16,11 @@ namespace TournamentManager.DataAccess
         public DbSet<Result> Results { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Venue> Venues { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
+        }
 
         // Seed the database
         protected override void OnModelCreating(ModelBuilder modelBuilder)

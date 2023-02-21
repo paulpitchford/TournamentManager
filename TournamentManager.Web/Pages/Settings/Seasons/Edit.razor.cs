@@ -31,20 +31,17 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
         {
             if (Season != null)
             {
-                try
-                {
-                    var response = await _apiClient.httpClient.PutAsJsonAsync<Season>($"/api/Seasons/{Id}", Season);
-                    bool updated = await response.Content.ReadFromJsonAsync<bool>();
+                var response = await _apiClient.httpClient.PutAsJsonAsync<Season>($"/api/Seasons/{Id}", Season);
+                bool updated = response.IsSuccessStatusCode;
 
-                    if (updated)
-                    {
-                        _navManager.NavigateTo("/settings/seasons");
-                    }
+                if (updated)
+                {
+                    _navManager.NavigateTo("/settings/seasons");
                 }
-                catch (Exception ex)
+                else
                 {
                     AlertIsVisible = true;
-                    Message = ex.Message;
+                    Message = await response.Content.ReadAsStringAsync();
                     MessageType = AlertMessageType.Danger;
                 }
             }

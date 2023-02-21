@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.AspNetCore.Mvc;
 using TournamentManager.Infrastructure.Entities;
 using TournamentManager.Infrastructure.Interfaces;
 
@@ -36,6 +37,10 @@ namespace TournamentManager.API.Controllers
             {
                 _unitOfWork.Seasons.Add(season);
                 return Ok(_unitOfWork.Save());
+            }
+            catch (UniqueConstraintException)
+            {
+                return BadRequest("This season name has been used already and must be unique.");
             }
             catch (Exception ex)
             {
@@ -81,6 +86,10 @@ namespace TournamentManager.API.Controllers
                 {
                     return NotFound();
                 }
+            }
+            catch (UniqueConstraintException)
+            {
+                return BadRequest("This season name has been used already and must be unique.");
             }
             catch (Exception ex)
             {

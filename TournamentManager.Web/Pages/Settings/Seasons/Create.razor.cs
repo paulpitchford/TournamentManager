@@ -27,10 +27,21 @@ namespace TournamentManager.Web.Pages.Settings.Seasons
             try
             {
                 var response = await _apiClient.httpClient.PostAsJsonAsync<Season>("/api/Seasons/", Season);
-                int seasonId = await response.Content.ReadFromJsonAsync<int>();
-                if (seasonId > 0)
+                bool updated = response.IsSuccessStatusCode;
+
+                if (updated)
                 {
-                    _navManager.NavigateTo("/settings/seasons");
+                    int seasonId = await response.Content.ReadFromJsonAsync<int>();
+                    if (seasonId > 0)
+                    {
+                        _navManager.NavigateTo("/settings/seasons");
+                    }
+                }
+                else
+                {
+                    AlertIsVisible = true;
+                    Message = await response.Content.ReadAsStringAsync();
+                    MessageType = AlertMessageType.Danger;
                 }
             }
             catch (Exception ex)
