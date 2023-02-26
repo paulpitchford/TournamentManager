@@ -120,7 +120,7 @@
     {
         <div class="row">
             <div class=col-12>
-                <h3 style="margin-top: 20px;">Results</h3>
+                <h3 class="mt-3">Results</h3>
             </div>
         </div>
 
@@ -165,48 +165,46 @@
             </div>
         </EditForm>
 
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Position</th>
-                            <th>Player</th>
-                            <th>Points</th>
-                            <th>Cash</th>
-                            <th></th>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Position</th>
+                        <th scope="col" class="px-6 py-3">Player</th>
+                        <th scope="col" class="px-6 py-3">Points</th>
+                        <th scope="col" class="px-6 py-3">Cash</th>
+                        <th scope="col" class="px-6 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Result result in Game.Results.OrderBy(p => p.Position))
+                    {
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">@result.Position</td>
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">@result.Player!.FirstName @result.Player!.LastName</td>
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">@result.Points</td>
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">@result.Cash</td>
+                            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button"><i class="fas fa-trash-alt"></i></button></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Result result in Game.Results.OrderBy(p => p.Position))
-                        {
-                            <tr>
-                                <td>@result.Position</td>
-                                <td>@result.Player!.FirstName @result.Player!.LastName</td>
-                                <td>@result.Points</td>
-                                <td>@result.Cash</td>
-                                <td><button class="btn btn-sm btn-danger" @onclick="() => RemoveResult(result)" type="button"><i class="fas fa-trash-alt"></i></button></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 
     // Add player model - hopefully we can just reuse our create Player page and then refresh the Players property with a new list of players
     <Modal @bind-Visible="@playerModalVisible">
         <ModalContent Centered Size="ModalSize.Large">
-            <ModalHeader>
-                <ModalTitle>New Player</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-                <CascadingValue Value="Player">
-                    <TournamentManager.Web.Pages.Settings.Players.PlayerForm OnCancel="CloseModal" OnSubmit="SavePlayer" />
-                </CascadingValue>
-            </ModalBody>
+        <ModalHeader>
+            <ModalTitle>New Player</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <CascadingValue Value="Player">
+                <TournamentManager.Web.Pages.Settings.Players.PlayerForm OnCancel="CloseModal" OnSubmit="SavePlayer" />
+            </CascadingValue>
+        </ModalBody>
         </ModalContent>
-    </Modal>
+        </Modal>
 }
 
 @code {

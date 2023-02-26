@@ -1,6 +1,6 @@
 using Blazorise;
-using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Blazorise.Tailwind;
 using TournamentManager.Infrastructure.BusinessLogic;
 using TournamentManager.Infrastructure.Interfaces;
 using TournamentManager.Web.Services;
@@ -16,7 +16,7 @@ builder.Services.AddBlazorise(options =>
 {
     options.Immediate = true;
 })
-    .AddBootstrapProviders()
+    .AddTailwindProviders()
     .AddFontAwesomeIcons();
 
 builder.Services.AddHttpClient();

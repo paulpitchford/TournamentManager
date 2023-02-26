@@ -15,16 +15,20 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
-    <PackageReference Include="Blazorise" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Bootstrap" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Components" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Datagrid" Version="1.2.0" />
-    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.0" />
-    <PackageReference Include="Blazorise.LoadingIndicator" Version="1.2.0" />
+    <PackageReference Include="Blazorise" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Components" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Datagrid" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.1" />
+    <PackageReference Include="Blazorise.LoadingIndicator" Version="1.2.1" />
+    <PackageReference Include="Blazorise.Tailwind" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TournamentManager.Infrastructure\TournamentManager.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
 </Project>
