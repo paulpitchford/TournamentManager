@@ -97,5 +97,28 @@ namespace TournamentManager.API.Controllers
                 return BadRequest($"There was an error saving your data: {ex.Message}");
             }
         }
+
+        [HttpDelete("{Id}")]
+        public ActionResult<bool> RemoveSeason(Guid Id)
+        {
+            try
+            {
+                Season? season = _unitOfWork.Seasons.GetById(Id);
+                if (season != null)
+                {
+                    _unitOfWork.Seasons.Remove(season);
+                    _unitOfWork.Save();
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"There was an error deleting your data: {ex.Message}");
+            }
+        }
     }
 }
