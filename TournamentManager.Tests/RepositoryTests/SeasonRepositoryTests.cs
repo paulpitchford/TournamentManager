@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
@@ -93,7 +94,7 @@ namespace TournamentManager.Tests.RepositoryTests
                 // Act and Assert
                 var secondSeason = new Season { Id = Guid.NewGuid(), SeasonName = seasonName, StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
                 unitOfWork.Seasons.Add(secondSeason);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                var exception = Assert.Throws<UniqueConstraintException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 
                 if (sqlException != null)
@@ -136,7 +137,6 @@ namespace TournamentManager.Tests.RepositoryTests
         public void CannotRemoveSeasonIfTheSeasonHasGames()
         {
             // Arrange
-            // This is a guid from one of the seeded seasons
             Season? season = new Season { SeasonName = "Season to Delete with Games", StartDate = DateTime.Today, PointStructureId = new Guid("d9db6444-f33f-4832-befe-46a17ea765cf") };
             Game? game = new Game { Id = new Guid("6bd7d582-b11b-4ac3-9f07-e3b517ab561b"), Buyin = 35, Fee = 5, GameDateTime = DateTime.Now.AddDays(7), GameDetails = "Test Game", GameTitle = "Test Game", GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"), VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"), PublishResults = false };
             season.Games.Add(game);
@@ -153,13 +153,13 @@ namespace TournamentManager.Tests.RepositoryTests
 
                     unitOfWork.Seasons.Remove(season);
 
-                    var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                    var exception = Assert.Throws<CannotInsertNullException>(() => unitOfWork.Save());
                     var sqlException = exception.InnerException as SqlException;
 
                     if (sqlException != null)
                     {
-                        // If we get a sqlException of 2601 that means that the insert failed due to the constraint which is what this test is ensuring
-                        Assert.Equal(2601, sqlException.Number);
+                        // If we get a sqlException of 515 that means that the remove failed because of the games that exist on the entity
+                        Assert.Equal(515, sqlException.Number);
                     }
                 }
             }

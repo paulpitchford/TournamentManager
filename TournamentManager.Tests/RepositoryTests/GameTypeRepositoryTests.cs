@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
@@ -92,7 +93,7 @@ namespace TournamentManager.Tests.RepositoryTests
                 // Act and Assert
                 var secondGameType = new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = false };
                 unitOfWork.GameTypes.Add(secondGameType);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                var exception = Assert.Throws<UniqueConstraintException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 
                 if (sqlException != null)
@@ -118,7 +119,7 @@ namespace TournamentManager.Tests.RepositoryTests
                 // We can just add this second one and the test should pass because we should get the SQL Exception 2601.
                 var secondGameType = new GameType { Id = Guid.NewGuid(), GameTypeName = gameTypeName, AwardPoints = false, IsDefault = true };
                 unitOfWork.GameTypes.Add(secondGameType);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                var exception = Assert.Throws<UniqueConstraintException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 
                 if (sqlException != null)

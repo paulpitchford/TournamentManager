@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
@@ -100,7 +101,7 @@ namespace TournamentManager.Tests.RepositoryTests
                 // Act and Assert
                 var secondResult = new Result { Id = Guid.NewGuid(), GameId = gameId, PlayerId = playerId, Position = 2, Points = 175, Cash = 150 };
                 unitOfWork.Results.Add(secondResult);
-                var exception = Assert.Throws<DbUpdateException>(() => unitOfWork.Save());
+                var exception = Assert.Throws<UniqueConstraintException>(() => unitOfWork.Save());
                 var sqlException = exception.InnerException as SqlException;
 
                 if (sqlException != null)
