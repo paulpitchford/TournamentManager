@@ -103,5 +103,64 @@ namespace TournamentManager.Tests.RepositoryTests
                 }
             }
         }
+
+        [Fact]
+        public void CanRemovePlayer()
+        {
+            // Arrange
+            Player? player = new Player { FirstName = "This is a", LastName = "Test Player" };
+            int result = 0;
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (player != null)
+                {
+                    unitOfWork.Players.Add(player);
+                    unitOfWork.Save();
+
+                    unitOfWork.Players.Remove(player);
+                    result = unitOfWork.Save();
+                }
+
+                // If the result is greater than zero, we now the data has been affected which means it's been deleted
+                Assert.True(result > 0);
+            }
+        }
+
+        [Fact]
+        public void CannotRemoveSeasonIfTheSeasonHasGames()
+        {
+            // Arrange
+            Guid playerId = new Guid("78480ee6-9296-41eb-9914-963f81c61b80");
+            Player? player = new Player { Id = playerId, FirstName = "This is a", LastName = "Test Player" };
+            Result result = new Result { GameId = new Guid ("6fee60f0-55e4-4cb0-acdc-609de32094be"), Cash = 200, Points = 100, PlayerId = playerId, Position = 999 };
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (player != null && result != null)
+                {
+                    unitOfWork.Players.Add(player);
+                    unitOfWork.Save();
+
+                    unitOfWork.Results.Add(result);
+                    unitOfWork.Save();
+
+                    var exception = Assert.Throws<InvalidOperationException>(() => unitOfWork.Players.Remove(player));
+                    var sqlException = exception.InnerException as SqlException;
+
+                    if (sqlException != null)
+                    {
+                        // If we get a sqlException of 515 that means that the remove failed because of the games that exist on the entity
+                        Assert.Equal(515, sqlException.Number);
+                    }
+                }
+            }
+        }
     }
 }

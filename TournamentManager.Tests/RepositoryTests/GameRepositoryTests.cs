@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using EntityFramework.Exceptions.Common;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TournamentManager.DataAccess.UnitOfWork;
 using TournamentManager.Infrastructure.Entities;
@@ -88,6 +89,35 @@ namespace TournamentManager.Tests.RepositoryTests
 
                 // If the udpdate is successful the unit of work save method will return 1 to indicate 1 record was saved
                 Assert.Equal(1, unitOfWork.Save());
+            }
+        }
+
+        [Fact]
+        public void CanRemoveGame()
+        {
+            // Arrange
+            Game? game = new Game { SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"), VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"), GameTypeId = new Guid("dbb07104-cffa-4539-91ce-1d0e5ecce2e0"), Fee = 5, Buyin = 35, GameDateTime = DateTime.Now, GameDetails = "Test Game", GameTitle = "Test Game", PublishResults = false };
+            Result? result = new Result { Cash = 200, PlayerId = new Guid("644d7d1a-57d1-4e70-9963-376369fa73cd"), Points = 100, Position = 1 };
+            game.Results.Add(result);
+
+            int testResult = 0;
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (game != null)
+                {
+                    unitOfWork.Games.Add(game);
+                    unitOfWork.Save();
+
+                    unitOfWork.Games.Remove(game);
+                    testResult = unitOfWork.Save();
+                }
+
+                // If the result is greater than zero, we now the data has been affected which means it's been deleted
+                Assert.True(testResult > 0);
             }
         }
     }

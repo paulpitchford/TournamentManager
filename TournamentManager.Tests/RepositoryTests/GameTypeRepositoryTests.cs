@@ -129,5 +129,66 @@ namespace TournamentManager.Tests.RepositoryTests
                 }
             }
         }
+
+        [Fact]
+        public void CanRemoveGameType()
+        {
+            // Arrange
+            GameType? gameType = new GameType { AwardPoints = true, GameTypeName = "This is a Test Game Type", IsDefault = false };
+            int result = 0;
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (gameType != null)
+                {
+                    unitOfWork.GameTypes.Add(gameType);
+                    unitOfWork.Save();
+
+                    unitOfWork.GameTypes.Remove(gameType);
+                    result = unitOfWork.Save();
+                }
+
+                // If the result is greater than zero, we now the data has been affected which means it's been deleted
+                Assert.True(result > 0);
+            }
+        }
+
+        [Fact]
+        public void CannotRemoveGameTypeIfTheGameTypeHasGames()
+        {
+            // Arrange
+            Guid gameTypeId = Guid.NewGuid();
+            GameType? gameType = new GameType { Id = gameTypeId, AwardPoints = true, GameTypeName = "This is a Test Game Type", IsDefault = false };
+            Game? game = new Game { SeasonId = new Guid("1b0c1ad0-e4f5-4fb6-98a4-e5e2a2d5e24e"), Buyin = 35, Fee = 5, GameDateTime = DateTime.Now.AddDays(7), GameDetails = "Test Game", GameTitle = "Test Game", GameTypeId = gameTypeId, VenueId = new Guid("63c0255e-ecde-4edf-8a7f-3ecf026bba3d"), PublishResults = false };
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (gameType != null && game != null)
+                {
+                    unitOfWork.GameTypes.Add(gameType);
+                    unitOfWork.Save();
+
+                    unitOfWork.Games.Add(game);
+                    unitOfWork.Save();
+
+                    unitOfWork.GameTypes.Remove(gameType);
+
+                    var exception = Assert.Throws<CannotInsertNullException>(() => unitOfWork.Save());
+                    var sqlException = exception.InnerException as SqlException;
+
+                    if (sqlException != null)
+                    {
+                        // If we get a sqlException of 515 that means that the remove failed because of the games that exist on the entity
+                        Assert.Equal(515, sqlException.Number);
+                    }
+                }
+            }
+        }
     }
 }
