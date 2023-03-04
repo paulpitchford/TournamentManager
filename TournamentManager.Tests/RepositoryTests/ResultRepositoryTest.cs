@@ -111,5 +111,32 @@ namespace TournamentManager.Tests.RepositoryTests
                 }
             }
         }
+
+        [Fact]
+        public void CanRemoveResult()
+        {
+            // Arrange
+            // This is a guid from one of the seeded results
+            Result? result = new Result { GameId = new Guid("87450acd-ca09-40c2-883b-aad03402f9dc"), Cash = 200, Points = 200, PlayerId = new Guid("35d039f5-8c42-4764-beda-ae2e563e8c27"), Position = 1 };
+            int testResult = 0;
+
+            using (var context = _fixture.CreateContext())
+            {
+                // Act and Assert
+                var unitOfWork = new UnitOfWork(context);
+
+                if (result != null)
+                {
+                    unitOfWork.Results.Add(result);
+                    unitOfWork.Save();
+
+                    unitOfWork.Results.Remove(result);
+                    testResult = unitOfWork.Save();
+                }
+
+                // If the result is greater than zero, we now the data has been affected which means it's been deleted
+                Assert.True(testResult > 0);
+            }
+        }
     }
 }
